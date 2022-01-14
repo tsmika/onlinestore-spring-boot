@@ -2,7 +2,7 @@ package by.brest.karas.model;
 
 public class CartRecord {
 
-    private Integer userId;
+    private Integer customerId;
 
     private Integer productId;
 
@@ -11,18 +11,18 @@ public class CartRecord {
     public CartRecord() {
     }
 
-    public CartRecord(Integer userId, Integer productId, Long quantity) {
-        this.userId = userId;
+    public CartRecord(Integer customerId, Integer productId, Long quantity) {
+        this.customerId = customerId;
         this.productId = productId;
         this.quantity = quantity;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public Integer getProductId() {
@@ -44,7 +44,7 @@ public class CartRecord {
     @Override
     public String toString() {
         return getClass().getName() + "{" +
-                "userId=" + userId +
+                "customerId=" + customerId +
                 ", productId=" + productId +
                 ", quantity=" + quantity +
                 '}';

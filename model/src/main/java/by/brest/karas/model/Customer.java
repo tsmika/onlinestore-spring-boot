@@ -1,6 +1,6 @@
 package by.brest.karas.model;
 
-public class User {
+public class Customer {
 
     private Integer userId;
 
@@ -10,10 +10,12 @@ public class User {
 
     private Role role;
 
-    public User() {
+    private boolean isExisted;
+
+    public Customer() {
     }
 
-    public User(Integer userId, String login, String password, Role role) {
+    public Customer(Integer userId, String login, String password, Role role) {
         this.userId = userId;
         this.login = login;
         this.password = password;
@@ -48,6 +50,14 @@ public class User {
         return role;
     }
 
+    public boolean isExisted() {
+        return isExisted;
+    }
+
+    public void setExisted(boolean existed) {
+        isExisted = existed;
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }
@@ -59,6 +69,7 @@ public class User {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", isExisted=" + isExisted +
                 '}';
     }
 }
