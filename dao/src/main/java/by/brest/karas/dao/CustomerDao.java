@@ -4,6 +4,7 @@ import by.brest.karas.model.Role;
 import by.brest.karas.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerDao {
 
@@ -11,13 +12,13 @@ public interface CustomerDao {
 
     Customer findByLogin(String login);
 
-    Customer findById(Integer id);
+    Optional<Customer> findById(Integer customerId);
+
+    Integer create (Customer customer);
+
+    Integer update(Customer updatedCustomer);
+
+    Integer delete(Integer customerId);
 
     List<Customer> selectCustomers(String filter);
-
-    void save (Customer customer, Role role);
-
-    void update(Integer id, Customer updatedCustomer);
-
-    void delete(Integer id);
 }

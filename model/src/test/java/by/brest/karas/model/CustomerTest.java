@@ -8,7 +8,7 @@ public class CustomerTest {
     @Test
     public void getLoginTestConstructor() {
 
-        Customer customer = new Customer(1, "testLogin", "", Role.ROLE_USER);
+        Customer customer = new Customer("testLogin", "", Role.ROLE_USER, true);
         Assert.assertEquals("testLogin", customer.getLogin());
 
     }

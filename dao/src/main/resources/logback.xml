@@ -1,0 +1,27 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{300} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>dao.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{300} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="by.brest" level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+<!--    <root level="DEBUG">-->
+<!--        <appender-ref ref="STDOUT"/>-->
+<!--    </root>-->
+
+</configuration>

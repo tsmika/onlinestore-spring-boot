@@ -1,8 +1,10 @@
 package by.brest.karas.model;
 
+import java.util.Objects;
+
 public class Customer {
 
-    private Integer userId;
+    private Integer customerId;
 
     private String login;
 
@@ -10,24 +12,25 @@ public class Customer {
 
     private Role role;
 
-    private boolean isExisted;
+    private Boolean isActual;
 
     public Customer() {
     }
 
-    public Customer(Integer userId, String login, String password, Role role) {
-        this.userId = userId;
+    public Customer(/*Integer customerId,*/ String login, String password, Role role, Boolean isActual) {
+//        this.customerId = customerId;
         this.login = login;
         this.password = password;
         this.role = role;
+        this.isActual = isActual;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public String getLogin() {
@@ -50,26 +53,39 @@ public class Customer {
         return role;
     }
 
-    public boolean isExisted() {
-        return isExisted;
-    }
-
-    public void setExisted(boolean existed) {
-        isExisted = existed;
-    }
-
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Boolean getIsActual() {
+        return isActual;
+    }
+
+    public void setIsActual(Boolean actual) {
+        isActual = actual;
     }
 
     @Override
     public String toString() {
         return getClass().getName() + "{" +
-                "userId=" + userId +
+                "customerId=" + customerId +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
-                ", isExisted=" + isExisted +
+                ", isActual=" + isActual +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(customerId, customer.customerId) && Objects.equals(login, customer.login) && Objects.equals(password, customer.password) && role == customer.role && Objects.equals(isActual, customer.isActual);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId, login, password, role, isActual);
     }
 }
