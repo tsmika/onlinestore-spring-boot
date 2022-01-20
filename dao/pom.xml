@@ -22,6 +22,7 @@
             <groupId>by.brest.karas</groupId>
             <artifactId>test-db</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>

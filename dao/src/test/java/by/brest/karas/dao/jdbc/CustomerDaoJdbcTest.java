@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-dao.xml"})
@@ -47,20 +48,40 @@ public class CustomerDaoJdbcTest {
     public void createCustomerTest() {
         List<Customer> customers = findAllAssertion();
 
-        Customer customer = new Customer("TestCustomerLogin", "TestCustomerPassword", Role.ROLE_USER, true);
-        customerDao.create(customer);
+        customerDao.create(new Customer("TestCustomerLogin", "TestCustomerPassword", Role.ROLE_USER, true));
 
         List<Customer> customersAfterAddingANewOne = customerDao.findAll();
         Assert.assertTrue(customers.size() == customersAfterAddingANewOne.size() - 1);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void createCustomerWithSameLoginTest() {
+        List<Customer> customers = findAllAssertion();
+
+        customerDao.create(new Customer("TestCustomerLogin", "TestCustomerPassword", Role.ROLE_USER, true));
+        customerDao.create(new Customer("TestCustomerLogin", "TestCustomerPassword", Role.ROLE_USER, true));
+        List<Customer> customersAfterAddingANewOne = customerDao.findAll();
+        Assert.assertTrue(customers.size() == customersAfterAddingANewOne.size() - 1);
+    }
+
+    @Test
+    public void updateCustomerTest() {
+        List<Customer> customers = findAllAssertion();
+        Customer customer = customers.get(0);
+        customer.setLogin("NewLoginForTest");
+        customerDao.update(customer);
+        Optional<Customer> updatedCustomer = customerDao.findById(customer.getCustomerId());
+
+        Assert.assertTrue("NewLoginForTest".equals(updatedCustomer.get().getLogin()));
+    }
+
     @Test
     public void testLogging(){
-        LOGGER.trace("Hello trace!");
-        LOGGER.debug("Hello debug!");
-        LOGGER.info("Hello info!");
-        LOGGER.warn("Hello warn!");
-        LOGGER.error("Hello error!");
+//        LOGGER.trace("Hello trace!");
+//        LOGGER.debug("Hello debug!");
+//        LOGGER.info("Hello info!");
+//        LOGGER.warn("Hello warn!");
+//        LOGGER.error("Hello error!");
     }
 
     private  List<Customer> findAllAssertion(){
