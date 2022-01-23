@@ -21,6 +21,6 @@ public class HelloController {
 
         LOGGER.debug("hello(name:{})", name);
         model.addAttribute("name", name);
-        return "hello_page";
+        return "user_index";
     }
 }
