@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-dao.xml"})
+@ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-dao.xml", "classpath*:dao.xml"})
 public class CustomerDaoJdbcTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoJdbcTest.class);

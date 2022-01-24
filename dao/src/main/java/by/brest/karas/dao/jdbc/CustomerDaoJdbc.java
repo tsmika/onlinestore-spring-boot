@@ -4,6 +4,7 @@ import by.brest.karas.dao.CustomerDao;
 import by.brest.karas.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,27 +18,26 @@ import java.util.Optional;
 public class CustomerDaoJdbc implements CustomerDao {
 
 
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    RowMapper rowMapper = BeanPropertyRowMapper.newInstance(Customer.class);
+    private RowMapper rowMapper = BeanPropertyRowMapper.newInstance(Customer.class);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoJdbc.class);
 
-    @SuppressWarnings("SqlResolve")
-    private static final String SQL_GET_ALL_CUSTOMERS =
-            "SELECT  C.CUSTOMER_ID, C.LOGIN, C.PASSWORD, C.ROLE, C.IS_ACTUAL FROM CUSTOMER AS C ORDER BY C.LOGIN";
+    @Value("${customer.select}")
+    private String selectSql;
 
-    private static final String SQL_GET_CUSTOMER_BY_ID =
-            "SELECT  C.CUSTOMER_ID, C.LOGIN, C.PASSWORD, C.ROLE, C.IS_ACTUAL FROM CUSTOMER AS C WHERE C.CUSTOMER_ID = :CUSTOMER_ID";
+    @Value("${customer.findById}")
+    private String findByIdSql;
 
-    private static final String SQL_CREATE_CUSTOMER =
-            "INSERT INTO CUSTOMER(LOGIN, PASSWORD, ROLE, IS_ACTUAL)  VALUES (:LOGIN, :PASSWORD, :ROLE, :IS_ACTUAL)";
+    @Value("${customer.create}")
+    private String createSql;
 
-    private static final String SQL_CHECK_CUSTOMER_LOGIN =
-            "SELECT COUNT(LOGIN) FROM CUSTOMER WHERE lower(LOGIN) = lower(:LOGIN)";
+    @Value("${customer.checkLogin}")
+    private String checkLoginSql;
 
-    private static final String SQL_UPDATE_CUSTOMER =
-            "UPDATE CUSTOMER SET LOGIN = :LOGIN, PASSWORD = :PASSWORD, ROLE = :ROLE, IS_ACTUAL = :IS_ACTUAL WHERE CUSTOMER_ID = :CUSTOMER_ID";
+    @Value("${customer.update}")
+    private String updateSql;
 
     public CustomerDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -46,14 +46,14 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Override
     public List<Customer> findAll() {
         LOGGER.debug("Find all customers");
-        return namedParameterJdbcTemplate.query(SQL_GET_ALL_CUSTOMERS, rowMapper);
+        return namedParameterJdbcTemplate.query(selectSql, rowMapper);
     }
 
     @Override
     public Optional<Customer> findById(Integer customerId) {
         LOGGER.debug("Find customer by id: {}", customerId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("CUSTOMER_ID", customerId);
-        return Optional.ofNullable((Customer) namedParameterJdbcTemplate.queryForObject(SQL_GET_CUSTOMER_BY_ID, sqlParameterSource, rowMapper));
+        return Optional.ofNullable((Customer) namedParameterJdbcTemplate.queryForObject(findByIdSql, sqlParameterSource, rowMapper));
     }
 
     @Override
@@ -75,11 +75,11 @@ public class CustomerDaoJdbc implements CustomerDao {
                 .addValue("PASSWORD", customer.getPassword())
                 .addValue("ROLE", customer.getRole().toString())
                 .addValue("IS_ACTUAL", customer.getIsActual());
-        return namedParameterJdbcTemplate.update(SQL_CREATE_CUSTOMER, mapSqlParameterSource);
+        return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
     private boolean isLoginUnique(Customer customer){
-        return namedParameterJdbcTemplate.queryForObject(SQL_CHECK_CUSTOMER_LOGIN, new MapSqlParameterSource("LOGIN", customer.getLogin()), Integer.class) == 0;
+        return namedParameterJdbcTemplate.queryForObject(checkLoginSql, new MapSqlParameterSource("LOGIN", customer.getLogin()), Integer.class) == 0;
     }
     @Override
     public Integer update(Customer customer) {
@@ -93,7 +93,7 @@ public class CustomerDaoJdbc implements CustomerDao {
                 .addValue("ROLE", customer.getRole().toString())
                 .addValue("IS_ACTUAL", customer.getIsActual());
 
-        return namedParameterJdbcTemplate.update(SQL_UPDATE_CUSTOMER, mapSqlParameterSource);
+        return namedParameterJdbcTemplate.update(updateSql, mapSqlParameterSource);
     }
 
 
