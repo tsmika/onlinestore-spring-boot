@@ -24,8 +24,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Integer productId, String picture, String shortDescription, String detailDescription, BigDecimal price, Date creationDate, Date updateDate, Integer changedBy) {
-        this.productId = productId;
+    public Product(String picture, String shortDescription, String detailDescription, BigDecimal price, Date creationDate, Date updateDate, Integer changedBy) {
         this.picture = picture;
         this.shortDescription = shortDescription;
         this.detailDescription = detailDescription;

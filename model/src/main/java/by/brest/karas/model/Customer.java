@@ -17,8 +17,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(/*Integer customerId,*/ String login, String password, Role role, Boolean isActual) {
-//        this.customerId = customerId;
+    public Customer(String login, String password, Role role, Boolean isActual) {
         this.login = login;
         this.password = password;
         this.role = role;
