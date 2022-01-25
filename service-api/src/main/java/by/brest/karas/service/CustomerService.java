@@ -1,13 +1,11 @@
-package by.brest.karas.dao;
+package by.brest.karas.service;
 
-import by.brest.karas.model.Role;
 import by.brest.karas.model.Customer;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CustomerDao {
-
+public interface CustomerService {
     List<Customer> findAll();
 
     Customer findByLogin(String login);

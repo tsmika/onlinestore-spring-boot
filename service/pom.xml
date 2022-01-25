@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>dao</artifactId>
+    <groupId>by.brest.karas.service.impl</groupId>
+    <artifactId>service</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
 
     <parent>
         <artifactId>onlinestore</artifactId>
@@ -23,41 +23,13 @@
         </dependency>
         <dependency>
             <groupId>by.brest.karas</groupId>
-            <artifactId>test-db</artifactId>
+            <artifactId>service-api</artifactId>
         </dependency>
 
-        <dependency>
+        <!--            Spring-->
+         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-
-        <!--            Tests-->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-        </dependency>
-
-
-        <!--            DB-->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
 
         <!--            Logging-->
@@ -74,7 +46,7 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-
     </dependencies>
+
 
 </project>
