@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("SqlResolve")
 public class CustomerDaoJdbc implements CustomerDao {
 
 

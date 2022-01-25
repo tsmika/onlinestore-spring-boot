@@ -24,6 +24,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <spring.version>5.3.14</spring.version>
         <logback.version>1.2.10</logback.version>
+        <mockito.version>4.2.0</mockito.version>
     </properties>
 
     <dependencyManagement>
@@ -125,8 +126,20 @@
                 <version>4.12</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-<!--            Logging-->
+            <!--            Logging-->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
