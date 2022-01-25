@@ -1,7 +1,8 @@
 package by.brest.karas.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CustomerTest {
 
@@ -9,7 +10,7 @@ public class CustomerTest {
     public void getLoginTestConstructor() {
 
         Customer customer = new Customer("testLogin", "", Role.ROLE_USER, true);
-        Assert.assertEquals("testLogin", customer.getLogin());
+        assertEquals("testLogin", customer.getLogin());
 
     }
 
@@ -18,7 +19,7 @@ public class CustomerTest {
 
         Customer customer = new Customer();
         customer.setLogin("testLogin");
-        Assert.assertEquals("testLogin", customer.getLogin());
+        assertEquals("testLogin", customer.getLogin());
     }
 
 }
