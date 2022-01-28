@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
+
     List<Customer> findAll();
 
     Customer findByLogin(String login);
