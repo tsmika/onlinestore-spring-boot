@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="productDao" class="by.brest.karas.dao.jdbc.ProductDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="productDtoDao" class="by.brest.karas.dao.jdbc.ProductDtoDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="productService" class="by.brest.karas.service.impl.ProductServiceImpl">
+        <constructor-arg name="productDao" ref="productDao"/>
+    </bean>
+
+    <bean id="productDtoService" class="by.brest.karas.service.impl.ProductDtoServiceImpl">
+        <constructor-arg name="productDtoDao" ref="productDtoDao"/>
+    </bean>
+
+
+<!--    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">-->
+<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="customerDtoDao" class="by.brest.karas.dao.jdbc.">-->
+<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">-->
+<!--        <constructor-arg name="customerDao" ref="customerDao"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="customerDtoService" class="by.brest.karas.service.impl.С">-->
+<!--        <constructor-arg name="customerDtoDao" ref="customerDtoDao"/>-->
+<!--    </bean>-->
+
+
+
+</beans>

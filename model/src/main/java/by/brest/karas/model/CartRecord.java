@@ -6,12 +6,12 @@ public class CartRecord {
 
     private Integer productId;
 
-    private Long quantity;
+    private Integer quantity;
 
     public CartRecord() {
     }
 
-    public CartRecord(Integer customerId, Integer productId, Long quantity) {
+    public CartRecord(Integer customerId, Integer productId, Integer quantity) {
         this.customerId = customerId;
         this.productId = productId;
         this.quantity = quantity;
@@ -33,11 +33,11 @@ public class CartRecord {
         this.productId = productId;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

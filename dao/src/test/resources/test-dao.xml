@@ -10,7 +10,11 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="userDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="productDao" class="by.brest.karas.dao.jdbc.ProductDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 

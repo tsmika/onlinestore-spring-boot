@@ -13,10 +13,23 @@
     </parent>
 
     <dependencies>
+
         <dependency>
             <groupId>by.brest.karas</groupId>
             <artifactId>model</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>by.brest.karas</groupId>-->
+<!--            <artifactId>service</artifactId>-->
+<!--        </dependency>-->
+
+
+        <!--        <dependency>-->
+<!--            <groupId>by.brest.karas</groupId>-->
+<!--            <artifactId>dao</artifactId>-->
+<!--        </dependency>-->
+
     </dependencies>
 
 </project>
