@@ -40,7 +40,8 @@ public class HomeController {
     public String goToStartPage(
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter
             , @RequestParam(value = "view", required = false, defaultValue = "") String view
-            , Model model) {
+            , Model model
+            , Principal principal) {
 
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);

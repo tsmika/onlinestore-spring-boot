@@ -8,6 +8,7 @@
     <http>
 <!--        <intercept-url pattern="/hello" access="hasAnyRole()" />-->
         <intercept-url pattern="/products" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+        <logout logout-success-url="/hello" />
 <!--        <intercept-url pattern="/products/**" access="hasAnyRole()" />-->
         <form-login
                 login-processing-url="/login"
@@ -15,8 +16,18 @@
                 password-parameter="password"
                 default-target-url="/products"/>
     </http>
-    <authentication-manager>
+
+    <authentication-manager alias="authenticationManager">
         <authentication-provider>
+
+<!--            <jdbc-user-service data-source-ref="dataSource"-->
+<!--                               users-by-username-query=-->
+<!--                                       "SELECT C.LOGIN, C.PASSWORD FROM CUSTOMER AS C WHERE C.LOGIN =?"-->
+<!--                               authorities-by-username-query=-->
+<!--                                        "SELECT C.LOGIN, C.ROLE FROM CUSTOMER AS C WHERE C.LOGIN =?"/>-->
+            <!--                                       "SELECT C.CUSTOMER_ID, C.LOGIN, C.PASSWORD, C.ROLE, C.IS_ACTUAL FROM CUSTOMER AS C WHERE C.LOGIN =?"-->
+            <!--                                       "SELECT C.CUSTOMER_ID, C.LOGIN, C.PASSWORD, C.ROLE, C.IS_ACTUAL FROM CUSTOMER AS C WHERE C.LOGIN =?"/>-->
+<!--                                       "select ud.username as username, rm.name as role from userdetails ud INNER JOIN rolemaster rm ON rm.id = ud.roleId  where username = ?" />-->
             <user-service>
 <!--                password value: 1-->
                 <user name="u" password="{bcrypt}$2a$10$dn5DykMneO6OhcOKKVHXV.suHUwuRja1NcBUKCs6LO26jd8o27ali" authorities="ROLE_USER" />
@@ -26,3 +37,11 @@
     </authentication-manager>
 
 </b:beans>
+
+<!--<jdbc-user-service data-source-ref="dataSource"-->
+<!--                   users-by-username-query=-->
+<!--                           "select username, password, enabled from userdetails where userName=?"-->
+<!--                   authorities-by-username-query=-->
+<!--                           "select ud.username as username, rm.name as role from userdetails ud INNER JOIN rolemaster rm ON rm.id = ud.roleId  where username = ?" />-->
+
+        <!--                                       "select username, password, enabled from userdetails where userName=?"-->

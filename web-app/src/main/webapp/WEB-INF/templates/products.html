@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
@@ -83,7 +83,12 @@
     </div>
 </nav>
 
+</br>
 
+<a href="/logout" onclick="document.getElementById('cart_logout_form').submit();">Logout</a>
+<form id="cart_logout_form" style="display:none" th:action="@{/logout}" method="POST"></form>
+
+</br>
 <th:block th:each="product : ${products}">
     <tr>
         <div class="card mb-3 mt-3 mx-3" style="height: 80px; max-width: 1080px">
