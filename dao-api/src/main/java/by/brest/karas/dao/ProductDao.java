@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface ProductDao {
 
-    List<Product> getAllProducts();
+    List<Product> findAll();
 
-    Product getProduct(Long id);
+    Product findProductById(Long id);
 
-    List<Product> getCartProducts(Long userId);
+    List<Product> findCartProductsByUserId(Long userId);
 
-    List<Product> getProducts(String filter);
+    List<Product> findProductsByDescription(String filter);
 
     void save(Product product);
 

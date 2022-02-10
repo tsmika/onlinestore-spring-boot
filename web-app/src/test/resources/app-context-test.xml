@@ -15,36 +15,12 @@
 
     <!-- Use @MVC annotations -->
     <mvc:annotation-driven/>
-    
+
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <!-- Component scan for @Controller, @Service... annotations -->
     <context:component-scan base-package="by.brest.karas*"/>
 
-    <!-- SpringResourceTemplateResolver-->
-<bean id="templateResolver"
-      class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
-    <property name="prefix" value="/WEB-INF/templates/" />
-    <property name="suffix" value=".html" />
-    <property name="templateMode" value="HTML" />
-    <property name="cacheable" value="false" />
-</bean>
-
-    <bean id="templateEngine"
-          class="org.thymeleaf.spring5.SpringTemplateEngine">
-        <property name="templateResolvers">
-            <set>
-                <ref bean="templateResolver" />
-            </set>
-        </property>
-    </bean>
-
-    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
-        <property name="templateEngine" ref="templateEngine" />
-        <property name="characterEncoding" value="UTF-8" />
-    </bean>
-
-<!--    ///////////////////-->
     <import resource="classpath:test-db.xml"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -75,6 +51,38 @@
 
     <bean id="productDtoService" class="by.brest.karas.service.impl.ProductDtoServiceImpl">
         <constructor-arg name="productDtoDao" ref="productDtoDao"/>
+    </bean>
+
+    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
+        <constructor-arg name="customerDao" ref="customerDao"/>
+    </bean>
+
+
+    <!-- SpringResourceTemplateResolver-->
+    <bean id="templateResolver"
+          class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/templates/" />
+        <property name="suffix" value=".html" />
+        <property name="templateMode" value="HTML" />
+        <property name="cacheable" value="false" />
+    </bean>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolvers">
+            <set>
+                <ref bean="templateResolver" />
+            </set>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+        <property name="characterEncoding" value="UTF-8" />
     </bean>
 
 </beans>

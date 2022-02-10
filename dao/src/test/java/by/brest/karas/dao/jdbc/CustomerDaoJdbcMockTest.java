@@ -23,7 +23,7 @@ public class CustomerDaoJdbcMockTest {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoJdbcMockTest.class);
 
     @InjectMocks
-    private CustomerDaoJdbc customerDaoJdbc;
+    private CustomerDaoJdbc customerDao;
 
     @Mock
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -34,12 +34,12 @@ public class CustomerDaoJdbcMockTest {
     @Test
     public void findAllTest() {
 
-        ReflectionTestUtils.setField(customerDaoJdbc, "selectSql", "select");
+        ReflectionTestUtils.setField(customerDao, "selectSql", "select");
         Customer customer = new Customer();
         List<Customer> customerList = Collections.singletonList(customer);
 
         Mockito.when(namedParameterJdbcTemplate.query(any(), ArgumentMatchers.<RowMapper<Customer>>any())).thenReturn(customerList);
-        List<Customer> customers = customerDaoJdbc.findAll();
+        List<Customer> customers = customerDao.findAll();
 
         assertNotNull(customers);
         assertFalse(customers.isEmpty());

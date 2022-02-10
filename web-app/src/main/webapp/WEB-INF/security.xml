@@ -1,0 +1,28 @@
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <http>
+<!--        <intercept-url pattern="/hello" access="hasAnyRole()" />-->
+        <intercept-url pattern="/products" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+<!--        <intercept-url pattern="/products/**" access="hasAnyRole()" />-->
+        <form-login
+                login-processing-url="/login"
+                username-parameter="username"
+                password-parameter="password"
+                default-target-url="/products"/>
+    </http>
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+<!--                password value: 1-->
+                <user name="u" password="{bcrypt}$2a$10$dn5DykMneO6OhcOKKVHXV.suHUwuRja1NcBUKCs6LO26jd8o27ali" authorities="ROLE_USER" />
+                <user name="a" password="{bcrypt}$2a$10$dn5DykMneO6OhcOKKVHXV.suHUwuRja1NcBUKCs6LO26jd8o27ali" authorities="ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+</b:beans>

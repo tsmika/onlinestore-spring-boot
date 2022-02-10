@@ -4,6 +4,7 @@ import by.brest.karas.dao.CustomerDao;
 import by.brest.karas.model.Customer;
 import by.brest.karas.service.CustomerService;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,13 @@ import java.util.logging.Logger;
 @Service
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
-    private final CustomerDao customerDao;
+
+
+//    private final CustomerDao customerDao;
+    private CustomerDao customerDao;
 //    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
+    public CustomerServiceImpl(){};
 
     public CustomerServiceImpl(CustomerDao customerDao) {
         this.customerDao = customerDao;

@@ -17,9 +17,9 @@ import java.util.Optional;
 public class CustomerDaoJdbc implements CustomerDao {
 
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private RowMapper rowMapper = BeanPropertyRowMapper.newInstance(Customer.class);
+    private final RowMapper<Customer> rowMapper = BeanPropertyRowMapper.newInstance(Customer.class);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoJdbc.class);
 
