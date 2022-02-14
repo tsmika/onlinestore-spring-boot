@@ -16,10 +16,7 @@ import java.util.logging.Logger;
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
 
-
-//    private final CustomerDao customerDao;
     private CustomerDao customerDao;
-//    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     public CustomerServiceImpl(){};
 

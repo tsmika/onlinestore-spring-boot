@@ -5,6 +5,23 @@
 						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
 
 
+    <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <b:property name="driverClassName" value="org.h2.Driver"/>
+    <b:property name="url" value="jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1"/>
+    <b:property name="username" value="sa"/>
+    <b:property name="password" value="password"/>
+    </b:bean>
+
+    <b:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <b:property name="dataSource" ref="dataSource"/>
+    </b:bean>
+
+    <b:bean id="encoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <b:constructor-arg name="strength" value="11" />
+    </b:bean>
+
+
     <http>
 <!--        <intercept-url pattern="/hello" access="hasAnyRole()" />-->
         <intercept-url pattern="/products" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
@@ -17,31 +34,16 @@
                 default-target-url="/products"/>
     </http>
 
-    <authentication-manager alias="authenticationManager">
+    <authentication-manager>
         <authentication-provider>
 
-<!--            <jdbc-user-service data-source-ref="dataSource"-->
-<!--                               users-by-username-query=-->
-<!--                                       "SELECT C.LOGIN, C.PASSWORD FROM CUSTOMER AS C WHERE C.LOGIN =?"-->
-<!--                               authorities-by-username-query=-->
-<!--                                        "SELECT C.LOGIN, C.ROLE FROM CUSTOMER AS C WHERE C.LOGIN =?"/>-->
-            <!--                                       "SELECT C.CUSTOMER_ID, C.LOGIN, C.PASSWORD, C.ROLE, C.IS_ACTUAL FROM CUSTOMER AS C WHERE C.LOGIN =?"-->
-            <!--                                       "SELECT C.CUSTOMER_ID, C.LOGIN, C.PASSWORD, C.ROLE, C.IS_ACTUAL FROM CUSTOMER AS C WHERE C.LOGIN =?"/>-->
-<!--                                       "select ud.username as username, rm.name as role from userdetails ud INNER JOIN rolemaster rm ON rm.id = ud.roleId  where username = ?" />-->
-            <user-service>
-<!--                password value: 1-->
-                <user name="u" password="{bcrypt}$2a$10$dn5DykMneO6OhcOKKVHXV.suHUwuRja1NcBUKCs6LO26jd8o27ali" authorities="ROLE_USER" />
-                <user name="a" password="{bcrypt}$2a$10$dn5DykMneO6OhcOKKVHXV.suHUwuRja1NcBUKCs6LO26jd8o27ali" authorities="ROLE_ADMIN" />
-            </user-service>
+            <password-encoder ref="encoder" />
+
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT C.LOGIN, C.PASSWORD, 'TRUE' FROM CUSTOMER AS C WHERE C.LOGIN =?"
+                               authorities-by-username-query="SELECT C.LOGIN, C.ROLE FROM CUSTOMER AS C WHERE C.LOGIN =?"
+                               />
         </authentication-provider>
     </authentication-manager>
 
 </b:beans>
-
-<!--<jdbc-user-service data-source-ref="dataSource"-->
-<!--                   users-by-username-query=-->
-<!--                           "select username, password, enabled from userdetails where userName=?"-->
-<!--                   authorities-by-username-query=-->
-<!--                           "select ud.username as username, rm.name as role from userdetails ud INNER JOIN rolemaster rm ON rm.id = ud.roleId  where username = ?" />-->
-
-        <!--                                       "select username, password, enabled from userdetails where userName=?"-->

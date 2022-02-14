@@ -25,22 +25,13 @@
     </bean>
 
 
-<!--    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">-->
-<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
-<!--    </bean>-->
+    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
 
-<!--    <bean id="customerDtoDao" class="by.brest.karas.dao.jdbc.">-->
-<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
-<!--    </bean>-->
-
-<!--    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">-->
-<!--        <constructor-arg name="customerDao" ref="customerDao"/>-->
-<!--    </bean>-->
-
-<!--    <bean id="customerDtoService" class="by.brest.karas.service.impl.С">-->
-<!--        <constructor-arg name="customerDtoDao" ref="customerDtoDao"/>-->
-<!--    </bean>-->
-
+    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
+        <constructor-arg name="customerDao" ref="customerDao"/>
+    </bean>
 
 
 </beans>

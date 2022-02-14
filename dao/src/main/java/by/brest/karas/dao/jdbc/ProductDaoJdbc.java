@@ -14,6 +14,7 @@ import java.util.List;
 public class ProductDaoJdbc implements ProductDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductDaoJdbc.class);
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final RowMapper<Product> rowMapper = BeanPropertyRowMapper.newInstance(Product.class);

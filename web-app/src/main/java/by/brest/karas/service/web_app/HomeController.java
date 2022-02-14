@@ -2,6 +2,7 @@ package by.brest.karas.service.web_app;
 
 
 import by.brest.karas.model.Customer;
+import by.brest.karas.model.Product;
 import by.brest.karas.model.Role;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Root controller.
@@ -47,7 +49,6 @@ public class HomeController {
         model.addAttribute("view", view);
         model.addAttribute("products", productService.findAll());
 
-//        System.out.println("Principal: " + principal.getName());
 //        if (filter == null) {
 //            model.addAttribute("products", productService.getAllProducts());
 //        } else model.addAttribute("products", productService.getProducts(filter));

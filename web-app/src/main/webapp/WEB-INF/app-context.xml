@@ -8,7 +8,9 @@
                         http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans.xsd
                         http://www.springframework.org/schema/context
-                        http://www.springframework.org/schema/context/spring-context.xsd">
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/security">
+
 
     <!-- Use spring servlet for all requests, including static resources -->
     <mvc:default-servlet-handler/>
@@ -76,5 +78,13 @@
     <bean id="productDtoService" class="by.brest.karas.service.impl.ProductDtoServiceImpl">
         <constructor-arg name="productDtoDao" ref="productDtoDao"/>
     </bean>
+
+    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
+        <constructor-arg name="customerDao" ref="customerDao"/>
+    </bean>
+
 
 </beans>
