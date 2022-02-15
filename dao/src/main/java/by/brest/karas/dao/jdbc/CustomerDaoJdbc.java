@@ -82,6 +82,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     private boolean isLoginUnique(Customer customer){
         return namedParameterJdbcTemplate.queryForObject(checkLoginSql, new MapSqlParameterSource("LOGIN", customer.getLogin()), Integer.class) == 0;
     }
+
     @Override
     public Integer update(Customer customer) {
         LOGGER.debug("Update customer: {}", customer);

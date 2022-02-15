@@ -18,7 +18,7 @@ public class ProductDtoDaoJdbc implements ProductDtoDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductDtoDaoJdbc.class);
 
-    @Value("${product.select}")
+    @Value("${product.selectAll}")
     private String selectSql;
 
     public ProductDtoDaoJdbc() {

@@ -14,7 +14,7 @@ public interface ProductDao {
 
     List<Product> findProductsByDescription(String filter);
 
-    void save(Product product);
+    Integer create(Product product);
 
     void update(Long id, Product updatedProduct);
 

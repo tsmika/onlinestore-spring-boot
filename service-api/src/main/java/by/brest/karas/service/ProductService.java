@@ -14,7 +14,7 @@ public interface ProductService {
 
     List<Product> findProductsByDescription(String description);
 
-    void save(Product product);
+    Integer create(Product product);
 
     void update(Long id, Product updatedProduct);
 

@@ -49,9 +49,9 @@ public class HomeController {
         model.addAttribute("view", view);
         model.addAttribute("products", productService.findAll());
 
-//        if (filter == null) {
-//            model.addAttribute("products", productService.getAllProducts());
-//        } else model.addAttribute("products", productService.getProducts(filter));
+        if (filter == null) {
+            model.addAttribute("products", productService.findAll());
+        } else model.addAttribute("products", productService.findProductsByDescription(filter));
 
         return "products";
     }
