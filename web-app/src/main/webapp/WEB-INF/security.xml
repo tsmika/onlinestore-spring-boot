@@ -24,8 +24,9 @@
 
     <http>
 <!--        <intercept-url pattern="/hello" access="hasAnyRole()" />-->
-        <intercept-url pattern="/products" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
-        <logout logout-success-url="/hello" />
+        <intercept-url pattern="/admins" access="hasAnyRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/users" access="hasAnyRole('ROLE_USER')" />
+        <logout logout-success-url="/products" />
 <!--        <intercept-url pattern="/products/**" access="hasAnyRole()" />-->
         <form-login
                 login-processing-url="/login"

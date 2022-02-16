@@ -35,7 +35,7 @@ public class HomeController {
 
     @GetMapping(value = "/")
     public String goToStartPage() {
-        return "redirect:hello";
+        return "redirect:products";
     }
 
     @GetMapping(value = "/products")
@@ -48,6 +48,7 @@ public class HomeController {
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);
         model.addAttribute("products", productService.findAll());
+        model.addAttribute("principal", "guest");
 
         if (filter == null) {
             model.addAttribute("products", productService.findAll());
