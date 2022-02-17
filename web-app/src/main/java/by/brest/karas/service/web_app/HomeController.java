@@ -48,7 +48,7 @@ public class HomeController {
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);
         model.addAttribute("products", productService.findAll());
-        model.addAttribute("principal", "guest");
+        model.addAttribute("principal_role", "guest");
 
         if (filter == null) {
             model.addAttribute("products", productService.findAll());
@@ -57,22 +57,31 @@ public class HomeController {
         return "products";
     }
 
-    @GetMapping("/hello")
-    public String authorisation() {
-        return "hello_page";
-    }
+//    @GetMapping("/hello")
+//    public String authorisation() {
+//        return "hello_page";
+//    }
 
     @GetMapping("/auth")
     public String authorisation(Principal principal) {
-        Customer customer = customerService.findByLogin(principal.getName());
+        Customer customer = customerService.findByLogin(principal.getName()).get();
         Integer principalId = customer.getCustomerId();
 
         if (customer.getRole().equals(Role.ROLE_ADMIN))
             return "redirect:/admins/" + principalId + "/products";
 
-        return "redirect:/users/" + principalId + "/products";
+        return "redirect:/customers/" + principalId + "/products";
     }
 
+
+    @GetMapping("/login")
+    public String getLogin(
+            @RequestParam(value = "error", required = false) String error
+            , Model model){
+
+        model.addAttribute("error", error != null);
+        return "login";
+    }
     //    @GetMapping(value = "/customers")
 //    public String index(
 //            @RequestParam(value = "filter", required = false, defaultValue = "") String filter

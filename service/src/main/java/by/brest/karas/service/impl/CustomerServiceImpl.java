@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByLogin(String login) {
+    public Optional<Customer> findByLogin(String login) {
         return customerDao.findByLogin(login);
     }
 

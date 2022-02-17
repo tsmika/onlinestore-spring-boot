@@ -9,7 +9,7 @@ public interface CustomerService {
 
     List<Customer> findAll();
 
-    Customer findByLogin(String login);
+    Optional<Customer> findByLogin(String login);
 
     Optional<Customer> findById(Integer customerId);
 

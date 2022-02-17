@@ -23,16 +23,20 @@
 
 
     <http>
-<!--        <intercept-url pattern="/hello" access="hasAnyRole()" />-->
-        <intercept-url pattern="/admins" access="hasAnyRole('ROLE_ADMIN')" />
-        <intercept-url pattern="/users" access="hasAnyRole('ROLE_USER')" />
-        <logout logout-success-url="/products" />
-<!--        <intercept-url pattern="/products/**" access="hasAnyRole()" />-->
+        <intercept-url pattern="/products" access="permitAll" />
+        <intercept-url pattern="/admins/**" access="hasAnyRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/customers/**" access="hasAnyRole('ROLE_USER')" />
+        <intercept-url pattern="/auth" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+        <intercept-url pattern="/login*" access="isAnonymous()" />
+        <logout logout-success-url="/products"/>
+
         <form-login
                 login-processing-url="/login"
                 username-parameter="username"
                 password-parameter="password"
-                default-target-url="/products"/>
+                default-target-url="/products"
+                login-page="/login"
+        />
     </http>
 
     <authentication-manager>

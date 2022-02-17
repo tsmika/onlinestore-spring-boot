@@ -28,6 +28,9 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Value("${customer.findById}")
     private String findByIdSql;
 
+    @Value("${customer.findByLogin}")
+    private String findByLoginSql;
+
     @Value("${customer.create}")
     private String createSql;
 
@@ -58,8 +61,10 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
-    public Customer findByLogin(String login) {
-        return null;
+    public Optional<Customer> findByLogin(String login) {
+        LOGGER.debug("Find customer by login: {}", login);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("CUSTOMER_LOGIN", login);
+        return Optional.ofNullable((Customer) namedParameterJdbcTemplate.queryForObject(findByLoginSql, sqlParameterSource, rowMapper));
     }
 
     @Override

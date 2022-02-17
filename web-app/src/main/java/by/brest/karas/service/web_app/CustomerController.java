@@ -12,14 +12,14 @@ import java.security.Principal;
  * Product controller.
  */
 @Controller
-@RequestMapping("/admins")
-public class AdminController {
+@RequestMapping("/customers")
+public class CustomerController {
 
     private final ProductService productService;
 
     private final CustomerService customerService;
 
-    public AdminController(ProductService productService, CustomerService customerService) {
+    public CustomerController(ProductService productService, CustomerService customerService) {
         this.productService = productService;
         this.customerService = customerService;
     }
@@ -29,35 +29,29 @@ public class AdminController {
     }
 
     @ModelAttribute("login")
-    public String getAdminLogin(Principal principal) {
+    public String getCustomerLogin(Principal principal) {
         return customerService.findById(getPrincipalId(principal)).get().getLogin();
     }
 
-    @ModelAttribute("admin_id")
-    public String getAdminId(Principal principal) {
+    @ModelAttribute("customer_id")
+    public String getCustomerId(Principal principal) {
         return getPrincipalId(principal).toString();
     }
 
-//    @ModelAttribute("customer_id")
-//    public String getnId() {
-//        return "customer_id";
-//    }
-
     @ModelAttribute("principal_role")
     public String getPrincipalRole() {
-        return "admin";
+        return "customer";
     }
 
-    @GetMapping("/{admin_id}/products")
+    @GetMapping("/{customer_id}/products")
     public String seeProducts(
-            @PathVariable("admin_id") Integer adminId,
+            @PathVariable("customer_id") Integer customerId,
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             @RequestParam(value = "view", required = false, defaultValue = "") String view,
             Model model) {
 
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);
-        model.addAttribute("admin_id", adminId);
 
         if (filter == null) {
             model.addAttribute("products", productService.findAll());

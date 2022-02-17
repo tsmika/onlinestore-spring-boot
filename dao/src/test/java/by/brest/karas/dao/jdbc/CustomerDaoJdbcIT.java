@@ -44,6 +44,16 @@ public class CustomerDaoJdbcIT {
     }
 
     @Test
+    public void findByLoginTest() {
+
+        String login = findAllAssertion().get(0).getLogin();
+        Customer expectedCustomer = customerDao.findByLogin(login).get();
+        assertEquals(login, expectedCustomer.getLogin());
+        assertTrue(login == expectedCustomer.getLogin());
+        assertEquals(expectedCustomer, findAllAssertion().get(0));
+    }
+
+    @Test
     public void findByIdExceptionalTest() {
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
             customerDao.findById(Integer.MAX_VALUE).get();

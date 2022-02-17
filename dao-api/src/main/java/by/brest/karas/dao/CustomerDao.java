@@ -9,9 +9,11 @@ public interface CustomerDao {
 
     List<Customer> findAll();
 
-    Customer findByLogin(String login);
+//    Customer findByLogin(String login);
 
     Optional<Customer> findById(Integer customerId);
+
+    Optional<Customer> findByLogin(String login);
 
     Integer create (Customer customer);
 
