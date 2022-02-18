@@ -239,56 +239,57 @@
                             </span>
                         </div>
 
-                        <div th:if="!${principal} eq 'guest'">
-                            <div class="col-1 align-self-center" style="text-align: center;">
-                                <span class="card-text btn-sm" th:text="' Created:'"
-                                      style="display: inline-block;"></span>
-                                <span class="card-text btn-sm" th:text="${product.getCreationDate()}"
-                                      style="display:inline-block;"></span>
-                            </div>
-
-                            <div class="col-1 align-self-center" style="text-align: center;">
-                                <span class="card-text btn-sm" th:text="'Updated:'"
-                                      style="display: inline-block;"></span>
-                                <span class="card-text btn-sm" th:text="${product.getUpdateDate()}"
-                                      style="display: inline-block;"></span>
-                            </div>
-
-                            <div class="col-1 align-self-center">
+                        <div th:if="${principal_role} eq 'admin' or ${principal_role} eq 'customer'"
+                             class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                   <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                      th:href="@{'/admins/' + ${user_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
                                        <i class="bi bi-cart-plus"></i> Add to cart
                                   </a>
                             </span>
-                            </div>
+                        </div>
 
-                            <div class="col-1 align-self-center">
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                   <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                      th:href="@{'/admins/products/' + ${product.getProductId()} + '/edit'}">
                                         <i class="bi bi-pencil"></i> Edit
                                   </a>
                             </span>
-                            </div>
+                        </div>
 
-                            <div class="col-1 align-self-center">
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                             <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                                th:href="@{'/admins/products/' + ${product.getProductId()} + '/delete'}">
                                                   <i class="bi bi-trash"></i> Delete
                                             </a>
                             </span>
-                            </div>
+                        </div>
 
-                            <div class="col-1 align-self-center">
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                             <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                                th:href="@{'/admins/' + ${user_id} + '/users/' + ${product.getChangedBy()}}">
                                             <i class="bi bi-person-circle"></i> Changed by
                                         </a>
                             </span>
-                            </div>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center"
+                             style="text-align: center;">
+                                <span class="card-text btn-sm" th:text="' Created:'"
+                                      style="display: inline-block;"></span>
+                            <span class="card-text btn-sm" th:text="${product.getCreationDate()}"
+                                  style="display:inline-block;"></span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center"
+                             style="text-align: center;">
+                                <span class="card-text btn-sm" th:text="'Updated:'"
+                                      style="display: inline-block;"></span>
+                            <span class="card-text btn-sm" th:text="${product.getUpdateDate()}"
+                                  style="display: inline-block;"></span>
                         </div>
 
                     </div>
@@ -319,55 +320,58 @@
                                 </span>
                             </p>
 
-                            <div th:if="!${principal} eq 'guest'">
-                                <span class="card-text btn-sm" th:text="' Created:'"
-                                      style="display: inline-block;"></span>
-                                <span class="card-text btn-sm" th:text="${product.getCreationDate()}"
-                                      style="display: inline-block;"></span>
-
-                                <span class="card-text btn-sm" th:text="'Updated:'"
-                                      style="display: inline-block;"></span>
-                                <span class="card-text btn-sm" th:text="${product.getUpdateDate()}"></span>
-
-                                <p class="card-text">
+                            <p th:if="${principal_role} eq 'admin' or ${principal_role} eq 'customer'"
+                               class="card-text">
                                 <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
                                   <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                      th:href="@{'/admins/' + ${user_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
                                        <i class="bi bi-cart-plus"></i> Add to cart
                                   </a>
                                 </span>
-                                </p>
+                            </p>
 
-                                <p class="card-text">
+                            <p th:if="${principal_role} eq 'admin'" class="card-text">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
                                   <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                      th:href="@{'/admins/products/' + ${product.getProductId()} + '/edit'}">
                                         <i class="bi bi-pencil"></i> Edit
                                   </a>
                             </span>
-                                </p>
+                            </p>
 
-                                <p class="card-text">
+                            <p th:if="${principal_role} eq 'admin'" class="card-text">
                                 <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
                                             <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                                th:href="@{'/admins/products/' + ${product.getProductId()} + '/delete'}">
                                                   <i class="bi bi-trash"></i> Delete
                                             </a>
                                 </span>
-                                </p>
+                            </p>
 
-                                <p class="card-text">
+                            <p th:if="${principal_role} eq 'admin'" class="card-text">
                                 <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
                                      <a class="card-text btn-sm btn-outline-secondary rounded-pill"
                                         th:href="@{'/admins/' + ${user_id} + '/users/' + ${product.getChangedBy()}}">
                                         <i class="bi bi-person-circle"></i> Changed by
                                      </a>
                                 </span>
-                                </p>
-                            </div>
+                            </p>
+
+                            <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm" th:text="' Created:'"
+                                  style="display: inline-block;"></span>
+                            <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm"
+                                  th:text="${product.getCreationDate()}"
+                                  style="display: inline-block;"></span>
+
+                            <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm" th:text="'Updated:'"
+                                  style="display: inline-block;"></span>
+                            <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm"
+                                  th:text="${product.getUpdateDate()}"></span>
+
                         </div>
                     </div>
                 </div>
+
             </tr>
         </th:block>
     </div>

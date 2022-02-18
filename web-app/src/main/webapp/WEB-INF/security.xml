@@ -32,10 +32,10 @@
 
         <form-login
                 login-processing-url="/login"
+                login-page="/login"
                 username-parameter="username"
                 password-parameter="password"
                 default-target-url="/products"
-                login-page="/login"
         />
     </http>
 
