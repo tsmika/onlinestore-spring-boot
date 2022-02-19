@@ -82,19 +82,7 @@ public class HomeController {
         model.addAttribute("error", error != null);
         return "login";
     }
-    //    @GetMapping(value = "/customers")
-//    public String index(
-//            @RequestParam(value = "filter", required = false, defaultValue = "") String filter
-//            , Model model) {
-//
-//        model.addAttribute("filter", filter);
-//
-//        if (filter == null) {
-//            model.addAttribute("customers", customerService.findAll());
-//        } else model.addAttribute("customers", customerService.selectCustomers(filter));
-//
-//        return "customer_index";
-//    }
+
 //    @GetMapping(value = "/")
 //    public String hello(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
 //                        Model model) {

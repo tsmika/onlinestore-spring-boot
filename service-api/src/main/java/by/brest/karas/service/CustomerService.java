@@ -19,5 +19,5 @@ public interface CustomerService {
 
     Integer delete(Integer customerId);
 
-    List<Customer> selectCustomers(String filter);
+    List<Customer> searchCustomersByLogin(String filter);
 }

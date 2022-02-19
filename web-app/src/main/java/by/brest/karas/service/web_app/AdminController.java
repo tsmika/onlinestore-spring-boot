@@ -38,18 +38,13 @@ public class AdminController {
         return getPrincipalId(principal).toString();
     }
 
-//    @ModelAttribute("customer_id")
-//    public String getnId() {
-//        return "customer_id";
-//    }
-
     @ModelAttribute("principal_role")
     public String getPrincipalRole() {
         return "admin";
     }
 
     @GetMapping("/{admin_id}/products")
-    public String seeProducts(
+    public String goToProductPage(
             @PathVariable("admin_id") Integer adminId,
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             @RequestParam(value = "view", required = false, defaultValue = "") String view,
@@ -65,5 +60,20 @@ public class AdminController {
 
         return "products";
     }
+
+    @GetMapping(value = "/{admin_id}/customers")
+    public String goToCustomerPage(
+            @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
+            Model model) {
+
+        model.addAttribute("filter", filter);
+
+        if (filter == null) {
+            model.addAttribute("customers", customerService.findAll());
+        } else model.addAttribute("customers", customerService.searchCustomersByLogin(filter));
+
+        return "customers";
+    }
+
 
 }

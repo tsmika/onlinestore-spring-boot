@@ -55,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> selectCustomers(String filter) {
-        return customerDao.selectCustomers(filter);
+    public List<Customer> searchCustomersByLogin(String filter) {
+        return customerDao.searchCustomersByLogin(filter);
     }
 }

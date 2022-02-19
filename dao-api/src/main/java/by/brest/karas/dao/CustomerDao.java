@@ -9,8 +9,6 @@ public interface CustomerDao {
 
     List<Customer> findAll();
 
-//    Customer findByLogin(String login);
-
     Optional<Customer> findById(Integer customerId);
 
     Optional<Customer> findByLogin(String login);
@@ -21,5 +19,5 @@ public interface CustomerDao {
 
     Integer delete(Integer customerId);
 
-    List<Customer> selectCustomers(String filter);
+    List<Customer> searchCustomersByLogin(String filter);
 }

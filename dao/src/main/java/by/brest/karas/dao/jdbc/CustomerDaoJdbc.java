@@ -40,11 +40,21 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Value("${customer.update}")
     private String updateSql;
 
+    @Value("${customer.searchCustomersByLogin}")
+    private String searchCustomersByLoginSql;
+
     public CustomerDaoJdbc() {
     }
 
     public CustomerDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    @Override
+    public List<Customer> searchCustomersByLogin(String filter) {
+        LOGGER.debug("Search customers by login");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");
+        return namedParameterJdbcTemplate.query(searchCustomersByLoginSql, sqlParameterSource, rowMapper);
     }
 
     @Override
@@ -71,7 +81,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     public Integer create(Customer customer) {
         LOGGER.debug("Create customer: {}", customer);
 
-        if(!isLoginUnique(customer)){
+        if (!isLoginUnique(customer)) {
             LOGGER.warn("User with the same login already exists in DB: {}", customer);
             throw new IllegalArgumentException("User with the same login already exists in DB");
         }
@@ -84,7 +94,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
-    private boolean isLoginUnique(Customer customer){
+    private boolean isLoginUnique(Customer customer) {
         return namedParameterJdbcTemplate.queryForObject(checkLoginSql, new MapSqlParameterSource("LOGIN", customer.getLogin()), Integer.class) == 0;
     }
 
@@ -107,11 +117,6 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Override
     public Integer delete(Integer customerId) {
         return 0;
-    }
-
-    @Override
-    public List<Customer> selectCustomers(String filter) {
-        return null;
     }
 }
 
