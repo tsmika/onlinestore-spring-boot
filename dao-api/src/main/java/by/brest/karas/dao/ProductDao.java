@@ -8,7 +8,7 @@ public interface ProductDao {
 
     List<Product> findAll();
 
-    Product findProductById(Long id);
+    Product findById(Integer id);
 
     List<Product> findCartProductsByUserId(Long userId);
 

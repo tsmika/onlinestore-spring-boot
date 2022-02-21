@@ -26,13 +26,16 @@ public class ProductDaoJdbc implements ProductDao {
     private String selectAllSql;
 
     @Value("${product.selectByDescription}")
-    private String selectByDescriptionSql;// = "SELECT P.PRODUCT_ID, P.PICTURE, P.SHORT_DESCRIPTION, P.DETAIL_DESCRIPTION, P.PRICE, P.CREATION_DATE, P.UPDATE_DATE, P.CHANGED_BY FROM PRODUCT AS P WHERE P.SHORT_DESCRIPTION LIKE \'%" + FILTER + "%\' ORDER BY P.SHORT_DESCRIPTION";
+    private String selectByDescriptionSql;
 
     @Value("${product.create}")
     private String createSql;
 
     @Value("${product.checkShortDescription}")
     private String checkShortDescriptionSql;
+
+    @Value("${product.selectById}")
+    private String selectByIdSql;
 
     public ProductDaoJdbc() {
     }
@@ -48,8 +51,10 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public Product findProductById(Long id) {
-        return null;
+    public Product findById(Integer id) {
+        LOGGER.debug("Find products by id");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("ID", id);
+        return namedParameterJdbcTemplate.query(selectByIdSql, sqlParameterSource, rowMapper).get(0);
     }
 
     @Override

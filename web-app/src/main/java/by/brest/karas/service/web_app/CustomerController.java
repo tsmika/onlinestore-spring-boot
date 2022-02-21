@@ -24,15 +24,6 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    private Integer getPrincipalId(Principal principal) {
-        return customerService.findByLogin(principal.getName()).get().getCustomerId();
-    }
-
-    @ModelAttribute("login")
-    public String getCustomerLogin(Principal principal) {
-        return customerService.findById(getPrincipalId(principal)).get().getLogin();
-    }
-
     @ModelAttribute("customer_id")
     public String getCustomerId(Principal principal) {
         return getPrincipalId(principal).toString();
@@ -43,8 +34,17 @@ public class CustomerController {
         return "customer";
     }
 
+    private Integer getPrincipalId(Principal principal) {
+        return customerService.findByLogin(principal.getName()).get().getCustomerId();
+    }
+
+    @ModelAttribute("login")
+    public String getCustomerLogin(Principal principal) {
+        return customerService.findById(getPrincipalId(principal)).get().getLogin();
+    }
+
     @GetMapping("/{customer_id}/products")
-    public String seeProducts(
+    public String goToStartPage(
             @PathVariable("customer_id") Integer customerId,
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             @RequestParam(value = "view", required = false, defaultValue = "") String view,

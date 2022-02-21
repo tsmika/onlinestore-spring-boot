@@ -5,6 +5,7 @@
 						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
 
 
+
     <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <b:property name="driverClassName" value="org.h2.Driver"/>
     <b:property name="url" value="jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1"/>
@@ -16,11 +17,10 @@
         <b:property name="dataSource" ref="dataSource"/>
     </b:bean>
 
-    <b:bean id="encoder"
+    <b:bean id="passwordEncoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
         <b:constructor-arg name="strength" value="11" />
     </b:bean>
-
 
     <http>
         <intercept-url pattern="/products" access="permitAll" />
@@ -42,7 +42,7 @@
     <authentication-manager>
         <authentication-provider>
 
-            <password-encoder ref="encoder" />
+            <password-encoder ref="passwordEncoder" />
 
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query="SELECT C.LOGIN, C.PASSWORD, 'TRUE' FROM CUSTOMER AS C WHERE C.LOGIN =?"

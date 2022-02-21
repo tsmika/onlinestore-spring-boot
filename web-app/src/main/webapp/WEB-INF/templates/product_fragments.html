@@ -31,7 +31,7 @@
 
                             <li class="nav-link">
                                 <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-                                   th:href="@{/home/users/new}">
+                                   th:href="@{/new_customer}">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                 <i class="bi bi-person-plus"></i> Register
                             </span>
@@ -232,10 +232,21 @@
 
                         <div class="col-4 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                <a class="card-text btn-sm btn-outline-secondary "
+                                <a th:if="${principal_role} eq 'guest'" class="card-text btn-sm btn-outline-secondary "
                                    th:text="${product.getShortDescription()}"
-                                   th:href="@{/admins/products/{id}(id=${product.getProductId()})}">
+                                   th:href="@{/products/{id}(id=${product.getProductId()})}">
                                 </a>
+
+                                <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{'/products/' + ${customer_id} + '/{id}(id=${product.getProductId()})'}">
+                                </a>
+
+                                <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{'/admins/' + ${admin_id} + '/products/' + ${product.getProductId()}}">
+                                </a>
+
                             </span>
                         </div>
 

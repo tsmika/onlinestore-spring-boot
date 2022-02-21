@@ -48,6 +48,7 @@
 
 <!--    ///////////////////-->
     <import resource="classpath:test-db.xml"/>
+<!--    <import resource="security.xml"/>-->
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -85,6 +86,26 @@
     <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
         <constructor-arg name="customerDao" ref="customerDao"/>
     </bean>
+
+
+
+<!--    ///////////////////////////////-->
+<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+<!--        <property name="driverClassName" value="org.h2.Driver"/>-->
+<!--        <property name="url" value="jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1"/>-->
+<!--        <property name="username" value="sa"/>-->
+<!--        <property name="password" value="password"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+<!--        <property name="dataSource" ref="dataSource"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">-->
+<!--        <constructor-arg name="strength" value="11" />-->
+<!--    </bean>-->
+    <!--    ////////////////////////////-->
+
 
 
 </beans>

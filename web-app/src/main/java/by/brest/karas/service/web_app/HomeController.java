@@ -1,20 +1,19 @@
 package by.brest.karas.service.web_app;
 
-
 import by.brest.karas.model.Customer;
-import by.brest.karas.model.Product;
 import by.brest.karas.model.Role;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 /**
  * Root controller.
@@ -28,13 +27,21 @@ public class HomeController {
 
     private final CustomerService customerService;
 
-    public HomeController(ProductService productService, CustomerService customerService) {
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public HomeController(ProductService productService, CustomerService customerService, BCryptPasswordEncoder passwordEncoder) {
         this.productService = productService;
         this.customerService = customerService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @ModelAttribute("principal_role")
+    public String getPrincipalRole() {
+        return "guest";
     }
 
     @GetMapping(value = "/")
-    public String goToStartPage() {
+    public String welcomePage() {
         return "redirect:products";
     }
 
@@ -45,10 +52,13 @@ public class HomeController {
             , Model model
             , Principal principal) {
 
+        for (Customer customer : customerService.findAll()) {
+            customer.setPassword(passwordEncoder.encode("1"));
+        }
+
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);
         model.addAttribute("products", productService.findAll());
-        model.addAttribute("principal_role", "guest");
 
         if (filter == null) {
             model.addAttribute("products", productService.findAll());
@@ -57,10 +67,15 @@ public class HomeController {
         return "products";
     }
 
-//    @GetMapping("/hello")
-//    public String authorisation() {
-//        return "hello_page";
-//    }
+    @GetMapping(value = "/products/{product_id}")
+    public String goToProductPage(
+            @PathVariable(value = "product_id") Integer productId,
+            Model model) {
+
+        model.addAttribute("product", productService.findById(productId));
+
+        return "product_info";
+    }
 
     @GetMapping("/auth")
     public String authorisation(Principal principal) {
@@ -77,10 +92,32 @@ public class HomeController {
     @GetMapping("/login")
     public String getLogin(
             @RequestParam(value = "error", required = false) String error
-            , Model model){
+            , Model model) {
 
+//        LOGGER.debug("login (name:{})" );
         model.addAttribute("error", error != null);
         return "login";
+    }
+
+    @GetMapping("/new_customer")
+    public String createUser(@ModelAttribute("customer") Customer customer) {
+        return "new_customer_form";
+    }
+
+    @PostMapping("/new_customer")
+    public String createUser(@ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors())
+            return "new_customer_form";
+
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customer.setRole(Role.ROLE_USER);
+        customer.setIsActual(true);
+
+        customerService.create(customer);
+//        Integer customerId = customerService.findByLogin(customer.getLogin()).get().getCustomerId();
+
+        return "redirect:products";
     }
 
 //    @GetMapping(value = "/")

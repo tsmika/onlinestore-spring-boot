@@ -9,6 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,8 +24,22 @@ class ProductServiceImplIntegrationTest {
 
     @Test
     void getAllProducts() {
+        findAllAssertion();
+    }
+
+    @Test
+    void findByIdIntegrationTest() {
+        List<Product> products = findAllAssertion();
+        Product testProduct = productDao.findById(products.get(0).getProductId());
+        assertNotNull(testProduct);
+        assertTrue(testProduct.getProductId() == 1);
+    }
+
+
+    private List<Product> findAllAssertion() {
         List<Product> products = productDao.findAll();
         assertNotNull(products);
         assertTrue(products.size() > 0);
+        return products;
     }
 }
