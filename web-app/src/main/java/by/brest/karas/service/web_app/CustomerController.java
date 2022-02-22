@@ -60,4 +60,14 @@ public class CustomerController {
         return "products";
     }
 
+    @GetMapping(value = "/{customer_id}/products/{product_id}")
+    public String goToProductPage(
+            @PathVariable(value = "product_id") Integer productId,
+            Model model) {
+
+        model.addAttribute("product", productService.findById(productId));
+
+        return "product_info";
+    }
+
 }

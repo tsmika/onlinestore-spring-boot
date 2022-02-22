@@ -4,7 +4,7 @@ import by.brest.karas.model.Customer;
 import by.brest.karas.model.Role;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 /**
@@ -100,12 +101,12 @@ public class HomeController {
     }
 
     @GetMapping("/new_customer")
-    public String createUser(@ModelAttribute("customer") Customer customer) {
+    public String goToNewCustomerForm(@ModelAttribute("customer") Customer customer) {
         return "new_customer_form";
     }
 
     @PostMapping("/new_customer")
-    public String createUser(@ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult) {
+    public String createNewCustomer(@ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors())
             return "new_customer_form";

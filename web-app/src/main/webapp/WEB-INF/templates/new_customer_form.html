@@ -24,7 +24,7 @@
 
 <form th:method="POST" th:action="@{/new_customer}" th:object="${customer}">
     <br>
-    <div style="margin-left:20px;">Please, enter login and password to create the account </div>
+    <div style="margin-left:20px;">Please, enter login and password to create the account</div>
     <br>
     <div class="row g-3 align-items-center">
         <div class="col-auto">
@@ -66,5 +66,9 @@
         <input class="btn btn-outline-dark" type="button" style="float:left; margin-left:20px;" value="Cancel"/>
     </a>
 </form>
+
+<script src="../../resources/static/js/bootstrap.bundle.min.js"
+        th:src="@{/resources/static/js/bootstrap.bundle.min.js}">
+</script>
 </body>
 </html>

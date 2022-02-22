@@ -239,7 +239,7 @@
 
                                 <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary "
                                    th:text="${product.getShortDescription()}"
-                                   th:href="@{'/products/' + ${customer_id} + '/{id}(id=${product.getProductId()})'}">
+                                   th:href="@{'/customers/' + ${customer_id} + '/products/' + ${product.getProductId()}}">
                                 </a>
 
                                 <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary "

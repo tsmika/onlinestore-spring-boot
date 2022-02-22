@@ -32,8 +32,11 @@
                 <p class="card-text" th:text="'Price: ' + ${product.getPrice()}">Price</p>
                 <p class="card-text" th:text="${product.getDetailDescription()}">DetailDescription</p>
                 <a th:if="${principal_role} eq 'guest'" th:href="@{/products}" class="btn btn-outline-secondary">Go home</a>
+                <a th:if="${principal_role} eq 'customer'" th:href="@{'/customers/' + ${customer_id} + '/products'}" class="btn btn-outline-secondary">Go home</a>
                 <a th:if="${principal_role} eq 'admin'" th:href="@{'/admins/' + ${admin_id} + '/products'}" class="btn btn-outline-secondary">Go home</a>
-                <a th:if="${principal_role} eq 'customer'" th:href="@{'/customers/' + ${customer_id} + '/products}'" class="btn btn-outline-secondary">Go home</a>
+                <a th:if="${principal_role} eq 'customer'"
+                   th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${product.getProductId()} + '/new'}"
+                   class="btn btn-outline-secondary">Add to cart</a>
                 <a th:if="${principal_role} eq 'admin'"
                    th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${product.getProductId()} + '/new'}"
                    class="btn btn-outline-secondary">Add to cart</a>
