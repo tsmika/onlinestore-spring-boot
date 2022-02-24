@@ -1,5 +1,6 @@
 package by.brest.karas.service.web_app;
 
+import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,12 @@ public class AdminController {
 
     private final CustomerService customerService;
 
-    public AdminController(ProductService productService, CustomerService customerService) {
+    private final CartRecordService cartRecordService;
+
+    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService) {
         this.productService = productService;
         this.customerService = customerService;
+        this.cartRecordService = cartRecordService;
     }
 
     private Integer getPrincipalId(Principal principal) {
@@ -85,5 +89,21 @@ public class AdminController {
         return "customers";
     }
 
+
+    /////////////////////// CART
+    @GetMapping("/{admin_id}/cart/products")
+    public String goToCartPage(
+            @PathVariable("admin_id") Integer adminId,
+            @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
+            Model model) {
+
+        model.addAttribute("filter", filter);
+
+        if (filter == null) {
+            model.addAttribute("cart", cartRecordService.findCartByUserId(adminId));
+        } else model.addAttribute("cart", cartRecordService.findFilteredCartByUserId(adminId, filter));
+
+        return "admin/users/cart";
+    }
 
 }

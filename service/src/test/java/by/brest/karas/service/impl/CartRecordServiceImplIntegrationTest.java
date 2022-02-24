@@ -1,7 +1,7 @@
 package by.brest.karas.service.impl;
 
-import by.brest.karas.model.dto.ProductDto;
-import by.brest.karas.service.ProductDtoService;
+import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:service-context-test.xml", "classpath*:dao.xml"})
 @Transactional
-public class ProductDtoServiceImplIntegrationTest {
+public class CartRecordServiceImplIntegrationTest {
 
     @Autowired
-    ProductDtoService productDtoService;
+    private CartRecordServiceImpl cartRecordService;
 
     @Test
-    public void shouldFindAll(){
-        List<ProductDto> products = productDtoService.findAll();
-        assertNotNull(products);
-        assertTrue(products.size() > 0);
-//        assertTrue(products.get(0)..size() > 0);
-
+    void findCartRecordsByCustomerIdIntegrationTest(){
+        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
+        assertNotNull(cartRecords);
+        assertTrue(cartRecords.size() > 0);
     }
 }

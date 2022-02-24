@@ -8,7 +8,7 @@
                         http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans.xsd
                         http://www.springframework.org/schema/context
-                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/context/spring-context.xsd>
                         http://www.springframework.org/schema/security">
 
 
@@ -68,44 +68,24 @@
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
-    <bean id="productDtoDao" class="by.brest.karas.dao.jdbc.ProductDtoDaoJdbc">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
-    </bean>
-
     <bean id="productService" class="by.brest.karas.service.impl.ProductServiceImpl">
         <constructor-arg name="productDao" ref="productDao"/>
-    </bean>
-
-    <bean id="productDtoService" class="by.brest.karas.service.impl.ProductDtoServiceImpl">
-        <constructor-arg name="productDtoDao" ref="productDtoDao"/>
     </bean>
 
     <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
+
     <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
         <constructor-arg name="customerDao" ref="customerDao"/>
     </bean>
 
+    <bean id="cartRecordDao" class="by.brest.karas.dao.jdbc.CartRecordDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
 
-
-<!--    ///////////////////////////////-->
-<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-<!--        <property name="driverClassName" value="org.h2.Driver"/>-->
-<!--        <property name="url" value="jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1"/>-->
-<!--        <property name="username" value="sa"/>-->
-<!--        <property name="password" value="password"/>-->
-<!--    </bean>-->
-
-<!--    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-<!--        <property name="dataSource" ref="dataSource"/>-->
-<!--    </bean>-->
-
-<!--    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">-->
-<!--        <constructor-arg name="strength" value="11" />-->
-<!--    </bean>-->
-    <!--    ////////////////////////////-->
-
-
+    <bean id="cartRecordService" class="by.brest.karas.service.impl.CartRecordServiceImpl">
+        <constructor-arg name="cartRecordDao" ref="cartRecordDao"/>
+    </bean>
 
 </beans>

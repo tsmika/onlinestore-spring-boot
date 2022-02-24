@@ -4,7 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
     
-<!--    <import resource="test-db.xml"/>-->
 
     <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg ref="dataSource"/>
@@ -15,6 +14,14 @@
     </bean>
 
     <bean id="productDao" class="by.brest.karas.dao.jdbc.ProductDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="cartRecordDao" class="by.brest.karas.dao.jdbc.CartRecordDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="cartDao" class="by.brest.karas.dao.jdbc.CartDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 

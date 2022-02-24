@@ -1,11 +1,16 @@
 package by.brest.karas.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class CartRecord {
 
     private Integer customerId;
 
     private Integer productId;
 
+    @NotNull(message = "The field can not be empty")
+    @Min(value = 1, message = "Quantity must be more than 0")
     private Integer quantity;
 
     public CartRecord() {
