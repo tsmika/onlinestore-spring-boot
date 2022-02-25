@@ -1,6 +1,10 @@
 package by.brest.karas.service.web_app;
 
+import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Product;
+import by.brest.karas.model.dto.Cart;
 import by.brest.karas.service.CartRecordService;
+import by.brest.karas.service.CartService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -8,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Product controller.
@@ -22,10 +29,13 @@ public class AdminController {
 
     private final CartRecordService cartRecordService;
 
-    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService) {
+    private final CartService cartService;
+
+    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartService cartService) {
         this.productService = productService;
         this.customerService = customerService;
         this.cartRecordService = cartRecordService;
+        this.cartService = cartService;
     }
 
     private Integer getPrincipalId(Principal principal) {
@@ -97,13 +107,23 @@ public class AdminController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
+        Cart cart = cartService.findCartByCustomerId(adminId);
+        List<CartRecord> cartRecords = cart.getCartRecords();
+        Map<Product, Integer> cartRecordsWithQuantity = new HashMap<>();
+
+        for (CartRecord cartRecord : cartRecords) {
+            cartRecordsWithQuantity.put(productService.findById(cartRecord.getProductId()), cartRecord.getQuantity());
+        }
+
         model.addAttribute("filter", filter);
+        model.addAttribute("cart_sum_total", cart.getCartSumTotal());
+        model.addAttribute("cart_records_with_quantity", cartRecordsWithQuantity);
 
-        if (filter == null) {
-            model.addAttribute("cart", cartRecordService.findCartByUserId(adminId));
-        } else model.addAttribute("cart", cartRecordService.findFilteredCartByUserId(adminId, filter));
+//        if (filter == null) {
+//            model.addAttribute("cartRecords", cartRecordService.findCartByUserId(adminId));
+//        } else model.addAttribute("cartRecords", cartRecordService.findFilteredCartByUserId(adminId, filter));
 
-        return "admin/users/cart";
+        return "cart";
     }
 
 }
