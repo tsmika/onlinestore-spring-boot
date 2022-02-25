@@ -1,7 +1,6 @@
 package by.brest.karas.service.impl;
 
 import by.brest.karas.model.CartRecord;
-import by.brest.karas.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
