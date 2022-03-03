@@ -1,6 +1,7 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Product;
 import by.brest.karas.model.dto.CartLine;
 import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CartLineService;
@@ -8,8 +9,10 @@ import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -54,6 +57,7 @@ public class AdminController {
         return "admin";
     }
 
+    /////////////////////// PRODUCTS
     @GetMapping("/{admin_id}/products")
     public String goToProductPage(
             @PathVariable("admin_id") Integer adminId,
@@ -82,6 +86,34 @@ public class AdminController {
         return "product_info";
     }
 
+
+
+
+    @GetMapping("/{admin_id}/products/new")
+    public String createProduct(@ModelAttribute Product product) {
+        return "new_product_form";
+    }
+
+    @PostMapping("/{admin_id}/products/new")
+    public String createProduct(
+            @ModelAttribute("product") @Valid Product product
+            , BindingResult bindingResult
+            , Model model
+            , Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            return "new_product_form";
+        }
+
+        product.setChangedBy(getPrincipalId(principal));
+        productService.create(product);
+
+        return "redirect: products";
+    }
+
+
+
+    /////////////////////// CUSTOMERS
     @GetMapping(value = "/{admin_id}/customers")
     public String goToCustomerPage(
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
@@ -95,7 +127,6 @@ public class AdminController {
 
         return "customers";
     }
-
 
     /////////////////////// CART
     @GetMapping("/{admin_id}/cart/products")

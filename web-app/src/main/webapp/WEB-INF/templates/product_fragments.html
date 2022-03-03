@@ -105,7 +105,7 @@
                             <li th:if="${principal_role} eq 'admin'" class="nav-link">
                                 <a type="button"
                                    class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-                                   th:href="@{/admins/products/new}">
+                                   th:href="@{'/admins/' + ${admin_id} + '/products/new'}">
                                         <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                             <i class="bi bi-plus-square"></i> Add product
                                         </span>

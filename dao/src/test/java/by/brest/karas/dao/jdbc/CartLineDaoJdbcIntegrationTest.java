@@ -33,7 +33,6 @@ class CartLineDaoJdbcIntegrationTest {
 
         cartLines = cartLineDaoJdbc.findCartLinesByCustomerId(1, "aaa");
         assertNotNull(cartLines);
-//        assertTrue(cartLineDaoJdbc.findCartLinesSumByCustomerId(1, "aaa").equals(BigDecimal.valueOf(0.0).setScale(2)));
 
         cartLines = cartLineDaoJdbc.findCartLinesByCustomerId(1, "3");
         assertNotNull(cartLines);
