@@ -1,10 +1,9 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.CartRecord;
-import by.brest.karas.model.Product;
-import by.brest.karas.model.dto.Cart;
+import by.brest.karas.model.dto.CartLine;
 import by.brest.karas.service.CartRecordService;
-import by.brest.karas.service.CartService;
+import by.brest.karas.service.CartLineService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Product controller.
@@ -29,13 +26,13 @@ public class AdminController {
 
     private final CartRecordService cartRecordService;
 
-    private final CartService cartService;
+    private final CartLineService cartLineService;
 
-    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartService cartService) {
+    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartLineService cartLineService) {
         this.productService = productService;
         this.customerService = customerService;
         this.cartRecordService = cartRecordService;
-        this.cartService = cartService;
+        this.cartLineService = cartLineService;
     }
 
     private Integer getPrincipalId(Principal principal) {
@@ -107,23 +104,11 @@ public class AdminController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
-        Cart cart = cartService.findCartByCustomerId(adminId);
-        List<CartRecord> cartRecords = cart.getCartRecords();
-        Map<Product, Integer> cartRecordsWithQuantity = new HashMap<>();
-
-        for (CartRecord cartRecord : cartRecords) {
-            cartRecordsWithQuantity.put(productService.findById(cartRecord.getProductId()), cartRecord.getQuantity());
-        }
-
+        List<CartLine> cartLines = cartLineService.findCartLinesByCustomerId(adminId, filter);
         model.addAttribute("filter", filter);
-        model.addAttribute("cart_sum_total", cart.getCartSumTotal());
-        model.addAttribute("cart_records_with_quantity", cartRecordsWithQuantity);
-
-//        if (filter == null) {
-//            model.addAttribute("cartRecords", cartRecordService.findCartByUserId(adminId));
-//        } else model.addAttribute("cartRecords", cartRecordService.findFilteredCartByUserId(adminId, filter));
+        model.addAttribute("cart_lines", cartLines);
+        model.addAttribute("cart_sum_total", (cartLines.size() != 0) ? cartLineService.findCartLinesSumByCustomerId(adminId, filter) : "0.00");
 
         return "cart";
     }
-
 }

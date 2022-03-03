@@ -21,6 +21,10 @@ public class CartRecordServiceImpl implements CartRecordService {
         return cartRecordDao.findCartRecordsByCustomerId(customerId);
     }
 
+    @Override
+    public List<CartRecord> findFilteredCartRecordsByCustomerId(Integer customerId, String filter) {
+        return cartRecordDao.findFilteredCartRecordstByCustomerId(customerId, filter);
+    }
     //////////////////////////////////////////
 
     @Override

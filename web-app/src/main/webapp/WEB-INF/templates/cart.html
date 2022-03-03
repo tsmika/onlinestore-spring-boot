@@ -19,25 +19,25 @@
 </head>
 
 <body>
-<!--<div th:insert="/admin/users/admin_user_fragments :: admin_navbar_for_cart"></div>-->
+<div th:insert="navbars :: cart_navbar"></div>
 
-<!--<div th:insert="product_index_fragments :: filter"></div>-->
 <br>
 <table class="table table-hover">
     <thead>
     <tr class="table-primary">
         <th scope="col"></th>
-        <th scope="col">Id</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
+        <th th:if="${principal_role} eq 'admin'" scope="col">Id</th>
         <th scope="col">Description</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Summa</th>
         <th scope="col"></th>
         <th scope="col"></th>
     </tr>
     </thead>
 
     <tbody>
-    <th:block th:each="product : ${cart_records_with_quantity}">
+    <th:block th:each="cart_line : ${cart_lines}">
         <tr>
             <div class="row gy-1">
 
@@ -46,37 +46,52 @@
                          class="img-fluid align-self-center" style="width: 50px;" alt="...">
                 </th>
 
-                <td>
+                <td th:if="${principal_role} eq 'admin'">
                         <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                            <p class="card-text btn-sm" th:text="${product.key.getProductId()}"></p>
+                            <p class="card-text btn-sm" th:text="${cart_line.getProductId()}"></p>
+                        </span>
+                </td>
+
+                <td>
+                <span class="d-none d-md-inline fs-5 fw-weight-bold">
+
+                         <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary "
+                            th:text="${cart_line.getShortDescription()}"
+                            th:href="@{'/customers/' + ${customer_id} + products/{id}(id=${cart_line.getProductId()})}">
+                         </a>
+
+                         <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary "
+                            th:text="${cart_line.getShortDescription()}"
+                            th:href="@{'/admins/' + ${admin_id} + products/{id}(id=${cart_line.getProductId()})}">
+                         </a>
+                </td>
+
+                <td>
+                         <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                            <p class="card-text btn-sm" th:text="${cart_line.getQuantity()}"></p>
                         </span>
                 </td>
 
                 <td>
                          <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                            <p class="card-text btn-sm" th:text="${product.key.getPrice()}"></p>
+                            <p class="card-text btn-sm" th:text="${cart_line.getPrice()}"></p>
                         </span>
                 </td>
 
                 <td>
-                        <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                            <p class="card-text btn-sm" th:text="${product.value}"></p>
+                         <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                            <p class="card-text btn-sm" th:text="${cart_line.getSumma()}"></p>
                         </span>
                 </td>
 
                 <td>
                     <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                         <a class="card-text btn-sm btn-outline-secondary "
-                            th:text="${product.key.getShortDescription()}"
-                            th:href="@{'/admins/' + ${admin_id} + products/{id}(id=${product.key.getProductId()})}">
+                        <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                           th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${cart_line.getProductId()} + '/edit'}">
+                             <i class="bi bi-pencil"></i> Edit
                          </a>
-                    </span>
-                </td>
-
-                <td>
-                    <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                         <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                         th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${product.key.getProductId()} + '/edit'}">
+                         <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                            th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${cart_line.getProductId()} + '/edit'}">
                              <i class="bi bi-pencil"></i> Edit
                          </a>
                         </span>
@@ -84,8 +99,12 @@
 
                 <td>
                     <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                         <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                         th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${product.key.getProductId()} + '/delete'}">
+                        <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                           th:href="@{'/customer/' + ${customer_id} + '/cart/products/' + ${cart_line.getProductId()} + '/delete'}">
+                             <i class="bi bi-trash"></i> Remove
+                         </a>
+                         <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                            th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${cart_line.getProductId()} + '/delete'}">
                              <i class="bi bi-trash"></i> Remove
                          </a>
                     </span>
@@ -94,7 +113,8 @@
             </div>
         </tr>
     </th:block>
-</tbody>
+    </tbody>
+
     <div class="container-fluid p-3">
         <div class="row">
             <div class="col-2">

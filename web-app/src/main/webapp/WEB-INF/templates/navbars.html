@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-feet=no">-->
+
+<!--    <link rel="icon" href="../../resources/static/img/favicon.ico"-->
+<!--          th:href="@{/resources/static/img/favicon.ico}">-->
+<!--    <link rel="stylesheet" href="/resources/static/css/bootstrap.min.css"-->
+<!--          th:href="@{/resources/static/css/bootstrap.min.css}">-->
+<!--    <link rel="stylesheet" href="../../resources/static/css/bootstrap.css"-->
+<!--          th:href="@{/resources/static/css/bootstrap.css}">-->
+<!--    <link rel="stylesheet" href="../../resources/static/css/style.css"-->
+<!--          th:href="@{/resources/static/css/style.css}">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">-->
+
+<!--    <title>Cart</title>-->
+<!--</head>-->
+<body>
+
+<div th:fragment="cart_navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light p-1">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContentCard">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="navbar-brand">
+                        <img src="../../resources/static/img/onlinestore.svg"
+                             th:src="@{/resources/static/img/onlinestore.svg}"
+                             alt="" width="45" height="36" style="float:left; margin-right:10px;"/>
+                    </li>
+
+                    <li class="nav-link" style="float:left; margin-right:25px;">
+                        <a type="button" class="btn btn-light btn-sm rounded-pill"
+                           style="background-color: #e1f5ec; cursor: default;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-person" style="font-size: 20px;"></i> <span th:text="${login}"
+                                                                                            style="font-size: 20px;"></span>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+
+                        <a th:if="${principal_role} eq 'admin'"
+                           type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                           th:href="@{'/admins/' + ${admin_id} + '/products'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-house"></i> Home
+                            </span>
+                        </a>
+
+                        <a th:if="${principal_role} eq 'customer'" type="button"
+                           class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                           th:href="@{'/customers/' + ${customer_id} + '/products'}">
+                                    <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                        <i class="bi bi-house"></i> Home
+                                    </span>
+                        </a>
+
+                    </li>
+
+                    <li th:if="${principal_role} eq 'admin'" class="nav-link">
+                        <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                           th:href="@{'/admins/' + ${admin_id} + '/customers'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-people"></i> Customers
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                           th:href="@{'/admins/' + ${user_id} + '/users/' + ${user_id} + '/update'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-pencil"></i> Edit account
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a id="logout_link" type="button"
+                           class="btn-sm btn-outline-secondary text-decoration-none rounded-pill">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold"
+                                  onclick="document.getElementById('logout-form').submit();">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </span>
+                        </a>
+                    </li>
+                    <form id="logout-form" style="display:none" th:action="@{/logout}" method="POST"></form>
+
+                </ul>
+
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                           name="filter" size="40">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+</body>
+</html>

@@ -25,7 +25,7 @@
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
-    <bean id="cartDao" class="by.brest.karas.dao.jdbc.CartDaoJdbc">
+    <bean id="cartLineDao" class="by.brest.karas.dao.jdbc.CartLineDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
         <constructor-arg ref="jdbcTemplate"/>
     </bean>

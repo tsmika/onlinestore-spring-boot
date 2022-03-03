@@ -45,17 +45,9 @@
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
-<!--    <bean id="productDtoDao" class="by.brest.karas.dao.jdbc.ProductDtoDaoJdbc">-->
-<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
-<!--    </bean>-->
-
     <bean id="productService" class="by.brest.karas.service.impl.ProductServiceImpl">
         <constructor-arg name="productDao" ref="productDao"/>
     </bean>
-
-<!--    <bean id="productDtoService" class="by.brest.karas.service.impl.ProductDtoServiceImpl">-->
-<!--        <constructor-arg name="productDtoDao" ref="productDtoDao"/>-->
-<!--    </bean>-->
 
     <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
@@ -73,13 +65,13 @@
         <constructor-arg name="cartRecordDao" ref="cartRecordDao"/>
     </bean>
 
-    <bean id="cartDao" class="by.brest.karas.dao.jdbc.CartDaoJdbc">
+    <bean id="cartLineDao" class="by.brest.karas.dao.jdbc.CartLineDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="cartService" class="by.brest.karas.service.impl.CartServiceImpl">
-        <constructor-arg name="cartDao" ref="cartDao"/>
+    <bean id="cartLineService" class="by.brest.karas.service.impl.CartLineServiceImpl">
+        <constructor-arg name="cartLineDao" ref="cartLineDao"/>
     </bean>
 
     <!-- SpringResourceTemplateResolver-->

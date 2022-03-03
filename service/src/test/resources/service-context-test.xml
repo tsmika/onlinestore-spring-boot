@@ -36,13 +36,13 @@
         <constructor-arg name="cartRecordDao" ref="cartRecordDao"/>
     </bean>
 
-    <bean id="cartDao" class="by.brest.karas.dao.jdbc.CartDaoJdbc">
+    <bean id="cartLineDao" class="by.brest.karas.dao.jdbc.CartLineDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="cartService" class="by.brest.karas.service.impl.CartServiceImpl">
-        <constructor-arg name="cartDao" ref="cartDao"/>
+    <bean id="cartLineService" class="by.brest.karas.service.impl.CartLineServiceImpl">
+        <constructor-arg name="cartLineDao" ref="cartLineDao"/>
     </bean>
 
 </beans>

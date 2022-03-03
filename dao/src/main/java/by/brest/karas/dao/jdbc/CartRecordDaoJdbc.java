@@ -27,6 +27,9 @@ public class CartRecordDaoJdbc implements CartRecordDao {
     @Value("${cartRecord.findCartRecordsByCustomerId}")
     private String findCartRecordsByCustomerIdSql;
 
+    @Value("${cartRecord.findFilteredCartRecordsByCustomerId}")
+    private String findFilteredCartRecordsByCustomerIdSql;
+
     public CartRecordDaoJdbc() {
     }
 
@@ -38,6 +41,20 @@ public class CartRecordDaoJdbc implements CartRecordDao {
     public List<CartRecord> findCartRecordsByCustomerId(Integer customerId) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("ID", customerId);
         return namedParameterJdbcTemplate.query(findCartRecordsByCustomerIdSql, sqlParameterSource, rowMapper);
+    }
+
+    @Override
+    public List<CartRecord> findFilteredCartRecordstByCustomerId(Integer customerId, String filter) {
+        LOGGER.debug("findFilteredCartRecordstByCustomerId()");
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("ID", customerId);
+        sqlParameterSource.addValue("FILTER", "%" + filter + "%");
+
+        List<CartRecord> cartRecords = namedParameterJdbcTemplate.query(
+                findFilteredCartRecordsByCustomerIdSql, sqlParameterSource,
+                BeanPropertyRowMapper.newInstance(CartRecord.class));
+
+        return cartRecords;
     }
 
     @Override
@@ -57,13 +74,16 @@ public class CartRecordDaoJdbc implements CartRecordDao {
     }
 
     @Override
-    public void update(CartRecord cartRecordToUpdate, Integer quantity) {}
+    public void update(CartRecord cartRecordToUpdate, Integer quantity) {
+    }
 
     @Override
-    public void save(CartRecord cartRecord) {}
+    public void save(CartRecord cartRecord) {
+    }
 
     @Override
-    public void delete(Integer userId, Integer productId) {}
+    public void delete(Integer userId, Integer productId) {
+    }
 
     @Override
     public Integer findQuantityFromCart(Integer userId, Integer productId) {

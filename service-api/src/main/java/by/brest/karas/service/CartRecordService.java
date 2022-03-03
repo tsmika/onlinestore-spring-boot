@@ -10,6 +10,8 @@ public interface CartRecordService {
 
     List<CartRecord> findCartRecordsByCustomerId(Integer customerId);
 
+    List<CartRecord> findFilteredCartRecordsByCustomerId(Integer customerId, String filter);
+
     //////////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);

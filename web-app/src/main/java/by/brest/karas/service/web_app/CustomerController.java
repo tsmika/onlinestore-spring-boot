@@ -1,5 +1,8 @@
 package by.brest.karas.service.web_app;
 
+import by.brest.karas.model.dto.CartLine;
+import by.brest.karas.service.CartRecordService;
+import by.brest.karas.service.CartLineService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -7,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Product controller.
@@ -19,9 +23,15 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    public CustomerController(ProductService productService, CustomerService customerService) {
+    private final CartRecordService cartRecordService;
+
+    private final CartLineService cartLineService;
+
+    public CustomerController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartLineService cartService, CartLineService cartLineService) {
         this.productService = productService;
         this.customerService = customerService;
+        this.cartRecordService = cartRecordService;
+        this.cartLineService = cartLineService;
     }
 
     @ModelAttribute("customer_id")
@@ -68,6 +78,21 @@ public class CustomerController {
         model.addAttribute("product", productService.findById(productId));
 
         return "product_info";
+    }
+
+    /////////////////////// CART
+    @GetMapping("/{customer_id}/cart/products")
+    public String goToCartPage(
+            @PathVariable("customer_id") Integer customerId,
+            @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
+            Model model) {
+
+        List<CartLine> cartLines = cartLineService.findCartLinesByCustomerId(customerId, filter);
+        model.addAttribute("filter", filter);
+        model.addAttribute("cart_lines", cartLines);
+        model.addAttribute("cart_sum_total", (cartLines.size() != 0) ? cartLineService.findCartLinesSumByCustomerId(customerId, filter) : "0.00");
+
+        return "cart";
     }
 
 }

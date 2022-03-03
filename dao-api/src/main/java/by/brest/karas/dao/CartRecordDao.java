@@ -10,6 +10,8 @@ public interface CartRecordDao {
 
     List<CartRecord> findCartRecordsByCustomerId(Integer customerId);
 
+    List<CartRecord> findFilteredCartRecordstByCustomerId(Integer customerId, String filter);
+
     ///////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);
