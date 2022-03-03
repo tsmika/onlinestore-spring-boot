@@ -86,11 +86,8 @@ public class AdminController {
         return "product_info";
     }
 
-
-
-
     @GetMapping("/{admin_id}/products/new")
-    public String createProduct(@ModelAttribute Product product) {
+    public String goToNewProductForm(@ModelAttribute Product product) {
         return "new_product_form";
     }
 
@@ -105,10 +102,13 @@ public class AdminController {
             return "new_product_form";
         }
 
-        product.setChangedBy(getPrincipalId(principal));
+        Integer adminId = getPrincipalId(principal);
+
+        product.setPicture("add picture");
+        product.setChangedBy(adminId);
         productService.create(product);
 
-        return "redirect: products";
+        return "redirect:/admins/" + adminId + "/products";
     }
 
 

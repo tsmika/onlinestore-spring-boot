@@ -51,7 +51,7 @@ class ProductDaoJdbcIntegrationTest {
     void findProductsByDescriptionIntegrationTest() {
         List<Product> products = findAllAssertion();
         String filter = "{]@*";
-        Product testProduct = new Product("test picture", filter, "test detail description", BigDecimal.valueOf(0.01), Date.valueOf("2001-1-1"), Date.valueOf("2001-1-1"), 1);
+        Product testProduct = new Product("test picture", filter, "test detail description", BigDecimal.valueOf(0.01),/* Date.valueOf("2001-1-1"), Date.valueOf("2001-1-1"),*/ 1);
         productDao.create(testProduct);
         products = findAllAssertion();
         products = productDao.findProductsByDescription(filter);
@@ -64,8 +64,8 @@ class ProductDaoJdbcIntegrationTest {
     public void createProductWithSameShortDescriptionIntegrationTest() {
         findAllAssertion();
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            productDao.create(new Product("test picture", "a", "test detail description", BigDecimal.valueOf(0.01), Date.valueOf("2001-1-1"), Date.valueOf("2001-1-1"), 1));
-            productDao.create(new Product("test picture", "a", "test detail description", BigDecimal.valueOf(0.01), Date.valueOf("2001-1-1"), Date.valueOf("2001-1-1"), 1));
+            productDao.create(new Product("test picture", "a", "test detail description", BigDecimal.valueOf(0.01), /*Date.valueOf("2001-1-1"), Date.valueOf("2001-1-1"),*/ 1));
+            productDao.create(new Product("test picture", "a", "test detail description", BigDecimal.valueOf(0.01), /*Date.valueOf("2001-1-1"), Date.valueOf("2001-1-1"),*/ 1));
         });
     }
 

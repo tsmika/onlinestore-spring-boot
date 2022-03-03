@@ -85,9 +85,8 @@ public class ProductDaoJdbc implements ProductDao {
                 .addValue("SHORT_DESCRIPTION", product.getShortDescription())
                 .addValue("DETAIL_DESCRIPTION", product.getDetailDescription())
                 .addValue("PRICE", product.getPrice())
-                .addValue("CREATION_DATE", product.getCreationDate())
-                .addValue("UPDATE_DATE", product.getUpdateDate())
                 .addValue("CHANGED_BY", product.getChangedBy());
+
 
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }

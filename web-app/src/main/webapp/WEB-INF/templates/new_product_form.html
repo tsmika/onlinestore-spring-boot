@@ -33,7 +33,7 @@
             </h3>
         </div>
 
-        <form th:method="POST" th:action="@{/admins/products/new}" th:object="${product}">
+        <form th:method="POST" th:action="@{'/admins/' + ${admin_id} + '/products/new'}" th:object="${product}">
 
             <label for="shortDescription" class="col-form-label">Product short description:</label>
             <div class="row g-3 align-items-center">

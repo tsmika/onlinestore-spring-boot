@@ -35,11 +35,23 @@ class ProductServiceImplIntegrationTest {
         assertTrue(testProduct.getProductId() == 1);
     }
 
-
     private List<Product> findAllAssertion() {
         List<Product> products = productDao.findAll();
         assertNotNull(products);
         assertTrue(products.size() > 0);
         return products;
     }
+
+    @Test
+    void createIntegrationTest() {
+        List<Product> products = findAllAssertion();
+        int sizeBefore = products.size();
+        Product testProduct = new Product("test pic", "test short description", "test detail description", BigDecimal.valueOf(5.55), 1);
+        productDao.create(testProduct);
+        products = productDao.findAll();
+        assertNotNull(products);
+        assertTrue(sizeBefore == products.size() - 1);
+        assertTrue(products.get(sizeBefore).getShortDescription().equals("test short description"));
+    }
+
 }

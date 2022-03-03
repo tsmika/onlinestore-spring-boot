@@ -33,13 +33,11 @@ public class Product {
     public Product() {
     }
 
-    public Product(String picture, String shortDescription, String detailDescription, BigDecimal price, Date creationDate, Date updateDate, Integer changedBy) {
+    public Product(String picture, String shortDescription, String detailDescription, BigDecimal price, Integer changedBy) {
         this.picture = picture;
         this.shortDescription = shortDescription;
         this.detailDescription = detailDescription;
         this.price = price;
-        this.creationDate = creationDate;
-        this.updateDate = updateDate;
         this.changedBy = changedBy;
     }
 
