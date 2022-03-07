@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-dao.xml", "classpath*:dao.xml"})
 public class CartRecordDaoJdbcIntegrationTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CartLineDaoJdbcIntegrationTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CartRecordDaoJdbcIntegrationTest.class);
     @Autowired
     private CartRecordDaoJdbc cartRecordDaoJdbc;
 

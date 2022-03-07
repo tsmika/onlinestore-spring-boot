@@ -1,10 +1,9 @@
 package by.brest.karas.service.web_app;
 
-import by.brest.karas.model.CartRecord;
 import by.brest.karas.model.Product;
-import by.brest.karas.model.dto.CartLine;
+import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordService;
-import by.brest.karas.service.CartLineService;
+import by.brest.karas.service.CartRecordDtoService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -29,13 +28,13 @@ public class AdminController {
 
     private final CartRecordService cartRecordService;
 
-    private final CartLineService cartLineService;
+    private final CartRecordDtoService cartRecordDtoService;
 
-    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartLineService cartLineService) {
+    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartRecordDtoService cartRecordDtoService) {
         this.productService = productService;
         this.customerService = customerService;
         this.cartRecordService = cartRecordService;
-        this.cartLineService = cartLineService;
+        this.cartRecordDtoService = cartRecordDtoService;
     }
 
     private Integer getPrincipalId(Principal principal) {
@@ -135,10 +134,10 @@ public class AdminController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
-        List<CartLine> cartLines = cartLineService.findCartLinesByCustomerId(adminId, filter);
+        List<CartRecordDto> cartRecordDtos = cartRecordDtoService.findCartRecordDtosByCustomerId(adminId, filter);
         model.addAttribute("filter", filter);
-        model.addAttribute("cart_lines", cartLines);
-        model.addAttribute("cart_sum_total", (cartLines.size() != 0) ? cartLineService.findCartLinesSumByCustomerId(adminId, filter) : "0.00");
+        model.addAttribute("cart_lines", cartRecordDtos);
+        model.addAttribute("cart_sum_total", (cartRecordDtos.size() != 0) ? cartRecordDtoService.findCartRecordDtosSumByCustomerId(adminId, filter) : "0.00");
 
         return "cart";
     }

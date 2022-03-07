@@ -1,8 +1,8 @@
 package by.brest.karas.service.web_app;
 
-import by.brest.karas.model.dto.CartLine;
+import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordService;
-import by.brest.karas.service.CartLineService;
+import by.brest.karas.service.CartRecordDtoService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -25,9 +25,9 @@ public class CustomerController {
 
     private final CartRecordService cartRecordService;
 
-    private final CartLineService cartLineService;
+    private final CartRecordDtoService cartLineService;
 
-    public CustomerController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartLineService cartService, CartLineService cartLineService) {
+    public CustomerController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartRecordDtoService cartService, CartRecordDtoService cartLineService) {
         this.productService = productService;
         this.customerService = customerService;
         this.cartRecordService = cartRecordService;
@@ -87,10 +87,10 @@ public class CustomerController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
-        List<CartLine> cartLines = cartLineService.findCartLinesByCustomerId(customerId, filter);
+        List<CartRecordDto> cartRecordDtos = cartLineService.findCartRecordDtosByCustomerId(customerId, filter);
         model.addAttribute("filter", filter);
-        model.addAttribute("cart_lines", cartLines);
-        model.addAttribute("cart_sum_total", (cartLines.size() != 0) ? cartLineService.findCartLinesSumByCustomerId(customerId, filter) : "0.00");
+        model.addAttribute("cart_lines", cartRecordDtos);
+        model.addAttribute("cart_sum_total", (cartRecordDtos.size() != 0) ? cartLineService.findCartRecordDtosSumByCustomerId(customerId, filter) : "0.00");
 
         return "cart";
     }

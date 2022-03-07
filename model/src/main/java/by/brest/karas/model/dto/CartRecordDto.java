@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * POJO CartRecord for model.
  */
-public class CartLine {
+public class CartRecordDto {
     /**
      * Customer Id.
      */
@@ -36,7 +36,7 @@ public class CartLine {
      */
 
 
-    public CartLine() {
+    public CartRecordDto() {
     }
 
     /**
@@ -44,7 +44,7 @@ public class CartLine {
      * @param customerId customer Id
      */
 
-    public CartLine(Integer customerId, Integer productId, String shortDescription, Integer quantity, BigDecimal price, BigDecimal summa) {
+    public CartRecordDto(Integer customerId, Integer productId, String shortDescription, Integer quantity, BigDecimal price, BigDecimal summa) {
         this.customerId = customerId;
         this.productId = productId;
         this.shortDescription = shortDescription;

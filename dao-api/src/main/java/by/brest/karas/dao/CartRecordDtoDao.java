@@ -1,6 +1,6 @@
 package by.brest.karas.dao;
 
-import by.brest.karas.model.dto.CartLine;
+import by.brest.karas.model.dto.CartRecordDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * CartRecordDto DAO interface
  */
-public interface CartLineDao {
+public interface CartRecordDtoDao {
 
     /**
      * Get cart with total sum
@@ -17,7 +17,7 @@ public interface CartLineDao {
      */
 
 //    Cart findCartByCustomerIdWithSumTotal(Integer customerId);
-    List<CartLine> findCartLinesByCustomerId(Integer customerId, String filter);
+    List<CartRecordDto> findCartRecordDtosByCustomerId(Integer customerId, String filter);
 
-    BigDecimal findCartLinesSumByCustomerId(Integer customerId, String filter);
+    BigDecimal findCartRecordDtosSumByCustomerId(Integer customerId, String filter);
 }
