@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title></title>
 </head>
 <body>
 <div th:fragment="product_index_navbar">
@@ -260,11 +260,21 @@
                             </span>
                         </div>
 
-                        <div th:if="${principal_role} eq 'admin' or ${principal_role} eq 'customer'"
+                        <div th:if="${principal_role} eq 'admin'"
                              class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                   <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                                     th:href="@{'/admins/' + ${user_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
+                                     th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
+                                       <i class="bi bi-cart-plus"></i> Add to cart
+                                  </a>
+                            </span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'customer'"
+                             class="col-1 align-self-center">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
                                        <i class="bi bi-cart-plus"></i> Add to cart
                                   </a>
                             </span>

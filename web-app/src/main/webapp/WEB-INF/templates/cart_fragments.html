@@ -1,0 +1,70 @@
+<div th:fragment="new_cart_record_form">
+
+    <div class="container-fluid p-3">
+
+        <div class="row">
+            <div class="col-2">
+                <button type="button" class="btn btn-outline-secondary">
+                    Product Id: <span class="badge bg-light  text-dark" th:text="${productId}"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-6">
+                <button type="button" class="btn btn-outline-secondary">
+                    Description: <span class="badge bg-light  text-dark" th:text="${productDescription}"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-2">
+                <button type="button" class="btn btn-outline-secondary">
+                    Price: <span class="badge bg-light  text-dark" th:text="${productPrice}"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-sm-1">
+                <input type="number" min="1" th:field="*{quantity}" id="quantity" class="form-control"
+                       aria-describedby="quantityHelpInline">
+                <div class="alert alert-danger" role="alert" style="color:red"
+                     th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-outline-dark" style="float:left; margin-left:20px;">
+                    Save
+                </button>
+
+                <a>
+                    <input onclick="javascript:history.back();" class="btn btn-outline-dark" type="button" style="float:left; margin-left:20px;"
+                           value="Go back"/>
+                </a>
+<!--                <a onclick="javascript:history.back();" class="btn btn-outline-secondary">Go back</a>-->
+<!--                <a th:if="${principal_role} eq 'customer'"-->
+<!--                   th:href="@{'/customers/' + ${customer_id} + '/products'}">-->
+<!--                    <input class="btn btn-outline-dark" type="button" style="float:left; margin-left:20px;"-->
+<!--                           value="Cancel"/>-->
+<!--                </a>-->
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</form>
+</div>

@@ -4,10 +4,14 @@ import by.brest.karas.dao.CartRecordDao;
 import by.brest.karas.model.CartRecord;
 import by.brest.karas.model.Product;
 import by.brest.karas.service.CartRecordService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
+@Transactional
 public class CartRecordServiceImpl implements CartRecordService {
 
     private CartRecordDao cartRecordDao;
@@ -25,6 +29,12 @@ public class CartRecordServiceImpl implements CartRecordService {
     public List<CartRecord> findFilteredCartRecordsByCustomerId(Integer customerId, String filter) {
         return cartRecordDao.findFilteredCartRecordstByCustomerId(customerId, filter);
     }
+
+    @Override
+    public Integer create(CartRecord cartRecord) {
+       return cartRecordDao.create(cartRecord);
+    }
+
     //////////////////////////////////////////
 
     @Override
@@ -56,11 +66,6 @@ public class CartRecordServiceImpl implements CartRecordService {
     @Override
     public void update(CartRecord cartRecordToUpdate, Integer quantity) {
         cartRecordDao.update(cartRecordToUpdate, quantity);
-    }
-
-    @Override
-    public void create(CartRecord cartRecord) {
-        cartRecordDao.save(cartRecord);
     }
 
     @Override

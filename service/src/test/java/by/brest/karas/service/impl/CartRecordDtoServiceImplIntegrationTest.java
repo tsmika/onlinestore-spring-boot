@@ -30,15 +30,14 @@ public class CartRecordDtoServiceImplIntegrationTest {
         assertTrue(cartRecordDtos.get(0).getCustomerId() == 1);
         assertTrue(cartRecordDtoService.findCartRecordDtosSumByCustomerId(1, "").equals(BigDecimal.valueOf(18.87).setScale(2)));
 
-        cartRecordDtos = cartRecordDtoService.findCartRecordDtosByCustomerId(1, "aaa");
+        cartRecordDtos = cartRecordDtoService.findCartRecordDtosByCustomerId(1, "{]&*%");
         assertNotNull(cartRecordDtos);
-//        assertNotNull(cartRecordDtos.size() == 0);
+        assertTrue(cartRecordDtos.size() == 0);
 
         cartRecordDtos = cartRecordDtoService.findCartRecordDtosByCustomerId(1, "3");
         assertNotNull(cartRecordDtos);
         assertNotNull(cartRecordDtos.size() == 1);
         assertTrue(cartRecordDtos.get(0).getCustomerId() == 1);
         assertTrue(cartRecordDtoService.findCartRecordDtosSumByCustomerId(1, "3").equals(BigDecimal.valueOf(16.65).setScale(2)));
-        System.out.println();
     }
 }

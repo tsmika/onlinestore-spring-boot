@@ -12,6 +12,8 @@ public interface CartRecordService {
 
     List<CartRecord> findFilteredCartRecordsByCustomerId(Integer customerId, String filter);
 
+    Integer create(CartRecord cartRecord);
+
     //////////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);
@@ -24,7 +26,7 @@ public interface CartRecordService {
 
     Map<Product, Integer> findCartByUserLogin(String login);
 
-    void create(CartRecord cartRecord);
+
 
     void update(CartRecord cartRecordToUpdate, Integer quantity);
 

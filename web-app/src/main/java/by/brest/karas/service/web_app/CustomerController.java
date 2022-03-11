@@ -1,5 +1,7 @@
 package by.brest.karas.service.web_app;
 
+import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Product;
 import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CartRecordDtoService;
@@ -7,8 +9,10 @@ import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -95,4 +99,39 @@ public class CustomerController {
         return "cart";
     }
 
+    @GetMapping("/{customer_id}/cart/products/{product_id}/new")
+    public String goToNewCartRecordForm(
+            @ModelAttribute("cartRecord") CartRecord cartRecord
+            , @PathVariable("product_id") Integer productId
+            , Model model) {
+
+        Product product = productService.findById(productId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("productDescription", product.getShortDescription());
+        model.addAttribute("productPrice", product.getPrice());
+        model.addAttribute("cartRecord", cartRecord);
+
+        return "new_cart_record_form";
+    }
+
+    @PostMapping("/{customer_id}/cart/products/{product_id}")
+    public String createCartRecord(
+            @ModelAttribute("cartRecord") @Valid CartRecord cartRecord
+            , BindingResult bindingResult
+            , @PathVariable("product_id") Integer productId
+            , @PathVariable("customer_id") Integer customerId
+            , Model model) {
+
+        model.addAttribute("productId", productId);
+
+        if (bindingResult.hasErrors()) {
+            return "new_cart_record_form";
+        }
+
+        cartRecord.setCustomerId(customerId);
+        cartRecord.setProductId(productId);
+        cartRecordService.create(cartRecord);
+
+        return "redirect:/customers/{customer_id}/cart/products";
+    }
 }

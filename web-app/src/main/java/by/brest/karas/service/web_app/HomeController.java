@@ -114,9 +114,7 @@ public class HomeController {
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customer.setRole(Role.ROLE_USER);
         customer.setIsActual(true);
-
         customerService.create(customer);
-//        Integer customerId = customerService.findByLogin(customer.getLogin()).get().getCustomerId();
 
         return "redirect:products";
     }

@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<div th:insert="navbars :: cart_navbar"></div>
 
 <div class="card mb-3 mt-3 mx-3" style="max-width: 1080px;">
     <div class="row g-0">
@@ -31,8 +32,7 @@
                 <p class="card-text" th:text="'Price: ' + ${product.getPrice()}">Price</p>
                 <p class="card-text" th:text="${product.getDetailDescription()}">DetailDescription</p>
                 <a th:if="${principal_role} eq 'guest'" th:href="@{/products}" class="btn btn-outline-secondary">Go home</a>
-                <a th:if="${principal_role} eq 'customer'" th:href="@{'/customers/' + ${customer_id} + '/products'}" class="btn btn-outline-secondary">Go home</a>
-                <a th:if="${principal_role} eq 'admin'" th:href="@{'/admins/' + ${admin_id} + '/products'}" class="btn btn-outline-secondary">Go home</a>
+                <a onclick="javascript:history.back();" class="btn btn-outline-secondary">Go back</a>
                 <a th:if="${principal_role} eq 'customer'"
                    th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${product.getProductId()} + '/new'}"
                    class="btn btn-outline-secondary">Add to cart</a>

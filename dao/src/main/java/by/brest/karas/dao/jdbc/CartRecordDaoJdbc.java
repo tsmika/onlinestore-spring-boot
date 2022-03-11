@@ -2,7 +2,6 @@ package by.brest.karas.dao.jdbc;
 
 import by.brest.karas.dao.CartRecordDao;
 import by.brest.karas.model.CartRecord;
-import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,15 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     @Value("${cartRecord.findFilteredCartRecordsByCustomerId}")
     private String findFilteredCartRecordsByCustomerIdSql;
+
+    @Value("${cartRecord.findProductInCartRecordsByCustomerId}")
+    private String findProductInCartRecordsByCustomerIdSql;
+
+    @Value("${cartRecord.create}")
+    private String createSql;
+
+    @Value("${cartRecord.update}")
+    private String updateSql;
 
     public CartRecordDaoJdbc() {
     }
@@ -58,6 +66,53 @@ public class CartRecordDaoJdbc implements CartRecordDao {
     }
 
     @Override
+    public Integer create(CartRecord cartRecord) {
+
+        String sql;
+
+        if (isRecordExist(cartRecord.getCustomerId(), cartRecord.getProductId())) {
+            LOGGER.debug("Update cart record: {}", cartRecord);
+            sql = updateSql;
+        } else {
+            LOGGER.debug("Create cart record: {}", cartRecord);
+            sql = createSql;
+        }
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        mapSqlParameterSource
+                .addValue("CUSTOMER_ID", cartRecord.getCustomerId())
+                .addValue("PRODUCT_ID", cartRecord.getProductId())
+                .addValue("QUANTITY", cartRecord.getQuantity());
+
+        return namedParameterJdbcTemplate.update(sql, mapSqlParameterSource);
+    }
+
+    public boolean isRecordExist(Integer customerId, Integer productId) {
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource
+                .addValue("CUSTOMER_ID", customerId)
+                .addValue("PRODUCT_ID", productId);
+
+        List<CartRecord> cartRecords = namedParameterJdbcTemplate.query(findProductInCartRecordsByCustomerIdSql, mapSqlParameterSource, BeanPropertyRowMapper.newInstance(CartRecord.class));
+
+//        if (cartRecords.size() > 1){
+//            try {
+//                throw new Exception("Duplicate cart records for user " + login);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        return cartRecords.size() == 0 ? false : true;
+    }
+
+
+    //////////////////////////////////////////
+
+
+    @Override
     public CartRecord findCartRecord(Integer userId, Integer productId) {
         return null;
     }
@@ -75,10 +130,6 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     @Override
     public void update(CartRecord cartRecordToUpdate, Integer quantity) {
-    }
-
-    @Override
-    public void save(CartRecord cartRecord) {
     }
 
     @Override

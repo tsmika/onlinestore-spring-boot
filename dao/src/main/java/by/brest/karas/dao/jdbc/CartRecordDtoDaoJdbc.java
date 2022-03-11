@@ -18,7 +18,6 @@ public class CartRecordDtoDaoJdbc implements CartRecordDtoDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private JdbcTemplate jdbcTemplate;
-//    private RowMapper<CartRecord> cartRecordRowMapper = BeanPropertyRowMapper.newInstance(CartRecord.class);
 
     private RowMapper<CartRecordDto> cartRecordDtoRowMapper = BeanPropertyRowMapper.newInstance(CartRecordDto.class);
 

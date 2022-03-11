@@ -12,6 +12,8 @@ public interface CartRecordDao {
 
     List<CartRecord> findFilteredCartRecordstByCustomerId(Integer customerId, String filter);
 
+    Integer create(CartRecord cartRecord);
+
     ///////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);
@@ -25,8 +27,6 @@ public interface CartRecordDao {
     Map<Product, Integer> findCartByUserLogin(String login);
 
     void update(CartRecord cartRecordToUpdate, Integer quantity);
-
-    void save(CartRecord cartRecord);
 
     void delete(Integer userId, Integer productId);
 }

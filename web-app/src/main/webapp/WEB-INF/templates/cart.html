@@ -57,12 +57,12 @@
 
                          <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary "
                             th:text="${cart_line.getShortDescription()}"
-                            th:href="@{'/customers/' + ${customer_id} + products/{id}(id=${cart_line.getProductId()})}">
+                            th:href="@{'/customers/' + ${customer_id} + '/products/' + ${cart_line.getProductId()}}">
                          </a>
 
                          <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary "
                             th:text="${cart_line.getShortDescription()}"
-                            th:href="@{'/admins/' + ${admin_id} + products/{id}(id=${cart_line.getProductId()})}">
+                            th:href="@{'/admins/' + ${admin_id} + '/products/' + ${cart_line.getProductId()}}">
                          </a>
                      </span>
                 </td>

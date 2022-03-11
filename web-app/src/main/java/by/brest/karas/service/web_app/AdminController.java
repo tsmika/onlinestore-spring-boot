@@ -1,5 +1,6 @@
 package by.brest.karas.service.web_app;
 
+import by.brest.karas.model.CartRecord;
 import by.brest.karas.model.Product;
 import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordService;
@@ -140,5 +141,42 @@ public class AdminController {
         model.addAttribute("cart_sum_total", (cartRecordDtos.size() != 0) ? cartRecordDtoService.findCartRecordDtosSumByCustomerId(adminId, filter) : "0.00");
 
         return "cart";
+    }
+
+    @GetMapping("/{admin_id}/cart/products/{product_id}/new")
+    public String goToNewCartRecordForm(
+            @ModelAttribute("cartRecord") CartRecord cartRecord
+            , @PathVariable("product_id") Integer productId
+            , Model model) {
+
+        Product product = productService.findById(productId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("productDescription", product.getShortDescription());
+        model.addAttribute("productPrice", product.getPrice());
+        model.addAttribute("cartRecord", cartRecord);
+
+        return "new_cart_record_form";
+    }
+
+    @PostMapping("/{admin_id}/cart/products/{product_id}")
+    public String createCartRecord(
+            @ModelAttribute("cartRecord") @Valid CartRecord cartRecord
+            , BindingResult bindingResult
+            , @PathVariable("product_id") Integer productId
+            , @PathVariable("admin_id") Integer adminId
+            , Model model) {
+
+        model.addAttribute("productId", productId);
+
+        if (bindingResult.hasErrors()) {
+            return "new_cart_record_form";
+        }
+
+        cartRecord.setCustomerId(adminId);
+        cartRecord.setProductId(productId);
+        cartRecordService.create(cartRecord);
+
+        return "redirect:/admins/{admin_id}/cart/products";
+
     }
 }
