@@ -99,17 +99,27 @@ public class CustomerController {
         return "cart";
     }
 
+    @GetMapping("/{customer_id}/cart/products/{product_id}/edit")
+    public String goToNewCartRecordForm(){
+        return "redirect:/customers/{customer_id}/cart/products/{product_id}/new";
+    }
+
     @GetMapping("/{customer_id}/cart/products/{product_id}/new")
     public String goToNewCartRecordForm(
-            @ModelAttribute("cartRecord") CartRecord cartRecord
-            , @PathVariable("product_id") Integer productId
-            , Model model) {
+            @ModelAttribute("cartRecord") CartRecord cartRecord,
+            @PathVariable("customer_id") Integer customerId,
+            @PathVariable("product_id") Integer productId,
+            Model model) {
 
         Product product = productService.findById(productId);
         model.addAttribute("productId", productId);
         model.addAttribute("productDescription", product.getShortDescription());
         model.addAttribute("productPrice", product.getPrice());
         model.addAttribute("cartRecord", cartRecord);
+
+        if (cartRecordService.isCartRecordExist(customerId, productId)){
+            model.addAttribute("quantity", cartRecordService.findCartRecordsByCustomerIdAndProductId(customerId, productId).get(0).getQuantity());
+        }
 
         return "new_cart_record_form";
     }
@@ -122,7 +132,11 @@ public class CustomerController {
             , @PathVariable("customer_id") Integer customerId
             , Model model) {
 
+        Product product = productService.findById(productId);
         model.addAttribute("productId", productId);
+        model.addAttribute("productDescription", product.getShortDescription());
+        model.addAttribute("productPrice", product.getPrice());
+        model.addAttribute("cartRecord", cartRecord);
 
         if (bindingResult.hasErrors()) {
             return "new_cart_record_form";

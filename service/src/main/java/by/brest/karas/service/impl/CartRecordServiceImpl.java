@@ -35,6 +35,11 @@ public class CartRecordServiceImpl implements CartRecordService {
        return cartRecordDao.create(cartRecord);
     }
 
+    @Override
+    public Boolean isCartRecordExist(Integer customerId, Integer productId) {
+        return cartRecordDao.isCartRecordExist(customerId, productId);
+    }
+
     //////////////////////////////////////////
 
     @Override
@@ -43,8 +48,8 @@ public class CartRecordServiceImpl implements CartRecordService {
     }
 
     @Override
-    public CartRecord findCartRecord(Integer userId, Integer productId) {
-        return cartRecordDao.findCartRecord(userId, productId);
+    public List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer userId, Integer productId) {
+        return cartRecordDao.findCartRecordsByCustomerIdAndProductId(userId, productId);
     }
 
     @Override

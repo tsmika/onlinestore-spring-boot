@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,6 +26,15 @@ public class CartRecordServiceImplIntegrationTest {
     private CartRecordDaoJdbc cartRecordDaoJdbc;
 
     @Test
+    void findCartRecordByCustomerIdAndProductIdIntegrationTest(){
+        CartRecord cartRecord = cartRecordDaoJdbc.findCartRecordByCustomerIdAndProductId(1, 2);
+        assertNotNull(cartRecord);
+        assertTrue(cartRecord.getCustomerId() == 1);
+        assertTrue(cartRecord.getProductId() == 2);
+        assertTrue(cartRecord.getQuantity() == 1);
+    }
+
+    @Test
     void findCartRecordsByCustomerIdIntegrationTest(){
         List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
         assertNotNull(cartRecords);
@@ -36,7 +44,8 @@ public class CartRecordServiceImplIntegrationTest {
     @Test
     void isRecordExistIntegrationTest(){
         List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
-        assertTrue(cartRecordDaoJdbc.isRecordExist(cartRecords.get(0).getCustomerId(), cartRecords.get(0).getProductId()));
+        assertTrue(cartRecordDaoJdbc.isCartRecordExist(cartRecords.get(0).getCustomerId(), cartRecords.get(0).getProductId()));
+        assertTrue(!(cartRecordDaoJdbc.isCartRecordExist(cartRecords.get(0).getCustomerId(), Integer.MAX_VALUE)));
         cartRecords = cartRecordService.findCartRecordsByCustomerId(Integer.MAX_VALUE);
         assertTrue(cartRecords.size() == 0);
     }
@@ -64,6 +73,19 @@ public class CartRecordServiceImplIntegrationTest {
         assertTrue(cartRecords.size() > 0);
         sizeAfter = cartRecords.size();
         assertTrue(sizeAfter - sizeBefore == 0);
+    }
 
+    @Test
+    public void findCartRecordsByCustomerIdAndProductIdIntegrationTest() {
+        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(1, 2);
+        assertNotNull(cartRecords);
+        assertTrue(cartRecords.size() == 1);
+        assertTrue(cartRecords.get(0).getProductId() == 2);
+        assertTrue(cartRecords.get(0).getCustomerId() == 1);
+        assertTrue(cartRecords.get(0).getQuantity() == 1);
+        cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(1, Integer.MAX_VALUE);
+        assertTrue(cartRecords.size() == 0);
+        cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(Integer.MAX_VALUE, 1);
+        assertTrue(cartRecords.size() == 0);
     }
 }

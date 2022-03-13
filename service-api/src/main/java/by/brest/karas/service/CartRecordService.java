@@ -14,11 +14,13 @@ public interface CartRecordService {
 
     Integer create(CartRecord cartRecord);
 
+    Boolean isCartRecordExist(Integer customerId, Integer productId);
+
+    List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer userId, Integer productId);
+
     //////////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);
-
-    CartRecord findCartRecord(Integer userId, Integer productId);
 
     Map<Product, Integer> findFilteredCartByUserId(Integer userId, String filter);
 

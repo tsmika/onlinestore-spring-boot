@@ -143,17 +143,27 @@ public class AdminController {
         return "cart";
     }
 
+    @GetMapping("/{admin_id}/cart/products/{product_id}/edit")
+    public String goToNewCartRecordForm(){
+        return "redirect:/admins/{admin_id}/cart/products/{product_id}/new";
+    }
+
     @GetMapping("/{admin_id}/cart/products/{product_id}/new")
     public String goToNewCartRecordForm(
-            @ModelAttribute("cartRecord") CartRecord cartRecord
-            , @PathVariable("product_id") Integer productId
-            , Model model) {
+            @ModelAttribute("cartRecord") CartRecord cartRecord,
+            @PathVariable("admin_id") Integer adminId,
+            @PathVariable("product_id") Integer productId,
+            Model model) {
 
         Product product = productService.findById(productId);
         model.addAttribute("productId", productId);
         model.addAttribute("productDescription", product.getShortDescription());
         model.addAttribute("productPrice", product.getPrice());
         model.addAttribute("cartRecord", cartRecord);
+
+        if (cartRecordService.isCartRecordExist(adminId, productId)){
+            model.addAttribute("quantity", cartRecordService.findCartRecordsByCustomerIdAndProductId(adminId, productId).get(0).getQuantity());
+        }
 
         return "new_cart_record_form";
     }
@@ -166,7 +176,11 @@ public class AdminController {
             , @PathVariable("admin_id") Integer adminId
             , Model model) {
 
+        Product product = productService.findById(productId);
         model.addAttribute("productId", productId);
+        model.addAttribute("productDescription", product.getShortDescription());
+        model.addAttribute("productPrice", product.getPrice());
+        model.addAttribute("cartRecord", cartRecord);
 
         if (bindingResult.hasErrors()) {
             return "new_cart_record_form";

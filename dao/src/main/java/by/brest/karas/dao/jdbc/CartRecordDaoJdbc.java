@@ -23,6 +23,9 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CartRecordDaoJdbc.class);
 
+    @Value("${cartRecord.findCartRecordByCustomerIdAndProductId}")
+    private String findCartRecordByCustomerIdAndProductIdSql;
+
     @Value("${cartRecord.findCartRecordsByCustomerId}")
     private String findCartRecordsByCustomerIdSql;
 
@@ -43,6 +46,16 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     public CartRecordDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    public CartRecord findCartRecordByCustomerIdAndProductId(Integer customerId, Integer productId) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        mapSqlParameterSource
+                .addValue("CUSTOMER_ID", customerId)
+                .addValue("PRODUCT_ID", productId);
+
+        return namedParameterJdbcTemplate.query(findCartRecordByCustomerIdAndProductIdSql, mapSqlParameterSource, rowMapper).get(0);
     }
 
     @Override
@@ -70,7 +83,7 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
         String sql;
 
-        if (isRecordExist(cartRecord.getCustomerId(), cartRecord.getProductId())) {
+        if (isCartRecordExist(cartRecord.getCustomerId(), cartRecord.getProductId())) {
             LOGGER.debug("Update cart record: {}", cartRecord);
             sql = updateSql;
         } else {
@@ -88,7 +101,8 @@ public class CartRecordDaoJdbc implements CartRecordDao {
         return namedParameterJdbcTemplate.update(sql, mapSqlParameterSource);
     }
 
-    public boolean isRecordExist(Integer customerId, Integer productId) {
+    @Override
+    public Boolean isCartRecordExist(Integer customerId, Integer productId) {
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource
@@ -108,14 +122,21 @@ public class CartRecordDaoJdbc implements CartRecordDao {
         return cartRecords.size() == 0 ? false : true;
     }
 
+    @Override
+    public List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer customerId, Integer productId) {
+        LOGGER.debug("findCartRecordsByCustomerIdAndProductId()");
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("CUSTOMER_ID", customerId);
+        sqlParameterSource.addValue("PRODUCT_ID", productId);
+
+        List<CartRecord> cartRecords = namedParameterJdbcTemplate.query(
+                findCartRecordByCustomerIdAndProductIdSql, sqlParameterSource,
+                BeanPropertyRowMapper.newInstance(CartRecord.class));
+
+        return cartRecords;
+    }
 
     //////////////////////////////////////////
-
-
-    @Override
-    public CartRecord findCartRecord(Integer userId, Integer productId) {
-        return null;
-    }
 
     @Override
     public Map<Product, Integer> findCartByUserId(Integer userId) {

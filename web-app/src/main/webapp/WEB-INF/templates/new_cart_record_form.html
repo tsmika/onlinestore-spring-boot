@@ -24,25 +24,118 @@
 <div>
     <h3>
         <span class="badge bg-light rounded-pill" style="color:#5e5ec9;">
-            <i class="bi bi-cart-plus"></i> Input quantity and save the product to the cart
+            <i class="bi bi-cart-plus"></i> Input quantity to save the product to the cart
         </span>
     </h3>
+</div>
+
+<div class="container-fluid p-3">
+
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-outline-secondary">
+                Product Id: <span class="badge bg-light  text-dark" th:text="${productId}"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-3">
+    <div class="row">
+        <div class="col-6">
+            <button type="button" class="btn btn-outline-secondary">
+                Description: <span class="badge bg-light  text-dark" th:text="${productDescription}"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-3">
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-outline-secondary">
+                Price: <span class="badge bg-light  text-dark" th:text="${productPrice}"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div th:if="${quantity}" class="container-fluid p-3">
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-warning">
+                You already have  the product in your cart. Would you like to change the quantity? Current value : <span class="badge bg-light  text-dark" th:text="${quantity}"></span>
+            </button>
+        </div>
+    </div>
 </div>
 
 <form th:if="${principal_role} eq 'customer'"
       th:method="POST" th:object="${cartRecord}"
       th:action="@{'/customers/' + ${customer_id} + '/cart/products/' + ${productId}}">
 
-    <div th:insert="cart_fragments :: new_cart_record_form"/>
 
+    <div class="container-fluid p-3">
+        <label for="quantityAdmin" class="form-label">Choose quantity:</label>
+        <div class="row">
+            <div class="col-sm-1">
+                <input type="number" min="1" th:field="*{quantity}" id="quantityAdmin" class="form-control"
+                       aria-describedby="quantityHelpInline">
+                <div class="alert alert-danger" role="alert" style="color:red"
+                     th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-outline-dark" style="float:left; margin-left:20px;">
+                    Save
+                </button>
+
+                <a>
+                    <input onclick="javascript:history.back();" class="btn btn-outline-dark" type="button" style="float:left; margin-left:20px;"
+                           value="Go back"/>
+                </a>
+            </div>
+        </div>
+    </div>
 </form>
 
 <form th:if="${principal_role} eq 'admin'"
       th:method="POST" th:object="${cartRecord}"
       th:action="@{'/admins/' + ${admin_id} + '/cart/products/' + ${productId}}">
 
-    <div th:insert="cart_fragments :: new_cart_record_form"/>
+    <div class="container-fluid p-3">
+        <label for="quantityCustomer" class="form-label">Choose quantity:</label>
+        <div class="row">
+            <div class="col-sm-1">
 
+                <input type="number" min="1" th:field="*{quantity}" id="quantityCustomer" class="form-control"
+                       aria-describedby="quantityHelpInline">
+                <div class="alert alert-danger" role="alert" style="color:red"
+                     th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-outline-dark" style="float:left; margin-left:20px;">
+                    Save
+                </button>
+
+                <a>
+                    <input onclick="javascript:history.back();" class="btn btn-outline-dark" type="button" style="float:left; margin-left:20px;"
+                           value="Go back"/>
+                </a>
+            </div>
+        </div>
+    </div>
 </form>
 
 <script src="../../resources/static/js/bootstrap.bundle.min.js"
