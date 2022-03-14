@@ -32,12 +32,17 @@ public class CartRecordServiceImpl implements CartRecordService {
 
     @Override
     public Integer create(CartRecord cartRecord) {
-       return cartRecordDao.create(cartRecord);
+        return cartRecordDao.create(cartRecord);
     }
 
     @Override
     public Boolean isCartRecordExist(Integer customerId, Integer productId) {
         return cartRecordDao.isCartRecordExist(customerId, productId);
+    }
+
+    @Override
+    public Integer delete(Integer customerId, Integer productId) {
+        return cartRecordDao.delete(customerId, productId);
     }
 
     //////////////////////////////////////////
@@ -71,10 +76,5 @@ public class CartRecordServiceImpl implements CartRecordService {
     @Override
     public void update(CartRecord cartRecordToUpdate, Integer quantity) {
         cartRecordDao.update(cartRecordToUpdate, quantity);
-    }
-
-    @Override
-    public void delete(Integer userId, Integer productId) {
-        cartRecordDao.delete(userId, productId);
     }
 }

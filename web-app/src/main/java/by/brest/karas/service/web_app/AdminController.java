@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.util.List;
 
@@ -112,7 +113,6 @@ public class AdminController {
     }
 
 
-
     /////////////////////// CUSTOMERS
     @GetMapping(value = "/{admin_id}/customers")
     public String goToCustomerPage(
@@ -137,14 +137,14 @@ public class AdminController {
 
         List<CartRecordDto> cartRecordDtos = cartRecordDtoService.findCartRecordDtosByCustomerId(adminId, filter);
         model.addAttribute("filter", filter);
-        model.addAttribute("cart_lines", cartRecordDtos);
+        model.addAttribute("cart_lines", (cartRecordDtos.size() != 0) ? cartRecordDtos : null);
         model.addAttribute("cart_sum_total", (cartRecordDtos.size() != 0) ? cartRecordDtoService.findCartRecordDtosSumByCustomerId(adminId, filter) : "0.00");
 
         return "cart";
     }
 
     @GetMapping("/{admin_id}/cart/products/{product_id}/edit")
-    public String goToNewCartRecordForm(){
+    public String goToNewCartRecordForm() {
         return "redirect:/admins/{admin_id}/cart/products/{product_id}/new";
     }
 
@@ -161,7 +161,7 @@ public class AdminController {
         model.addAttribute("productPrice", product.getPrice());
         model.addAttribute("cartRecord", cartRecord);
 
-        if (cartRecordService.isCartRecordExist(adminId, productId)){
+        if (cartRecordService.isCartRecordExist(adminId, productId)) {
             model.addAttribute("quantity", cartRecordService.findCartRecordsByCustomerIdAndProductId(adminId, productId).get(0).getQuantity());
         }
 
@@ -191,6 +191,21 @@ public class AdminController {
         cartRecordService.create(cartRecord);
 
         return "redirect:/admins/{admin_id}/cart/products";
-
     }
+
+    @GetMapping("/{admin_id}/cart/products/{product_id}/delete")
+    public String deleteCartRecordByCustomerIdAndProductId(
+            @PathVariable("product_id") Integer productId,
+            @PathVariable("admin_id") Integer adminId) {
+
+//        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
+//        LOGGER.debug("delete({},{})", id, model);
+        cartRecordService.delete(adminId, productId);
+
+        return "redirect:/admins/{admin_id}/cart/products";
+    }
+
+
+    ///////////////////////  ^^^^CART
 }
+

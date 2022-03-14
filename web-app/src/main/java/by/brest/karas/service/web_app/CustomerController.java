@@ -148,4 +148,19 @@ public class CustomerController {
 
         return "redirect:/customers/{customer_id}/cart/products";
     }
+
+    @GetMapping("/{customer_id}/cart/products/{product_id}/delete")
+    public String deleteCartRecordByCustomerIdAndProductId(
+            @PathVariable("product_id") Integer productId,
+            @PathVariable("customer_id") Integer customerId) {
+
+//        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
+//        LOGGER.debug("delete({},{})", id, model);
+        cartRecordService.delete(customerId, productId);
+
+        return "redirect:/customers/{customer_id}/cart/products";
+    }
+
+
+    ///////////////////////  ^^^^CART
 }

@@ -18,6 +18,8 @@ public interface CartRecordService {
 
     List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer userId, Integer productId);
 
+    Integer delete(Integer customerId, Integer productId);
+
     //////////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);
@@ -28,9 +30,5 @@ public interface CartRecordService {
 
     Map<Product, Integer> findCartByUserLogin(String login);
 
-
-
     void update(CartRecord cartRecordToUpdate, Integer quantity);
-
-    void delete(Integer userId, Integer productId);
 }

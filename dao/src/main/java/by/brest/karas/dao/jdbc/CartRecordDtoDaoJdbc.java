@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class CartRecordDtoDaoJdbc implements CartRecordDtoDao {
@@ -47,11 +48,17 @@ public class CartRecordDtoDaoJdbc implements CartRecordDtoDao {
         String sql = findCartRecordDtosByCustomerIdSql + customerId;
         sql = sql + "AND P.SHORT_DESCRIPTION LIKE" + "'%" + filter + "%'";
         jdbcTemplate.execute(sql);
-        return namedParameterJdbcTemplate.query(getCartRecordDtosByCustomerIdSql, cartRecordDtoRowMapper);
+        List<CartRecordDto> cartRecordDtos = namedParameterJdbcTemplate.query(getCartRecordDtosByCustomerIdSql, cartRecordDtoRowMapper);
+
+        for (CartRecordDto cartRecordDto : cartRecordDtos){
+            cartRecordDto.setSumma(cartRecordDto.getSumma().setScale(2, RoundingMode.CEILING));
+        }
+
+        return cartRecordDtos;
     }
 
     @Override
     public BigDecimal findCartRecordDtosSumByCustomerId(Integer customerId, String filter) {
-        return jdbcTemplate.queryForObject(findCartRecordDtosSumByCustomerIdSql, BigDecimal.class).setScale(2);
+        return jdbcTemplate.queryForObject(findCartRecordDtosSumByCustomerIdSql, BigDecimal.class).setScale(2, RoundingMode.CEILING);
     }
 }

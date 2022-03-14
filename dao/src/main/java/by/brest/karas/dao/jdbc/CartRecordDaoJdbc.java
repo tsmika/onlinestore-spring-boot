@@ -41,6 +41,9 @@ public class CartRecordDaoJdbc implements CartRecordDao {
     @Value("${cartRecord.update}")
     private String updateSql;
 
+    @Value("${cartRecord.delete}")
+    private String deleteSql;
+
     public CartRecordDaoJdbc() {
     }
 
@@ -136,6 +139,15 @@ public class CartRecordDaoJdbc implements CartRecordDao {
         return cartRecords;
     }
 
+    @Override
+    public Integer delete(Integer customerId, Integer productId) {
+        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
+
+        return namedParameterJdbcTemplate.update(deleteSql, new MapSqlParameterSource()
+                .addValue("CUSTOMER_ID", customerId)
+                .addValue("PRODUCT_ID", productId));
+    }
+
     //////////////////////////////////////////
 
     @Override
@@ -153,9 +165,6 @@ public class CartRecordDaoJdbc implements CartRecordDao {
     public void update(CartRecord cartRecordToUpdate, Integer quantity) {
     }
 
-    @Override
-    public void delete(Integer userId, Integer productId) {
-    }
 
     @Override
     public Integer findQuantityFromCart(Integer userId, Integer productId) {

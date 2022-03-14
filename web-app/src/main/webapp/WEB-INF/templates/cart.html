@@ -87,11 +87,13 @@
 
                 <td>
                     <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                        <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                        <a th:if="${principal_role} eq 'customer'"
+                           class="card-text btn-sm btn-outline-secondary rounded-pill"
                            th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${cart_line.getProductId()} + '/edit'}">
                              <i class="bi bi-pencil"></i> Edit
                          </a>
-                         <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                         <a th:if="${principal_role} eq 'admin'"
+                            class="card-text btn-sm btn-outline-secondary rounded-pill"
                             th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${cart_line.getProductId()} + '/edit'}">
                              <i class="bi bi-pencil"></i> Edit
                          </a>
@@ -99,15 +101,20 @@
                 </td>
 
                 <td>
-                    <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                        <a th:if="${principal_role} eq 'customer'" class="card-text btn-sm btn-outline-secondary rounded-pill"
-                           th:href="@{'/customer/' + ${customer_id} + '/cart/products/' + ${cart_line.getProductId()} + '/delete'}">
+                    <span  th:if="${principal_role} eq 'admin'" data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                          th:attr="data-customer_id=${admin_id}, data-product_id=${cart_line.getProductId()},
+                           data-product_description=${cart_line.getShortDescription()}, data-role=${principal_role}+'s' ">
+                        <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill" title="delete cart record">
                              <i class="bi bi-trash"></i> Remove
-                         </a>
-                         <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary rounded-pill"
-                            th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${cart_line.getProductId()} + '/delete'}">
+                        </a>
+                    </span>
+
+                    <span  th:if="${principal_role} eq 'customer'" data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                           th:attr="data-customer_id=${customer_id}, data-product_id=${cart_line.getProductId()},
+                            data-product_description=${cart_line.getShortDescription()}, data-role=${principal_role}+'s' ">
+                        <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill" title="delete cart record">
                              <i class="bi bi-trash"></i> Remove
-                         </a>
+                        </a>
                     </span>
                 </td>
 
@@ -126,8 +133,46 @@
         </div>
     </div>
 </table>
+
+<footer>
+    <p class="text-center">&copy; 2022</p>
+</footer>
+
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="exampleModalLabel">Remove cart record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Remove cart record?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="deleteUrl" href="#" class="btn btn-danger">Remove</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../../resources/static/js/bootstrap.bundle.min.js"
         th:src="@{/resources/static/js/bootstrap.bundle.min.js}">
 </script>
+
+<script src="../../resources/static/js/jquery-3.6.0.slim.js"
+        th:src="@{/resources/static/js/jquery-3.6.0.slim.js}">
+</script>
+
+<script>
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget)
+        $(this).find('.modal-body').text('Do you really want to remove "' + target.data('product_description') + '" from the cart?')
+        document.getElementById('deleteUrl').href = '/' + target.data('role') + '/' + target.data('customer_id') + '/cart/products/' + target.data('product_id') + '/delete';
+    })
+</script>
+
 </body>
 </html>

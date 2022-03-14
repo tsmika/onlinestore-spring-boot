@@ -88,4 +88,16 @@ public class CartRecordServiceImplIntegrationTest {
         cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(Integer.MAX_VALUE, 1);
         assertTrue(cartRecords.size() == 0);
     }
+
+    @Test
+    public void deleteIntegrationTest() {
+        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
+        assertNotNull(cartRecords);
+        int sizeBefore = cartRecords.size();
+        assertTrue(sizeBefore == 2);
+        cartRecordService.delete(1, cartRecords.get(0).getProductId());
+        cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
+        int sizeAfter = cartRecords.size();
+        assertTrue(sizeBefore - 1 == sizeAfter);
+    }
 }

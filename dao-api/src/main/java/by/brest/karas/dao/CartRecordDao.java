@@ -18,6 +18,8 @@ public interface CartRecordDao {
 
     List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer userId, Integer productId);
 
+    Integer delete(Integer customerId, Integer productId);
+
     ///////////////////////////////////
 
     Integer findQuantityFromCart(Integer userId, Integer productId);
@@ -30,5 +32,5 @@ public interface CartRecordDao {
 
     void update(CartRecord cartRecordToUpdate, Integer quantity);
 
-    void delete(Integer userId, Integer productId);
+
 }
