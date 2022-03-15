@@ -112,6 +112,32 @@ public class AdminController {
         return "redirect:/admins/" + adminId + "/products";
     }
 
+    @GetMapping("/{admin_id}/products/{product_id}/edit")
+    public String goToEditProductPage(
+            Model model,
+            @PathVariable("product_id") Integer productId) {
+        model.addAttribute("product", productService.findById(productId));
+        return "edit_product";
+    }
+
+    @PatchMapping("/{admin_id}/products/{product_id}/edit")
+    public String editProduct(
+            @ModelAttribute("product") @Valid Product product,
+            @PathVariable("product_id") Integer productId,
+            BindingResult bindingResult,
+            Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            return "edit_product";
+        }
+
+        product.setProductId(productId);
+        product.setChangedBy(getPrincipalId(principal));
+        productService.update(product);
+
+        return "redirect:/admins/{admin_id}/products";
+    }
+    //^^^^^^^^^^^^^^^^^^^^ PRODUCTS
 
     /////////////////////// CUSTOMERS
     @GetMapping(value = "/{admin_id}/customers")

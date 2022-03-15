@@ -283,7 +283,7 @@
                         <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                   <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                                     th:href="@{'/admins/products/' + ${product.getProductId()} + '/edit'}">
+                                     th:href="@{'/admins/' + ${admin_id} + '/products/' + ${product.getProductId()} + '/edit'}">
                                         <i class="bi bi-pencil"></i> Edit
                                   </a>
                             </span>

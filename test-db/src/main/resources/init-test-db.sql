@@ -5,11 +5,11 @@ VALUES
 
 INSERT INTO PRODUCT(PICTURE, SHORT_DESCRIPTION, DETAIL_DESCRIPTION, PRICE, CREATION_DATE, UPDATE_DATE, CHANGED_BY)
 VALUES
-    ('Pic1', 'Short description for product 1', 'Detail description for product 1', 1.11, now(), now(), 1),
-    ('Pic2', 'Short description for product 2', 'Detail description for product 2', 2.22, now(), now(), 1),
-    ('Pic3', 'Short description for product 3', 'Detail description for product 3', 3.33, now(), now(), 1),
-    ('Pic4', 'Short description for product 4', 'Detail description for product 4', 4.44, now(), now(), 1),
-    ('Pic5', 'Short description for product 5', 'Detail description for product 5', 5.55, now(), now(), 1);
+    ('Pic1', 'Short description for product 1', 'Detail description for product 1', 1.11, now() - 1, now() - 1, 1),
+    ('Pic2', 'Short description for product 2', 'Detail description for product 2', 2.22, now() - 1, now() - 1, 1),
+    ('Pic3', 'Short description for product 3', 'Detail description for product 3', 3.33, now() - 1, now() - 1, 1),
+    ('Pic4', 'Short description for product 4', 'Detail description for product 4', 4.44, now() - 1, now() - 1, 1),
+    ('Pic5', 'Short description for product 5', 'Detail description for product 5', 5.55, now() - 1, now() - 1, 1);
 
 
 INSERT INTO CART_RECORDS(CUSTOMER_ID, PRODUCT_ID, QUANTITY)

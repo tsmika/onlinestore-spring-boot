@@ -31,6 +31,9 @@ public class ProductDaoJdbc implements ProductDao {
     @Value("${product.create}")
     private String createSql;
 
+    @Value("${product.update}")
+    private String updateSql;
+
     @Value("${product.checkShortDescription}")
     private String checkShortDescriptionSql;
 
@@ -97,8 +100,15 @@ public class ProductDaoJdbc implements ProductDao {
 
 
     @Override
-    public void update(Long id, Product updatedProduct) {
-
+    public Integer update(Product updatedProduct) {
+        LOGGER.debug("Update product: {}", updatedProduct);
+        return namedParameterJdbcTemplate.update(updateSql, new MapSqlParameterSource()
+                .addValue("PRODUCT_ID", updatedProduct.getProductId())
+                .addValue("PICTURE", "Updated " + updatedProduct.getPicture())
+                .addValue("SHORT_DESCRIPTION", updatedProduct.getShortDescription())
+                .addValue("DETAIL_DESCRIPTION", updatedProduct.getDetailDescription())
+                .addValue("PRICE", updatedProduct.getPrice())
+                .addValue("CHANGED_BY", updatedProduct.getChangedBy()));
     }
 
     @Override

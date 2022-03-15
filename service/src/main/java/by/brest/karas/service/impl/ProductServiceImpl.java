@@ -47,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void update(Long id, Product updatedProduct) {
-        productDao.update(id, updatedProduct);
+    public Integer update(Product updatedProduct) {
+        return productDao.update(updatedProduct);
     }
 
     @Override

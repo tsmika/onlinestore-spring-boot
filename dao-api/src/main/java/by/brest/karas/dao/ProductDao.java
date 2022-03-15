@@ -16,7 +16,7 @@ public interface ProductDao {
 
     Integer create(Product product);
 
-    void update(Long id, Product updatedProduct);
+    Integer update(Product updatedProduct);
 
     void delete(Long id);
 }
