@@ -1,5 +1,6 @@
 package by.brest.karas.service.impl;
 
+import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,4 +79,16 @@ class ProductServiceImplIntegrationTest {
         assertTrue(product.getChangedBy().equals(productAfter.getChangedBy()));
     }
 
+    @Test
+    public void deleteIntegrationTest() {
+        List<Product> products = findAllAssertion();
+        assertNotNull(products);
+        int sizeBefore = products.size();
+        assertTrue(sizeBefore == 5);
+        productService.delete(1);
+        products = findAllAssertion();
+        assertNotNull(products);
+        int sizeAfter = products.size();
+        assertTrue(sizeBefore - 1 == sizeAfter);
+    }
 }

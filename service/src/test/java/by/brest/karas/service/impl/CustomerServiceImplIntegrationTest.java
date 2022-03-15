@@ -1,5 +1,6 @@
 package by.brest.karas.service.impl;
 
+import by.brest.karas.model.CartRecord;
 import by.brest.karas.model.Customer;
 import by.brest.karas.model.Role;
 import org.junit.jupiter.api.Assertions;
@@ -105,5 +106,18 @@ public class CustomerServiceImplIntegrationTest {
         Optional<Customer> updatedCustomer = customerService.findById(customer.getCustomerId());
 
         assertTrue("NewLoginForTest".equals(updatedCustomer.get().getLogin()));
+    }
+
+    @Test
+    public void deleteIntegrationTest() {
+        List<Customer> customers = findAllAssertion();
+        assertNotNull(customers);
+        int sizeBefore = customers.size();
+        assertTrue(sizeBefore == 2);
+        customerService.delete(2);
+        customers = findAllAssertion();
+        assertNotNull(customers);
+        int sizeAfter = customers.size();
+        assertTrue(sizeBefore - 1 == sizeAfter);
     }
 }

@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(Long id) {
-        productDao.delete(id);
+    public Integer delete(Integer id) {
+        return productDao.delete(id);
     }
 }

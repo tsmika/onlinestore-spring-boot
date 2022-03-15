@@ -34,6 +34,9 @@ public class ProductDaoJdbc implements ProductDao {
     @Value("${product.update}")
     private String updateSql;
 
+    @Value("${product.delete}")
+    private String deleteSql;
+
     @Value("${product.checkShortDescription}")
     private String checkShortDescriptionSql;
 
@@ -77,7 +80,7 @@ public class ProductDaoJdbc implements ProductDao {
 
         LOGGER.debug("Create product: {}", product);
 
-        if(!isShortDescriptionUnique(product)){
+        if (!isShortDescriptionUnique(product)) {
             LOGGER.warn("Product with the same short description already exists in DB: {}", product);
             throw new IllegalArgumentException("Product with the same short description already exists in DB");
         }
@@ -94,8 +97,9 @@ public class ProductDaoJdbc implements ProductDao {
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
-    private boolean isShortDescriptionUnique(Product product){
-        return namedParameterJdbcTemplate.queryForObject(checkShortDescriptionSql, new MapSqlParameterSource("SHORT_DESCRIPTION", product.getShortDescription()), Integer.class) == 0;
+    private boolean isShortDescriptionUnique(Product product) {
+        return namedParameterJdbcTemplate.queryForObject(checkShortDescriptionSql,
+                new MapSqlParameterSource("SHORT_DESCRIPTION", product.getShortDescription()), Integer.class) == 0;
     }
 
 
@@ -112,7 +116,9 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public Integer delete(Integer id) {
+        LOGGER.debug("Delete product: {}", id);
+        return namedParameterJdbcTemplate.update(deleteSql, new MapSqlParameterSource()
+                .addValue("ID", id));
     }
 }

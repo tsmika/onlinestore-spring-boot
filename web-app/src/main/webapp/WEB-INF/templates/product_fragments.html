@@ -290,11 +290,11 @@
                         </div>
 
                         <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
-                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                            <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                                               th:href="@{'/admins/products/' + ${product.getProductId()} + '/delete'}">
-                                                  <i class="bi bi-trash"></i> Delete
-                                            </a>
+                            <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                                  th:attr="data-admin_id=${admin_id}, data-product_id=${product.getProductId()}, data-description=${product.getShortDescription()} ">
+                                 <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill" title="delete product">
+                                     <i class="bi bi-trash"></i> Delete
+                                 </a>
                             </span>
                         </div>
 
@@ -305,6 +305,7 @@
                                             <i class="bi bi-person-circle"></i> Changed by
                                         </a>
                             </span>
+
                         </div>
 
                         <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center"
@@ -340,7 +341,7 @@
                     <div class="card" style="width: 15rem;">
                         <img th:src="@{/resources/static/img/onlinestore_add_photo.jpg}" class="card-img-top"
                              alt="...">
-                        <div class="card-body">
+                        <p class="card-body">
                             <p class="card-text" th:text="'Price: ' + ${product.getPrice()}">Price</p>
                             <p class="card-text">
                                  <span class="d-none d-md-inline fs-5 fw-weight-bold">
@@ -371,12 +372,12 @@
                             </p>
 
                             <p th:if="${principal_role} eq 'admin'" class="card-text">
-                                <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
-                                            <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                                               th:href="@{'/admins/products/' + ${product.getProductId()} + '/delete'}">
-                                                  <i class="bi bi-trash"></i> Delete
-                                            </a>
-                                </span>
+                            <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                                  th:attr="data-admin_id=${admin_id}, data-product_id=${product.getProductId()}, data-description=${product.getShortDescription()} ">
+                                 <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill" title="delete product">
+                                     <i class="bi bi-trash"></i> Delete
+                                 </a>
+                            </span>
                             </p>
 
                             <p th:if="${principal_role} eq 'admin'" class="card-text">
@@ -399,7 +400,6 @@
                             <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm"
                                   th:text="${product.getUpdateDate()}"></span>
 
-                        </div>
                     </div>
                 </div>
 
@@ -409,4 +409,5 @@
 </div>
 
 </body>
+
 </html>

@@ -137,6 +137,18 @@ public class AdminController {
 
         return "redirect:/admins/{admin_id}/products";
     }
+
+    @GetMapping("/{admin_id}/products/{product_id}/delete")
+    public String deleteProductById(
+            @PathVariable("product_id") Integer productId,
+            Model model) {
+
+//        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
+//        LOGGER.debug("delete({},{})", id, model);
+        productService.delete(productId);
+
+        return "redirect:/admins/{admin_id}/products";
+    }
     //^^^^^^^^^^^^^^^^^^^^ PRODUCTS
 
     /////////////////////// CUSTOMERS
