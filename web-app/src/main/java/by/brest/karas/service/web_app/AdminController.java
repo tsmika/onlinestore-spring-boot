@@ -1,6 +1,7 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordService;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.math.RoundingMode;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Product controller.
@@ -78,7 +80,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/{admin_id}/products/{product_id}")
-    public String goToProductPage(
+    public String goToProductInfoPage(
             @PathVariable(value = "product_id") Integer productId,
             Model model) {
 
@@ -165,6 +167,17 @@ public class AdminController {
 
         return "customers";
     }
+
+    @GetMapping(value = "/{admin_id}/customers/{customer_id}")
+    public String goToCustomerInfoPage(
+            @PathVariable(value = "customer_id") Integer customerId,
+            Model model) {
+
+        model.addAttribute("customer",customerService.findById(customerId).get());
+
+        return "customer_info";
+    }
+    //^^^^^^^^^^^^^^^^^^^^ CUSTOMERS
 
     /////////////////////// CART
     @GetMapping("/{admin_id}/cart/products")

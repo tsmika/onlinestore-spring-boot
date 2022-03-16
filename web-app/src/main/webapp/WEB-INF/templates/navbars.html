@@ -54,9 +54,18 @@
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li th:if="${principal_role} eq 'admin'" class="nav-link">
                         <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-                           th:href="@{'/admins/' + ${user_id} + '/users/' + ${user_id} + '/update'}">
+                           th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${admin_id} + '/update'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-pencil"></i> Edit account
+                            </span>
+                        </a>
+                    </li>
+
+                    <li th:if="${principal_role} eq 'customer'" class="nav-link">
+                        <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                           th:href="@{'/customers/' + ${customer_id} + '/update'}">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                 <i class="bi bi-pencil"></i> Edit account
                             </span>

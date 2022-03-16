@@ -108,16 +108,16 @@ public class CustomerServiceImplIntegrationTest {
         assertTrue("NewLoginForTest".equals(updatedCustomer.get().getLogin()));
     }
 
-    @Test
-    public void deleteIntegrationTest() {
-        List<Customer> customers = findAllAssertion();
-        assertNotNull(customers);
-        int sizeBefore = customers.size();
-        assertTrue(sizeBefore == 2);
-        customerService.delete(2);
-        customers = findAllAssertion();
-        assertNotNull(customers);
-        int sizeAfter = customers.size();
-        assertTrue(sizeBefore - 1 == sizeAfter);
-    }
+//    @Test
+//    public void deleteIntegrationTest() {
+//        List<Customer> customers = findAllAssertion();
+//        assertNotNull(customers);
+//        int sizeBefore = customers.size();
+//        assertTrue(sizeBefore == 2);
+//        customerService.delete(2);
+//        customers = findAllAssertion();
+//        assertNotNull(customers);
+//        int sizeAfter = customers.size();
+//        assertTrue(sizeBefore - 1 == sizeAfter);
+//    }
 }

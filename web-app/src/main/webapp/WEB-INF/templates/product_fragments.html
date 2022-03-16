@@ -301,7 +301,7 @@
                         <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
                                             <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                                               th:href="@{'/admins/' + ${user_id} + '/users/' + ${product.getChangedBy()}}">
+                                               th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${product.getChangedBy()}}">
                                             <i class="bi bi-person-circle"></i> Changed by
                                         </a>
                             </span>
@@ -383,12 +383,11 @@
                             <p th:if="${principal_role} eq 'admin'" class="card-text">
                                 <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
                                      <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                                        th:href="@{'/admins/' + ${user_id} + '/users/' + ${product.getChangedBy()}}">
+                                        th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${product.getChangedBy()}}">
                                         <i class="bi bi-person-circle"></i> Changed by
                                      </a>
                                 </span>
                             </p>
-
                             <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm" th:text="' Created:'"
                                   style="display: inline-block;"></span>
                             <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm"
