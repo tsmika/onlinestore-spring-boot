@@ -1,11 +1,10 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.CartRecord;
-import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import by.brest.karas.model.dto.CartRecordDto;
-import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CartRecordDtoService;
+import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -14,10 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.RoundingMode;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Product controller.
@@ -98,7 +95,6 @@ public class AdminController {
     public String createProduct(
             @ModelAttribute("product") @Valid Product product
             , BindingResult bindingResult
-            , Model model
             , Principal principal) {
 
         if (bindingResult.hasErrors()) {
@@ -111,30 +107,28 @@ public class AdminController {
         product.setChangedBy(adminId);
         productService.create(product);
 
-        return "redirect:/admins/" + adminId + "/products";
+        return "redirect:/admins/{admin_id}/products";
     }
 
     @GetMapping("/{admin_id}/products/{product_id}/edit")
-    public String goToEditProductPage(
-            Model model,
-            @PathVariable("product_id") Integer productId) {
+    public String goToEditProductPage(Model model, @PathVariable("product_id") Integer productId) {
         model.addAttribute("product", productService.findById(productId));
         return "edit_product";
     }
 
     @PatchMapping("/{admin_id}/products/{product_id}/edit")
     public String editProduct(
-            @ModelAttribute("product") @Valid Product product,
             @PathVariable("product_id") Integer productId,
-            BindingResult bindingResult,
-            Principal principal) {
+            @PathVariable("admin_id") Integer adminId,
+            @ModelAttribute("product") @Valid Product product,
+            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "edit_product";
         }
 
         product.setProductId(productId);
-        product.setChangedBy(getPrincipalId(principal));
+        product.setChangedBy(adminId);
         productService.update(product);
 
         return "redirect:/admins/{admin_id}/products";
@@ -142,8 +136,7 @@ public class AdminController {
 
     @GetMapping("/{admin_id}/products/{product_id}/delete")
     public String deleteProductById(
-            @PathVariable("product_id") Integer productId,
-            Model model) {
+            @PathVariable("product_id") Integer productId) {
 
 //        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
 //        LOGGER.debug("delete({},{})", id, model);
@@ -173,7 +166,7 @@ public class AdminController {
             @PathVariable(value = "customer_id") Integer customerId,
             Model model) {
 
-        model.addAttribute("customer",customerService.findById(customerId).get());
+        model.addAttribute("customer", customerService.findById(customerId).get());
 
         return "customer_info";
     }
