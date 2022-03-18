@@ -1,12 +1,14 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordDtoService;
 import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,11 +33,18 @@ public class AdminController {
 
     private final CartRecordDtoService cartRecordDtoService;
 
-    public AdminController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartRecordDtoService cartRecordDtoService) {
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public AdminController(ProductService productService,
+                           CustomerService customerService,
+                           CartRecordService cartRecordService,
+                           CartRecordDtoService cartRecordDtoService,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.productService = productService;
         this.customerService = customerService;
         this.cartRecordService = cartRecordService;
         this.cartRecordDtoService = cartRecordDtoService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private Integer getPrincipalId(Principal principal) {
@@ -169,6 +178,42 @@ public class AdminController {
         model.addAttribute("customer", customerService.findById(customerId).get());
 
         return "customer_info";
+    }
+
+    @GetMapping("/{admin_id}/customers/{customer_id}/edit")
+    public String goToCustomerEditPage(
+            @PathVariable("customer_id") Integer customerId,
+            Model model) {
+
+        model.addAttribute("customer_id", customerId);
+        model.addAttribute("customer", customerService.findById(customerId).get());
+
+        return "edit_customer";
+    }
+
+    @PatchMapping("/{admin_id}/customers/{customer_id}/edit")
+    public String updateUser(
+            @ModelAttribute("customer") @Valid Customer customer,
+            BindingResult bindingResult,
+            @PathVariable("customer_id") Integer customerId,
+            Model model) {
+
+
+        model.addAttribute("customer_id", customerId);
+
+        if (bindingResult.hasErrors())
+            return "edit_customer";
+
+        if(customer.getIsActual()) {
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        } else {
+            customer.setPassword(passwordEncoder.encode("deleted customer password"));
+        }
+
+        customer.setCustomerId(customerId);
+        customerService.update(customer);
+
+        return "redirect:/admins/{admin_id}/customers";
     }
     //^^^^^^^^^^^^^^^^^^^^ CUSTOMERS
 
