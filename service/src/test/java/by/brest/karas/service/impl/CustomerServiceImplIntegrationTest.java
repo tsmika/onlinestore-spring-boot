@@ -26,6 +26,9 @@ public class CustomerServiceImplIntegrationTest {
     @Autowired
     private CustomerServiceImpl customerService;
 
+    @Autowired
+    private CartRecordServiceImpl cartRecordService;
+
     @Test
     void findAllIntegrationTest() {
         findAllAssertion();
@@ -108,16 +111,32 @@ public class CustomerServiceImplIntegrationTest {
         assertTrue("NewLoginForTest".equals(updatedCustomer.get().getLogin()));
     }
 
-//    @Test
-//    public void deleteIntegrationTest() {
-//        List<Customer> customers = findAllAssertion();
-//        assertNotNull(customers);
-//        int sizeBefore = customers.size();
-//        assertTrue(sizeBefore == 2);
-//        customerService.delete(2);
-//        customers = findAllAssertion();
-//        assertNotNull(customers);
-//        int sizeAfter = customers.size();
-//        assertTrue(sizeBefore - 1 == sizeAfter);
-//    }
+    @Test
+    public void deleteIntegrationTest() {
+        List<Customer> customers = findAllAssertion();
+        int sizeBefore = customers.size();
+        assertTrue(sizeBefore == 4);
+        int cartRecordSizeBefore = cartRecordService.findCartRecordsByCustomerId(customers.get(2).getCustomerId()).size();
+        assertTrue(cartRecordSizeBefore == 3);
+        customerService.delete(3);
+        int cartRecordSizeAfter = cartRecordService.findCartRecordsByCustomerId(customers.get(2).getCustomerId()).size();
+        assertTrue(cartRecordSizeAfter == 0);
+        customers = findAllAssertion();
+        int sizeAfter = customers.size();
+        assertTrue(sizeBefore - 1 == sizeAfter);
+
+        customers = findAllAssertion();
+        assertTrue(customers.get(0).getIsActual() == true);
+        sizeBefore = customers.size();
+        cartRecordSizeBefore = cartRecordService.findCartRecordsByCustomerId(customers.get(0).getCustomerId()).size();
+        assertTrue(cartRecordSizeBefore == 2);
+        customerService.delete(1);
+        customers = findAllAssertion();
+        sizeAfter = customers.size();
+        cartRecordSizeAfter = cartRecordService.findCartRecordsByCustomerId(customers.get(0).getCustomerId()).size();
+        assertTrue(sizeBefore == sizeAfter);
+        assertTrue(customers.get(0).getIsActual() == false);
+        assertTrue(cartRecordSizeAfter == 0);
+
+    }
 }

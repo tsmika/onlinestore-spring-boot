@@ -2,6 +2,7 @@ package by.brest.karas.dao.jdbc;
 
 import by.brest.karas.dao.CustomerDao;
 import by.brest.karas.model.Customer;
+import by.brest.karas.model.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,13 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Value("${customer.searchCustomersByLogin}")
     private String searchCustomersByLoginSql;
+
+    @Value("${customer.deleteAdmin}")
+    private String deleteAdminSql;
+
+    @Value("${customer.deleteCustomer}")
+    private String deleteCustomerSql;
+
 
     public CustomerDaoJdbc() {
     }
@@ -116,7 +124,15 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Integer delete(Integer customerId) {
-        return 0;
+        LOGGER.debug("Delete customer: {}", customerId);
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
+                .addValue("ID", customerId);
+
+        return findById(customerId).get().getRole() == Role.ROLE_ADMIN ?
+                namedParameterJdbcTemplate.update(deleteAdminSql, mapSqlParameterSource) :
+                namedParameterJdbcTemplate.update(deleteCustomerSql, mapSqlParameterSource);
+
     }
 }
 

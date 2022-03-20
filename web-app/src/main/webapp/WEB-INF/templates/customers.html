@@ -76,11 +76,11 @@
                 </td>
 
                 <td>
-                    <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                         <a class="card-text btn-sm btn-outline-secondary rounded-pill"
-                            th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${customer.getCustomerId()} + '/delete'}">
-                             <i class="bi bi-trash"></i> Remove
-                         </a>
+                    <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                          th:attr="data-admin_id=${admin_id}, data-customer_id=${customer.getCustomerId()}, data-login=${customer.getLogin()} ">
+                                 <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill" title="delete customer">
+                                     <i class="bi bi-trash"></i> Remove
+                                 </a>
                     </span>
                 </td>
 
@@ -90,8 +90,41 @@
     </tbody>
 </table>
 
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="exampleModalLabel">Delete customer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Delete customer?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="../../resources/static/js/bootstrap.bundle.min.js"
         th:src="@{/resources/static/js/bootstrap.bundle.min.js}">
+</script>
+
+<script src="../../resources/static/js/jquery-3.6.0.slim.js"
+        th:src="@{/resources/static/js/jquery-3.6.0.slim.js}">
+</script>
+
+<script>
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget)
+        $(this).find('.modal-body').text('Do you really want to delete "' + target.data('login') + '"?')
+        document.getElementById('deleteUrl').href = '/admins/' + target.data('admin_id') + '/customers/' + target.data('customer_id') + '/delete';
+    })
 </script>
 
 </body>

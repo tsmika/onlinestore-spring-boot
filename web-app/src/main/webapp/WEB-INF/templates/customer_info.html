@@ -66,10 +66,10 @@
         <div class="row">
             <div class="col-6">
                 <button th:if="${customer.getIsActual()}" type="button" class="btn btn-success">
-                    Is actual: <span class="badge bg-light  text-dark" th:text="${customer.getIsActual()}"></span>
+                    Is actual: <span class="badge bg-light  text-dark" th:text="actual"></span>
                 </button>
                 <button th:if="!${customer.getIsActual()}" type="button" class="btn btn-warning">
-                    Is actual: <span class="badge bg-light  text-dark" th:text="${customer.getIsActual()}"></span>
+                    Is actual: <span class="badge bg-light  text-dark" th:text="disabled"></span>
                 </button>
             </div>
         </div>
