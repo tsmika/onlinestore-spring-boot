@@ -196,7 +196,8 @@
                             </span>
                                 </a>
                             </li>
-                            <form id="logout-form-card-new" style="display:none" th:action="@{/logout}" method="POST"></form>
+                            <form id="logout-form-card-new" style="display:none" th:action="@{/logout}"
+                                  method="POST"></form>
 
                         </ul>
                     </div>
@@ -281,5 +282,57 @@
     </nav>
 </div>
 
+<div th:fragment="new_customer_navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light p-1">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContentNewCustomer">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="navbar-brand">
+                        <img src="../../resources/static/img/onlinestore.svg"
+                             th:src="@{/resources/static/img/onlinestore.svg}"
+                             alt="" width="45" height="36" style="float:left; margin-right:10px;"/>
+                    </li>
+
+                    <div th:if="${principal_role} eq 'guest'">
+
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-link">
+
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{/products}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-house"></i> Home
+                            </span>
+                                </a>
+
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{/auth}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                               <i class="bi bi-box-arrow-in-right"></i> Log in
+                            </span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{/new_customer}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-person-plus"></i> Register
+                            </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </ul>
+            </div>
+
+            </ul>
+
+        </div>
+    </nav>
+</div>
 </body>
 </html>

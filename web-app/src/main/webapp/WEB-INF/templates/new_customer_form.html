@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<div th:insert="navbars :: new_customer_navbar"></div>
 
 <form th:method="POST" th:action="@{/new_customer}" th:object="${customer}">
     <br>

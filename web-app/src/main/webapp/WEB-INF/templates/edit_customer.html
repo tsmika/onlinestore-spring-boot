@@ -28,7 +28,7 @@
         <div><br>
             <h3>
         <span class="badge bg-light rounded-pill" style="color:#5e5ec9;">
-            <i class="bi bi-cart-plus"></i> Edit the user details
+            <i class="bi bi-cart-plus"></i> Edit the customer details
         </span>
             </h3>
         </div>
@@ -43,7 +43,8 @@
             </div>
         </div>
 
-        <form th:method="PATCH" th:action="@{'/admins/' + ${admin_id} + '/customers/' + ${customer_id} + '/edit'}" th:object="${customer}">
+        <form th:if="${principal_role} eq 'admin'" th:method="PATCH" th:action="@{'/admins/' + ${admin_id} + '/customers/' + ${customer_id} + '/edit'}"
+              th:object="${customer}">
             <input type="hidden" name="_method" value="PATCH">
 
             <div class="form-group">
@@ -52,15 +53,7 @@
                 <div class="row g-3 align-items-center">
                     <div class="col-auto">
                         <input type="text" th:field="*{login}" id="login" class="form-control"
-                               aria-describedby="loginHelp">
-                    </div>
-                    <div class="col-8">
-                  <span id="loginHelp" class="form-text">
-                    Must be 2-10 characters long.
-                  </span>
-                    </div>
-                    <div class="alert alert-danger" role="alert" style="color:red; max-width: 30rem;"
-                         th:if="${#fields.hasErrors('login')}" th:errors="*{login}">
+                               aria-describedby="loginHelp" readonly="readonly">
                     </div>
                 </div>
 
@@ -119,6 +112,55 @@
             </div>
 
         </form>
+
+        <form th:if="${principal_role} eq 'customer'" th:method="PATCH" th:action="@{'/customers/' + ${customer_id} + '/edit'}" th:object="${customer}">
+            <input type="hidden" name="_method" value="PATCH">
+
+            <div class="form-group">
+
+                <label for="login" class="col-form-label">Login: </label>
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <input type="text" th:field="*{login}" id="customerLogin" class="form-control"
+                               aria-describedby="customerLoginHelp" readonly="readonly">
+                    </div>
+                </div>
+
+                <label for="password" class="col-form-label">Password: </label>
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <input type="password" th:field="*{password}" id="customerPassword" class="form-control"
+                               aria-describedby="customerPasswordHelp">
+                    </div>
+                    <div class="col-8">
+                  <span id="customerPasswordHelp" class="form-text">
+                    Must be 1-10 characters long.
+                  </span>
+                    </div>
+                    <div class="alert alert-danger" role="alert" style="color:red; max-width: 30rem;"
+                         th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <br>
+            <div class="container-fluid p-3">
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-outline-dark" style="float:left; margin-left:20px;">
+                            Update
+                        </button>
+                        <a th:href="@{'/customers/' + ${customer_id} + '/products'}">
+                            <input class="btn btn-outline-dark" type="button" style="float:left; margin-left:20px;"
+                                   value="Cancel"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
 
     </div>
 </div>

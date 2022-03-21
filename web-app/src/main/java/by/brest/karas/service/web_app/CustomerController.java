@@ -1,12 +1,15 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.CartRecord;
+import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
+import by.brest.karas.model.Role;
 import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CartRecordDtoService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,11 +34,14 @@ public class CustomerController {
 
     private final CartRecordDtoService cartLineService;
 
-    public CustomerController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartRecordDtoService cartService, CartRecordDtoService cartLineService) {
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public CustomerController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartRecordDtoService cartService, CartRecordDtoService cartLineService, BCryptPasswordEncoder passwordEncoder) {
         this.productService = productService;
         this.customerService = customerService;
         this.cartRecordService = cartRecordService;
         this.cartLineService = cartLineService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @ModelAttribute("customer_id")
@@ -100,7 +106,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{customer_id}/cart/products/{product_id}/edit")
-    public String goToNewCartRecordForm(){
+    public String goToNewCartRecordForm() {
         return "redirect:/customers/{customer_id}/cart/products/{product_id}/new";
     }
 
@@ -117,7 +123,7 @@ public class CustomerController {
         model.addAttribute("productPrice", product.getPrice());
         model.addAttribute("cartRecord", cartRecord);
 
-        if (cartRecordService.isCartRecordExist(customerId, productId)){
+        if (cartRecordService.isCartRecordExist(customerId, productId)) {
             model.addAttribute("quantity", cartRecordService.findCartRecordsByCustomerIdAndProductId(customerId, productId).get(0).getQuantity());
         }
 
@@ -161,6 +167,44 @@ public class CustomerController {
         return "redirect:/customers/{customer_id}/cart/products";
     }
 
-
     ///////////////////////  ^^^^CART
+
+    @GetMapping("/{customer_id}/edit")
+    public String goToCustomerEditPage(
+            @PathVariable("customer_id") Integer customerId,
+            Principal principal,
+            Model model) {
+
+        System.out.println("/{customer_id}/edit");
+
+        if (customerId != Integer.valueOf(getCustomerId(principal))) {
+            return "redirect:customers/{customer_id}/edit";
+        }
+
+        model.addAttribute("customer_id", customerId);
+        model.addAttribute("customer", customerService.findById(customerId).get());
+
+        return "edit_customer";
+    }
+
+    @PatchMapping("/{customer_id}/edit")
+    public String updateCustomer(
+            @ModelAttribute("customer") @Valid Customer customer,
+            BindingResult bindingResult,
+            @PathVariable("customer_id") Integer customerId,
+            Model model) {
+
+        model.addAttribute("customer_id", customerId);
+
+        if (bindingResult.hasErrors())
+            return "edit_customer";
+
+        customer.setCustomerId(customerId);
+        customer.setRole(Role.ROLE_USER);
+        customer.setIsActual(true);
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customerService.update(customer);
+
+        return "redirect:/customers/{customer_id}/products";
+    }
 }

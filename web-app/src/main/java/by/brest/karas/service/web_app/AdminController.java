@@ -192,7 +192,7 @@ public class AdminController {
     }
 
     @PatchMapping("/{admin_id}/customers/{customer_id}/edit")
-    public String updateUser(
+    public String updateCustomer(
             @ModelAttribute("customer") @Valid Customer customer,
             BindingResult bindingResult,
             @PathVariable("customer_id") Integer customerId,
@@ -203,6 +203,8 @@ public class AdminController {
 
         if (bindingResult.hasErrors())
             return "edit_customer";
+
+        System.out.println(customer);
 
         if(customer.getIsActual()) {
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
@@ -225,7 +227,6 @@ public class AdminController {
 
         return "redirect:/admins/{admin_id}/customers";
     }
-
 
 
     //^^^^^^^^^^^^^^^^^^^^ CUSTOMERS
