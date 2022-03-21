@@ -15,7 +15,7 @@
                              alt="" width="45" height="36" style="float:left; margin-right:10px;"/>
                     </li>
 
-                    <li class="nav-link" style="float:left; margin-right:25px;">
+                    <li th:if="${principal_role} eq 'admin' or ${principal_role} eq 'customer'" class="nav-link" style="float:left; margin-right:25px;">
                         <a type="button" class="btn btn-light btn-sm rounded-pill"
                            style="background-color: #e1f5ec; cursor: default;">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold">
@@ -72,7 +72,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li th:if="${principal_role} eq 'admin' or ${principal_role} eq 'customer'" class="nav-link">
                         <a id="logout_link" type="button"
                            class="btn-sm btn-outline-secondary text-decoration-none rounded-pill">
                             <span class="d-none d-md-inline fs-5 fw-weight-bold"
@@ -84,12 +84,6 @@
                     <form id="logout-form" style="display:none" th:action="@{/logout}" method="POST"></form>
 
                 </ul>
-
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                           name="filter" size="40">
-                    <button class="btn btn-outline-dark" type="submit">Search</button>
-                </form>
 
             </div>
         </div>
