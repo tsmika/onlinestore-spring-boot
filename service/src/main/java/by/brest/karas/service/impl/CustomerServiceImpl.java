@@ -16,10 +16,7 @@ import java.util.logging.Logger;
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
 
-
-//    private final CustomerDao customerDao;
     private CustomerDao customerDao;
-//    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     public CustomerServiceImpl(){};
 
@@ -33,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByLogin(String login) {
+    public Optional<Customer> findByLogin(String login) {
         return customerDao.findByLogin(login);
     }
 
@@ -58,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> selectCustomers(String filter) {
-        return customerDao.selectCustomers(filter);
+    public List<Customer> searchCustomersByLogin(String filter) {
+        return customerDao.searchCustomersByLogin(filter);
     }
 }

@@ -9,7 +9,7 @@ public interface CustomerService {
 
     List<Customer> findAll();
 
-    Customer findByLogin(String login);
+    Optional<Customer> findByLogin(String login);
 
     Optional<Customer> findById(Integer customerId);
 
@@ -19,5 +19,5 @@ public interface CustomerService {
 
     Integer delete(Integer customerId);
 
-    List<Customer> selectCustomers(String filter);
+    List<Customer> searchCustomersByLogin(String filter);
 }

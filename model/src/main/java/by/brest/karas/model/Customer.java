@@ -1,13 +1,19 @@
 package by.brest.karas.model;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Customer {
 
     private Integer customerId;
 
+    @NotEmpty(message = "The field can not be empty")
+    @Size(min = 2, max = 10, message = "Login must contains from 2 to 10 characters.")
     private String login;
 
+    @NotEmpty(message = "The field can not be empty")
+    @Size(min = 1, max = 10, message = "Login must contains from 1 to 10 characters.")
     private String password;
 
     private Role role;

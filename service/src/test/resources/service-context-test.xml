@@ -8,11 +8,11 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="productDao" class="by.brest.karas.dao.jdbc.ProductDaoJdbc">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="productDtoDao" class="by.brest.karas.dao.jdbc.ProductDtoDaoJdbc">
+    <bean id="productDao" class="by.brest.karas.dao.jdbc.ProductDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
@@ -20,27 +20,29 @@
         <constructor-arg name="productDao" ref="productDao"/>
     </bean>
 
-    <bean id="productDtoService" class="by.brest.karas.service.impl.ProductDtoServiceImpl">
-        <constructor-arg name="productDtoDao" ref="productDtoDao"/>
+    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
+    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
+        <constructor-arg name="customerDao" ref="customerDao"/>
+    </bean>
 
-<!--    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">-->
-<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
-<!--    </bean>-->
+    <bean id="cartRecordDao" class="by.brest.karas.dao.jdbc.CartRecordDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
 
-<!--    <bean id="customerDtoDao" class="by.brest.karas.dao.jdbc.">-->
-<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
-<!--    </bean>-->
+    <bean id="cartRecordService" class="by.brest.karas.service.impl.CartRecordServiceImpl">
+        <constructor-arg name="cartRecordDao" ref="cartRecordDao"/>
+    </bean>
 
-<!--    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">-->
-<!--        <constructor-arg name="customerDao" ref="customerDao"/>-->
-<!--    </bean>-->
+    <bean id="cartRecordDtoDao" class="by.brest.karas.dao.jdbc.CartRecordDtoDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
 
-<!--    <bean id="customerDtoService" class="by.brest.karas.service.impl.С">-->
-<!--        <constructor-arg name="customerDtoDao" ref="customerDtoDao"/>-->
-<!--    </bean>-->
-
-
+    <bean id="cartRecordDtoService" class="by.brest.karas.service.impl.CartRecordDtoServiceImpl">
+        <constructor-arg name="cartRecordDtoDao" ref="cartRecordDtoDao"/>
+    </bean>
 
 </beans>

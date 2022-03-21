@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
@@ -19,122 +19,64 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-sm navbar-light bg-light p-1">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="navbar-brand">
-                    <img src="../../resources/static/img/onlinestore.svg"
-                         th:src="@{/resources/static/img/onlinestore.svg}" alt="" width="45" height="36" style="float:left; margin-right:20px;"/>
-                </li>
+<div th:insert="product_fragments :: product_index_navbar"></div>
 
-                <li class="nav-link">
-                    <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-                       th:href="@{/home/products}">
-                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                <i class="bi bi-house"></i> Home
-                            </span>
-                    </a>
-                </li>
+<div th:if="${view} eq ''">
+    <div th:insert="product_fragments :: product_index_list"></div>
+</div>
 
-                <li class="nav-link">
-                    <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-                       th:href="@{/home/users/new}">
-                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                <i class="bi bi-person-plus"></i> Register
-                            </span>
-                    </a>
-                </li>
+<div th:if="${view} eq 'list'">
+    <div th:insert="product_fragments :: product_index_list"></div>
+</div>
 
-                <li class="nav-link">
-                    <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-                       th:href="@{/home/auth}">
-                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                               <i class="bi bi-box-arrow-in-right"></i> Log in
-                            </span>
-                    </a>
-                </li>
+<div th:if="${view} eq 'grid'">
+    <div th:insert="product_fragments :: product_index_grid"></div>
+</div>
 
-            </ul>
+<footer>
+    <br>
+    <p class="text-center">&copy; 2022</p>
+</footer>
 
-            <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-               th:href="@{'/home/products?filter=&view=list'}" style="margin-right:10px;">
-                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                <i class="bi bi-list"></i>List
-                            </span>
-            </a>
+<script src="../../resources/static/js/bootstrap.bundle.min.js"
+        th:src="@{/resources/static/js/bootstrap.bundle.min.js}">
+</script>
+</body>
 
-            <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
-               th:href="@{'/home/products?filter=&view=grid'}" style="margin-right:30px;">
-                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                <i class="bi bi-grid-3x3-gap"></i> Grid
-                            </span>
-            </a>
-
-
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       name="filter" size="40">
-                <button class="btn btn-outline-dark" type="submit">Search</button>
-            </form>
-
-        </div>
-    </div>
-</nav>
-
-
-<th:block th:each="product : ${products}">
-    <tr>
-        <div class="card mb-3 mt-3 mx-3" style="height: 80px; max-width: 1080px">
-            <div class="row g-0  justify-content-center align-items-center">
-                <div class="col-md-1">
-                    <img src="../../resources/static/img/onlinestore_add_photo.jpg"
-                         th:src="@{/resources/static/img/onlinestore_add_photo.jpg}"
-                         class="img-fluid align-self-center" style="width: 75px;" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-2">
-                                    <p class="card-text" th:text="'Price: ' + ${product.getPrice()}">Price</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="card-text">
-                                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
-                                            <a class="card-text btn-sm btn-outline-secondary "
-                                               th:text="${product.getShortDescription()}"
-                                               th:href="@{/home/products/{id}(id=${product.getProductId()})}"></a>
-                                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="exampleModalLabel">Delete product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Delete product?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
-
-    </tr>
-</th:block>
-
-<!--<div th:insert="fragments :: home_navbar"></div>-->
-
-<!--    <div th:if="${view} eq ''">-->
-<!--        <div th:insert="product_index_fragments :: product_index_list"></div>-->
-<!--    </div>-->
-
-<!--    <div th:if="${view} eq 'list'">-->
-<!--        <div th:insert="product_index_fragments :: product_index_list"></div>-->
-<!--    </div>-->
-
-<!--    <div th:if="${view} eq 'grid'">-->
-<!--        <div th:insert="product_index_fragments :: product_index_grid"></div>-->
-<!--    </div>-->
+    </div>
+</div>
 
 <script src="../../resources/static/js/bootstrap.bundle.min.js"
         th:src="@{/resources/static/js/bootstrap.bundle.min.js}">
 </script>
 
-</body>
+<script src="../../resources/static/js/jquery-3.6.0.slim.js"
+        th:src="@{/resources/static/js/jquery-3.6.0.slim.js}">
+</script>
+
+<script>
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget)
+        $(this).find('.modal-body').text('Do you really want to delete "' + target.data('description') + '"?')
+        document.getElementById('deleteUrl').href = '/admins/' + target.data('admin_id') + '/products/' + target.data('product_id') + '/delete';
+    })
+</script>
 </html>

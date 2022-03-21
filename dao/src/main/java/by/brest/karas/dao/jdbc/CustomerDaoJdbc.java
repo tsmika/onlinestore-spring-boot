@@ -2,6 +2,7 @@ package by.brest.karas.dao.jdbc;
 
 import by.brest.karas.dao.CustomerDao;
 import by.brest.karas.model.Customer;
+import by.brest.karas.model.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,18 +17,20 @@ import java.util.Optional;
 
 public class CustomerDaoJdbc implements CustomerDao {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoJdbc.class);
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final RowMapper<Customer> rowMapper = BeanPropertyRowMapper.newInstance(Customer.class);
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoJdbc.class);
 
     @Value("${customer.select}")
     private String selectSql;
 
     @Value("${customer.findById}")
     private String findByIdSql;
+
+    @Value("${customer.findByLogin}")
+    private String findByLoginSql;
 
     @Value("${customer.create}")
     private String createSql;
@@ -38,8 +41,28 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Value("${customer.update}")
     private String updateSql;
 
+    @Value("${customer.searchCustomersByLogin}")
+    private String searchCustomersByLoginSql;
+
+    @Value("${customer.deleteAdmin}")
+    private String deleteAdminSql;
+
+    @Value("${customer.deleteCustomer}")
+    private String deleteCustomerSql;
+
+
+    public CustomerDaoJdbc() {
+    }
+
     public CustomerDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    @Override
+    public List<Customer> searchCustomersByLogin(String filter) {
+        LOGGER.debug("Search customers by login");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");
+        return namedParameterJdbcTemplate.query(searchCustomersByLoginSql, sqlParameterSource, rowMapper);
     }
 
     @Override
@@ -56,15 +79,17 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
-    public Customer findByLogin(String login) {
-        return null;
+    public Optional<Customer> findByLogin(String login) {
+        LOGGER.debug("Find customer by login: {}", login);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("CUSTOMER_LOGIN", login);
+        return Optional.ofNullable((Customer) namedParameterJdbcTemplate.queryForObject(findByLoginSql, sqlParameterSource, rowMapper));
     }
 
     @Override
     public Integer create(Customer customer) {
         LOGGER.debug("Create customer: {}", customer);
 
-        if(!isLoginUnique(customer)){
+        if (!isLoginUnique(customer)) {
             LOGGER.warn("User with the same login already exists in DB: {}", customer);
             throw new IllegalArgumentException("User with the same login already exists in DB");
         }
@@ -77,9 +102,10 @@ public class CustomerDaoJdbc implements CustomerDao {
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
-    private boolean isLoginUnique(Customer customer){
+    private boolean isLoginUnique(Customer customer) {
         return namedParameterJdbcTemplate.queryForObject(checkLoginSql, new MapSqlParameterSource("LOGIN", customer.getLogin()), Integer.class) == 0;
     }
+
     @Override
     public Integer update(Customer customer) {
         LOGGER.debug("Update customer: {}", customer);
@@ -98,12 +124,15 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Integer delete(Integer customerId) {
-        return 0;
-    }
+        LOGGER.debug("Delete customer: {}", customerId);
 
-    @Override
-    public List<Customer> selectCustomers(String filter) {
-        return null;
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
+                .addValue("ID", customerId);
+
+        return findById(customerId).get().getRole() == Role.ROLE_ADMIN ?
+                namedParameterJdbcTemplate.update(deleteAdminSql, mapSqlParameterSource) :
+                namedParameterJdbcTemplate.update(deleteCustomerSql, mapSqlParameterSource);
+
     }
 }
 

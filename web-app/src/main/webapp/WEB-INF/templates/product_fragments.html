@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:fragment="product_index_navbar">
+
+    <nav class="navbar navbar-expand-sm navbar-light bg-light p-1">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="navbar-brand">
+                        <img src="../../resources/static/img/onlinestore.svg"
+                             th:src="@{/resources/static/img/onlinestore.svg}"
+                             alt="" width="45" height="36" style="float:left; margin-right:10px;"/>
+                    </li>
+
+                    <div th:if="${principal_role} eq 'guest'">
+
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-link">
+
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{/products}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-house"></i> Home
+                            </span>
+                                </a>
+
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{/auth}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                               <i class="bi bi-box-arrow-in-right"></i> Log in
+                            </span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{/new_customer}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-person-plus"></i> Register
+                            </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div th:if="!(${principal_role} eq 'guest')">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            <li class="nav-link" style="float:left; margin-right:25px;">
+                                <a type="button" class="btn btn-light btn-sm rounded-pill"
+                                   style="background-color: #e1f5ec; cursor: default;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-person" style="font-size: 20px;"></i> <span th:text="${login}"
+                                                                                            style="font-size: 20px;"></span>
+                            </span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link">
+
+                                <a th:if="${principal_role} eq 'admin'"
+                                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/admins/' + ${admin_id} + '/products'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-house"></i> Home
+                            </span>
+                                </a>
+
+                                <a th:if="${principal_role} eq 'customer'" type="button"
+                                   class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/customers/' + ${customer_id} + '/products'}">
+                                    <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                        <i class="bi bi-house"></i> Home
+                                    </span>
+                                </a>
+
+                            </li>
+
+                            <li th:if="${principal_role} eq 'admin'" class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/admins/' + ${admin_id} + '/cart/products'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                               <i class="bi bi-cart4"></i> Cart
+                            </span>
+                                </a>
+                            </li>
+
+                            <li th:if="${principal_role} eq 'customer'" class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/customers/' + ${customer_id} + '/cart/products'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                               <i class="bi bi-cart4"></i> Cart
+                            </span>
+                                </a>
+                            </li>
+
+                            <li th:if="${principal_role} eq 'admin'" class="nav-link">
+                                <a type="button"
+                                   class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/admins/' + ${admin_id} + '/products/new'}">
+                                        <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                            <i class="bi bi-plus-square"></i> Add product
+                                        </span>
+                                </a>
+                            </li>
+
+                            <li th:if="${principal_role} eq 'admin'" class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/admins/' + ${admin_id} + '/customers'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-people"></i> Customers
+                            </span>
+                                </a>
+                            </li>
+
+                            <li th:if="${principal_role} eq 'admin'" class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${admin_id} + '/edit'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-pencil"></i> Edit account
+                            </span>
+                                </a>
+                            </li>
+
+                            <li th:if="${principal_role} eq 'customer'" class="nav-link">
+                                <a type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                                   th:href="@{'/customers/' + ${customer_id} + '/edit'}">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-pencil"></i> Edit account
+                            </span>
+                                </a>
+                            </li>
+
+                            <li class="nav-link">
+                                <a id="logout_link" type="button"
+                                   class="btn-sm btn-outline-secondary text-decoration-none rounded-pill">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold"
+                                  onclick="document.getElementById('logout-form').submit();">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </span>
+                                </a>
+                            </li>
+                            <form id="logout-form" style="display:none" th:action="@{/logout}" method="POST"></form>
+                        </ul>
+                    </div>
+
+                </ul>
+
+                <a th:if="${principal_role} eq 'guest'"
+                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                   th:href="@{'/products?filter=' + ${filter} + '&view=list'}"
+                   style="margin-right:30px;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-list"></i>List
+                            </span>
+                </a>
+
+                <a th:if="${principal_role} eq 'guest'"
+                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                   th:href="@{'/products?filter=' + ${filter} + '&view=grid'}"
+                   style="margin-right:30px;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-list"></i>Grid
+                            </span>
+                </a>
+
+                <a th:if="${principal_role} eq 'admin'"
+                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                   th:href="@{'/admins/' + ${admin_id} + '/products?filter=' + ${filter} + '&view=list'}"
+                   style="margin-right:30px;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-list"></i>List
+                            </span>
+                </a>
+
+                <a th:if="${principal_role} eq 'customer'"
+                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                   th:href="@{'/customers/' + ${customer_id} + '/products?filter=' + ${filter} + '&view=list'}"
+                   style="margin-right:30px;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-list"></i>List
+                            </span>
+                </a>
+
+                <a th:if="${principal_role} eq 'admin'"
+                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                   th:href="@{'/admins/' + ${admin_id} + '/products?filter=' + ${filter} + '&view=grid'}"
+                   style="margin-right:30px;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-grid-3x3-gap"></i> Grid
+                            </span>
+                </a>
+
+                <a th:if="${principal_role} eq 'customer'"
+                   type="button" class="btn-sm btn-outline-secondary text-decoration-none rounded-pill"
+                   th:href="@{'/customers/' + ${customer_id} + '/products?filter=' + ${filter} + '&view=grid'}"
+                   style="margin-right:30px;">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <i class="bi bi-grid-3x3-gap"></i> Grid
+                            </span>
+                </a>
+
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                           name="filter" size="40">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="product_index_list">
+
+    <th:block th:each="product : ${products}">
+        <br>
+        <tbody>
+        <div class="container-fluid bg-light">
+            <tr>
+                <td>
+
+                    <div class="row gy-1">
+                        <div class="col-1 align-self-center">
+                            <img src="../../resources/static/img/onlinestore_add_photo.jpg"
+                                 th:src="@{/resources/static/img/onlinestore_add_photo.jpg}"
+                                 class="img-fluid align-self-center" style="width: 75px;" alt="...">
+                        </div>
+
+                        <div class="col-1 align-self-center">
+                            <p class="card-text btn-sm" th:text="'Price: ' + ${product.getPrice()}"></p>
+                        </div>
+
+                        <div class="col-4 align-self-center">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <a th:if="${principal_role} eq 'guest'" class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{/products/{id}(id=${product.getProductId()})}">
+                                </a>
+
+                                <a th:if="${principal_role} eq 'customer'"
+                                   class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{'/customers/' + ${customer_id} + '/products/' + ${product.getProductId()}}">
+                                </a>
+
+                                <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{'/admins/' + ${admin_id} + '/products/' + ${product.getProductId()}}">
+                                </a>
+
+                            </span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'"
+                             class="col-1 align-self-center">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
+                                       <i class="bi bi-cart-plus"></i> Add to cart
+                                  </a>
+                            </span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'customer'"
+                             class="col-1 align-self-center">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
+                                       <i class="bi bi-cart-plus"></i> Add to cart
+                                  </a>
+                            </span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/admins/' + ${admin_id} + '/products/' + ${product.getProductId()} + '/edit'}">
+                                        <i class="bi bi-pencil"></i> Edit
+                                  </a>
+                            </span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
+                            <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                                  th:attr="data-admin_id=${admin_id}, data-product_id=${product.getProductId()}, data-description=${product.getShortDescription()} ">
+                                 <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                    title="delete product">
+                                     <i class="bi bi-trash"></i> Remove
+                                 </a>
+                            </span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                            <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                               th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${product.getChangedBy()}}">
+                                            <i class="bi bi-person-circle"></i> Changed by
+                                        </a>
+                            </span>
+
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center"
+                             style="text-align: center;">
+                                <span class="card-text btn-sm" th:text="' Created:'"
+                                      style="display: inline-block;"></span>
+                            <span class="card-text btn-sm" th:text="${product.getCreationDate()}"
+                                  style="display:inline-block;"></span>
+                        </div>
+
+                        <div th:if="${principal_role} eq 'admin'" class="col-1 align-self-center"
+                             style="text-align: center;">
+                                <span class="card-text btn-sm" th:text="'Updated:'"
+                                      style="display: inline-block;"></span>
+                            <span class="card-text btn-sm" th:text="${product.getUpdateDate()}"
+                                  style="display: inline-block;"></span>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        </div>
+        </tbody>
+    </th:block>
+
+</div>
+
+<div th:fragment="product_index_grid">
+    <div class="row row-cols-1 row-cols-md-6 g-4">
+        <th:block th:each="product : ${products}">
+            <tr>
+                <div class="col">
+                    <div class="card" style="width: 15rem;">
+                        <img th:src="@{/resources/static/img/onlinestore_add_photo.jpg}" class="card-img-top"
+                             alt="...">
+                        <p class="card-body">
+                        <p class="card-text" th:text="'Price: ' + ${product.getPrice()}">Price</p>
+                        <p class="card-text">
+                                 <span class="d-none d-md-inline fs-5 fw-weight-bold">
+                                <a th:if="${principal_role} eq 'guest'" class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{/products/{id}(id=${product.getProductId()})}">
+                                </a>
+
+                                <a th:if="${principal_role} eq 'customer'"
+                                   class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{'/customers/' + ${customer_id} + '/products/' + ${product.getProductId()}}">
+                                </a>
+
+                                <a th:if="${principal_role} eq 'admin'" class="card-text btn-sm btn-outline-secondary "
+                                   th:text="${product.getShortDescription()}"
+                                   th:href="@{'/admins/' + ${admin_id} + '/products/' + ${product.getProductId()}}">
+                                </a>
+                                </span>
+                        </p>
+
+                        <p th:if="${principal_role} eq 'admin'"
+                           class="card-text">
+                                <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/admins/' + ${admin_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
+                                       <i class="bi bi-cart-plus"></i> Add to cart
+                                  </a>
+                                </span>
+                        </p>
+
+                        <p th:if="${principal_role} eq 'customer'"
+                           class="card-text">
+                                <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/customers/' + ${customer_id} + '/cart/products/' + ${product.getProductId()} + '/new'}">
+                                       <i class="bi bi-cart-plus"></i> Add to cart
+                                  </a>
+                                </span>
+                        </p>
+
+
+                        <p th:if="${principal_role} eq 'admin'" class="card-text">
+                            <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
+                                  <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                     th:href="@{'/admins/' + ${admin_id} + '/products/' + ${product.getProductId()} + '/edit'}">
+                                        <i class="bi bi-pencil"></i> Edit
+                                  </a>
+                            </span>
+                        </p>
+
+                        <p th:if="${principal_role} eq 'admin'" class="card-text">
+                            <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                                  th:attr="data-admin_id=${admin_id}, data-product_id=${product.getProductId()}, data-description=${product.getShortDescription()} ">
+                                 <a href="#" class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                    title="delete product">
+                                     <i class="bi bi-trash"></i> Delete
+                                 </a>
+                            </span>
+                        </p>
+
+                        <p th:if="${principal_role} eq 'admin'" class="card-text">
+                                <span class="d-none d-md-inline fs-5 fw-weight-bold" style="display: inline-block;">
+                                     <a class="card-text btn-sm btn-outline-secondary rounded-pill"
+                                        th:href="@{'/admins/' + ${admin_id} + '/customers/' + ${product.getChangedBy()}}">
+                                        <i class="bi bi-person-circle"></i> Changed by
+                                     </a>
+                                </span>
+                        </p>
+                        <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm" th:text="' Created:'"
+                              style="display: inline-block;"></span>
+                        <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm"
+                              th:text="${product.getCreationDate()}"
+                              style="display: inline-block;"></span>
+
+                        <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm" th:text="'Updated:'"
+                              style="display: inline-block;"></span>
+                        <span th:if="${principal_role} eq 'admin'" class="card-text btn-sm"
+                              th:text="${product.getUpdateDate()}"></span>
+
+                    </div>
+                </div>
+
+            </tr>
+        </th:block>
+    </div>
+</div>
+
+</body>
+
+</html>

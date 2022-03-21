@@ -8,15 +8,15 @@ public interface ProductService {
 
     List<Product> findAll();
 
-    Product findProductById(Long id);
+    Product findById(Integer id);
 
     List<Product> findCartProductsByUserId(Long userId);
 
     List<Product> findProductsByDescription(String description);
 
-    void save(Product product);
+    Integer create(Product product);
 
-    void update(Long id, Product updatedProduct);
+    Integer update(Product updatedProduct);
 
-    void delete(Long id);
+    Integer delete(Integer id);
 }

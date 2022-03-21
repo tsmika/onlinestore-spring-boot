@@ -1,5 +1,6 @@
 package by.brest.karas.model;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
@@ -10,10 +11,17 @@ public class Product {
 
     private String picture;
 
+    @NotEmpty(message = "Description must not be empty")
+    @Size(min = 5, max = 50, message = "Description must be from 5 to 50 characters")
     private String shortDescription;
 
+    @NotEmpty(message = "Description must not be empty")
+    @Size(min = 5, max = 1000, message = "Description must be from 5 to 1000 characters")
     private String detailDescription;
 
+    @NotNull(message = "Price must be greater than 0")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
+    @Digits(integer=7, fraction=2, message = "Price must 2 characters of fraction")
     private BigDecimal price;
 
     private Date creationDate;
@@ -25,13 +33,11 @@ public class Product {
     public Product() {
     }
 
-    public Product(String picture, String shortDescription, String detailDescription, BigDecimal price, Date creationDate, Date updateDate, Integer changedBy) {
+    public Product(String picture, String shortDescription, String detailDescription, BigDecimal price, Integer changedBy) {
         this.picture = picture;
         this.shortDescription = shortDescription;
         this.detailDescription = detailDescription;
         this.price = price;
-        this.creationDate = creationDate;
-        this.updateDate = updateDate;
         this.changedBy = changedBy;
     }
 

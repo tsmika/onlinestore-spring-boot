@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findProductById(Long id) {
-        return productDao.findProductById(id);
+    public Product findById(Integer id) {
+        return productDao.findById(id);
     }
 
     @Override
@@ -42,17 +42,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(Product product) {
-        productDao.save(product);
+    public Integer create(Product product) {
+        return productDao.create(product);
     }
 
     @Override
-    public void update(Long id, Product updatedProduct) {
-        productDao.update(id, updatedProduct);
+    public Integer update(Product updatedProduct) {
+        return productDao.update(updatedProduct);
     }
 
     @Override
-    public void delete(Long id) {
-        productDao.delete(id);
+    public Integer delete(Integer id) {
+        return productDao.delete(id);
     }
 }
