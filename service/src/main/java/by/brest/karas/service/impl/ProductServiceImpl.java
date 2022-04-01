@@ -32,11 +32,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findCartProductsByUserId(Long userId) {
-        return productDao.findCartProductsByUserId(userId);
-    }
-
-    @Override
     public List<Product> findProductsByDescription(String description) {
         return productDao.findProductsByDescription(description);
     }

@@ -59,16 +59,16 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
-    public List<Customer> searchCustomersByLogin(String filter) {
-        LOGGER.debug("Search customers by login");
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");
-        return namedParameterJdbcTemplate.query(searchCustomersByLoginSql, sqlParameterSource, rowMapper);
-    }
-
-    @Override
     public List<Customer> findAll() {
         LOGGER.debug("Find all customers");
         return namedParameterJdbcTemplate.query(selectSql, rowMapper);
+    }
+
+    @Override
+    public Optional<Customer> findByLogin(String login) {
+        LOGGER.debug("Find customer by login: {}", login);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("CUSTOMER_LOGIN", login);
+        return Optional.ofNullable((Customer) namedParameterJdbcTemplate.queryForObject(findByLoginSql, sqlParameterSource, rowMapper));
     }
 
     @Override
@@ -79,10 +79,10 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
-    public Optional<Customer> findByLogin(String login) {
-        LOGGER.debug("Find customer by login: {}", login);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("CUSTOMER_LOGIN", login);
-        return Optional.ofNullable((Customer) namedParameterJdbcTemplate.queryForObject(findByLoginSql, sqlParameterSource, rowMapper));
+    public List<Customer> searchCustomersByLogin(String filter) {
+        LOGGER.debug("Search customers by login");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");
+        return namedParameterJdbcTemplate.query(searchCustomersByLoginSql, sqlParameterSource, rowMapper);
     }
 
     @Override
@@ -124,10 +124,9 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Integer delete(Integer customerId) {
-        LOGGER.debug("Delete customer: {}", customerId);
 
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
-                .addValue("ID", customerId);
+        LOGGER.debug("Delete customer: {}", customerId);
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource().addValue("ID", customerId);
 
         return findById(customerId).get().getRole() == Role.ROLE_ADMIN ?
                 namedParameterJdbcTemplate.update(deleteAdminSql, mapSqlParameterSource) :
@@ -135,20 +134,4 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 }
-
-//        return namedParameterJdbcTemplate.query(SQL_GET_ALL_CUSTOMERS, new CustomerRowMapper());
-//    private class CustomerRowMapper implements org.springframework.jdbc.core.RowMapper<Customer> {
-//        @Override
-//        public Customer mapRow(ResultSet resultSet, int i) throws SQLException {
-//
-//            Customer customer = new Customer();
-//            customer.setCustomerId(resultSet.getInt("CUSTOMER_ID"));
-//            customer.setLogin(resultSet.getString("LOGIN"));
-//            customer.setPassword(resultSet.getString("PASSWORD"));
-//            customer.setRole(Role.valueOf(resultSet.getString("ROLE")));
-//            customer.setIsExisted(resultSet.getBoolean("IS_EXISTED"));
-//            return customer;
-//        }
-//    }
-
 

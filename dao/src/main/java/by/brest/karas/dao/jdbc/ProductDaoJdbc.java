@@ -64,11 +64,6 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> findCartProductsByUserId(Long userId) {
-        return null;
-    }
-
-    @Override
     public List<Product> findProductsByDescription(String filter) {
         LOGGER.debug("Find products by description");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");

@@ -10,8 +10,6 @@ public interface ProductDao {
 
     Product findById(Integer id);
 
-    List<Product> findCartProductsByUserId(Long userId);
-
     List<Product> findProductsByDescription(String filter);
 
     Integer create(Product product);

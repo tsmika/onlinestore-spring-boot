@@ -26,11 +26,6 @@ public class CartRecordServiceImpl implements CartRecordService {
     }
 
     @Override
-    public List<CartRecord> findFilteredCartRecordsByCustomerId(Integer customerId, String filter) {
-        return cartRecordDao.findFilteredCartRecordstByCustomerId(customerId, filter);
-    }
-
-    @Override
     public Integer create(CartRecord cartRecord) {
         return cartRecordDao.create(cartRecord);
     }
@@ -41,40 +36,12 @@ public class CartRecordServiceImpl implements CartRecordService {
     }
 
     @Override
-    public Integer delete(Integer customerId, Integer productId) {
-        return cartRecordDao.delete(customerId, productId);
-    }
-
-    //////////////////////////////////////////
-
-    @Override
-    public Integer findQuantityFromCart(Integer userId, Integer productId) {
-        return cartRecordDao.findQuantityFromCart(userId, productId);
-    }
-
-    @Override
     public List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer userId, Integer productId) {
         return cartRecordDao.findCartRecordsByCustomerIdAndProductId(userId, productId);
     }
 
     @Override
-    public Map<Product, Integer> findFilteredCartByUserId(Integer userId, String filter) {
-        return cartRecordDao.findFilteredCartByUserId(userId, filter);
-    }
-
-    @Override
-    public Map<Product, Integer> findCartByUserId(Integer userId) {
-        return null;
-    }
-
-
-    @Override
-    public Map<Product, Integer> findCartByUserLogin(String login) {
-        return cartRecordDao.findCartByUserLogin(login);
-    }
-
-    @Override
-    public void update(CartRecord cartRecordToUpdate, Integer quantity) {
-        cartRecordDao.update(cartRecordToUpdate, quantity);
+    public Integer delete(Integer customerId, Integer productId) {
+        return cartRecordDao.delete(customerId, productId);
     }
 }

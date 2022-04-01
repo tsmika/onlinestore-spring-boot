@@ -85,6 +85,12 @@
 
                 </ul>
 
+                <form th:if="${principal_role} eq 'admin' or ${principal_role} eq 'customer'" class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                           name="filter" size="40">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+
             </div>
         </div>
     </nav>

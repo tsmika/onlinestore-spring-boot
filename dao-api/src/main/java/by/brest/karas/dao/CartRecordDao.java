@@ -10,8 +10,6 @@ public interface CartRecordDao {
 
     List<CartRecord> findCartRecordsByCustomerId(Integer customerId);
 
-    List<CartRecord> findFilteredCartRecordstByCustomerId(Integer customerId, String filter);
-
     Integer create(CartRecord cartRecord);
 
     Boolean isCartRecordExist(Integer customerId, Integer productId);
@@ -19,18 +17,4 @@ public interface CartRecordDao {
     List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer userId, Integer productId);
 
     Integer delete(Integer customerId, Integer productId);
-
-    ///////////////////////////////////
-
-    Integer findQuantityFromCart(Integer userId, Integer productId);
-
-    Map<Product, Integer> findFilteredCartByUserId(Integer userId, String filter);
-
-    Map<Product, Integer> findCartByUserId(Integer userId);
-
-    Map<Product, Integer> findCartByUserLogin(String login);
-
-    void update(CartRecord cartRecordToUpdate, Integer quantity);
-
-
 }

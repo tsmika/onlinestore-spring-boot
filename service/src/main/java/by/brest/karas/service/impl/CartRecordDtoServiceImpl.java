@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class CartRecordDtoServiceImpl implements CartRecordDtoService {
+
     private CartRecordDtoDao cartRecordDtoDao;
 
     public CartRecordDtoServiceImpl(CartRecordDtoDao cartRecordDtoDao) {
