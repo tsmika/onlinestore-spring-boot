@@ -102,7 +102,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
-    private boolean isLoginUnique(Customer customer) {
+    public boolean isLoginUnique(Customer customer) {
         return namedParameterJdbcTemplate.queryForObject(checkLoginSql, new MapSqlParameterSource("LOGIN", customer.getLogin()), Integer.class) == 0;
     }
 
