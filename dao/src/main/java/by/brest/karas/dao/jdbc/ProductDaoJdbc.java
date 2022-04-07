@@ -88,15 +88,13 @@ public class ProductDaoJdbc implements ProductDao {
                 .addValue("PRICE", product.getPrice())
                 .addValue("CHANGED_BY", product.getChangedBy());
 
-
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
-    private boolean isShortDescriptionUnique(Product product) {
+    public boolean isShortDescriptionUnique(Product product) {
         return namedParameterJdbcTemplate.queryForObject(checkShortDescriptionSql,
                 new MapSqlParameterSource("SHORT_DESCRIPTION", product.getShortDescription()), Integer.class) == 0;
     }
-
 
     @Override
     public Integer update(Product updatedProduct) {

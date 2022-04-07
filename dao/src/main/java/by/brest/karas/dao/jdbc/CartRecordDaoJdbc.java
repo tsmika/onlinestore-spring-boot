@@ -17,7 +17,7 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private RowMapper<CartRecord> rowMapper = BeanPropertyRowMapper.newInstance(CartRecord.class);
+    private final RowMapper<CartRecord> rowMapper = BeanPropertyRowMapper.newInstance(CartRecord.class);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CartRecordDaoJdbc.class);
 
@@ -26,9 +26,6 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     @Value("${cartRecord.findCartRecordsByCustomerId}")
     private String findCartRecordsByCustomerIdSql;
-
-    @Value("${cartRecord.findFilteredCartRecordsByCustomerId}")
-    private String findFilteredCartRecordsByCustomerIdSql;
 
     @Value("${cartRecord.findProductInCartRecordsByCustomerId}")
     private String findProductInCartRecordsByCustomerIdSql;
@@ -62,11 +59,9 @@ public class CartRecordDaoJdbc implements CartRecordDao {
         sqlParameterSource.addValue("CUSTOMER_ID", customerId);
         sqlParameterSource.addValue("PRODUCT_ID", productId);
 
-        List<CartRecord> cartRecords = namedParameterJdbcTemplate.query(
+        return namedParameterJdbcTemplate.query(
                 findCartRecordByCustomerIdAndProductIdSql, sqlParameterSource,
                 BeanPropertyRowMapper.newInstance(CartRecord.class));
-
-        return cartRecords;
     }
 
 
@@ -88,7 +83,7 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 //            }
 //        }
 
-        return cartRecords.size() == 0 ? false : true;
+        return cartRecords.size() != 0;
     }
 
     @Override

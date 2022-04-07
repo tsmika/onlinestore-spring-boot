@@ -45,9 +45,7 @@ public class CartRecordDtoDaoJdbc implements CartRecordDtoDao {
     public List<CartRecordDto> findCartRecordDtosByCustomerId(Integer customerId, String filter) {
 
         LOGGER.debug("findCartRecordDtosByCustomerId()");
-        String sql = findCartRecordDtosByCustomerIdSql + customerId;
-        sql = sql + "AND P.SHORT_DESCRIPTION LIKE" + "'%" + filter + "%'";
-        jdbcTemplate.execute(sql);
+        jdbcTemplate.execute(findCartRecordDtosByCustomerIdSql + customerId +  "AND P.SHORT_DESCRIPTION LIKE" + "'%" + filter + "%'");
         List<CartRecordDto> cartRecordDtos = namedParameterJdbcTemplate.query(getCartRecordDtosByCustomerIdSql, cartRecordDtoRowMapper);
 
         for (CartRecordDto cartRecordDto : cartRecordDtos) {
