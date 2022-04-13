@@ -44,13 +44,11 @@ public class CartRecordDtoDaoJdbc implements CartRecordDtoDao {
     @Override
     public List<CartRecordDto> findCartRecordDtosByCustomerId(Integer customerId, String filter) {
 
-        LOGGER.debug("findCartRecordDtosByCustomerId()");
-        String sql = findCartRecordDtosByCustomerIdSql + customerId;
-        sql = sql + "AND P.SHORT_DESCRIPTION LIKE" + "'%" + filter + "%'";
-        jdbcTemplate.execute(sql);
+        LOGGER.debug("find cart record dtos by customer id and filter: {}, {}", customerId, filter);
+        jdbcTemplate.execute(findCartRecordDtosByCustomerIdSql + customerId +  "AND P.SHORT_DESCRIPTION LIKE" + "'%" + filter + "%'");
         List<CartRecordDto> cartRecordDtos = namedParameterJdbcTemplate.query(getCartRecordDtosByCustomerIdSql, cartRecordDtoRowMapper);
 
-        for (CartRecordDto cartRecordDto : cartRecordDtos){
+        for (CartRecordDto cartRecordDto : cartRecordDtos) {
             cartRecordDto.setSumma(cartRecordDto.getSumma().setScale(2, RoundingMode.CEILING));
         }
 
@@ -59,6 +57,7 @@ public class CartRecordDtoDaoJdbc implements CartRecordDtoDao {
 
     @Override
     public BigDecimal findCartRecordDtosSumByCustomerId(Integer customerId, String filter) {
+        LOGGER.debug("find cart record dtos sum by customer id and filter: {}, {}", customerId, filter);
         return jdbcTemplate.queryForObject(findCartRecordDtosSumByCustomerIdSql, BigDecimal.class).setScale(2, RoundingMode.CEILING);
     }
 }

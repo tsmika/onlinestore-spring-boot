@@ -13,11 +13,11 @@ public interface CustomerService {
 
     Optional<Customer> findById(Integer customerId);
 
-    Integer create (Customer customer);
+    List<Customer> searchCustomersByLogin(String filter);
+
+    Integer create(Customer customer);
 
     Integer update(Customer updatedCustomer);
 
     Integer delete(Integer customerId);
-
-    List<Customer> searchCustomersByLogin(String filter);
 }

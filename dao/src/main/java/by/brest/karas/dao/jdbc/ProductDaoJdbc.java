@@ -58,19 +58,14 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public Product findById(Integer id) {
-        LOGGER.debug("Find products by id");
+        LOGGER.debug("Find products by id: {}", id);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("ID", id);
         return namedParameterJdbcTemplate.query(selectByIdSql, sqlParameterSource, rowMapper).get(0);
     }
 
     @Override
-    public List<Product> findCartProductsByUserId(Long userId) {
-        return null;
-    }
-
-    @Override
     public List<Product> findProductsByDescription(String filter) {
-        LOGGER.debug("Find products by description");
+        LOGGER.debug("Find products by description: {}", filter);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");
         return namedParameterJdbcTemplate.query(selectByDescriptionSql, sqlParameterSource, rowMapper);
     }
@@ -93,15 +88,13 @@ public class ProductDaoJdbc implements ProductDao {
                 .addValue("PRICE", product.getPrice())
                 .addValue("CHANGED_BY", product.getChangedBy());
 
-
         return namedParameterJdbcTemplate.update(createSql, mapSqlParameterSource);
     }
 
-    private boolean isShortDescriptionUnique(Product product) {
+    public boolean isShortDescriptionUnique(Product product) {
         return namedParameterJdbcTemplate.queryForObject(checkShortDescriptionSql,
                 new MapSqlParameterSource("SHORT_DESCRIPTION", product.getShortDescription()), Integer.class) == 0;
     }
-
 
     @Override
     public Integer update(Product updatedProduct) {

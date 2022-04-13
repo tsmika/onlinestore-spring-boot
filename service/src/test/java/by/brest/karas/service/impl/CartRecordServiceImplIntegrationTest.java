@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:service-context-test.xml", "classpath*:dao.xml"})
@@ -26,32 +25,37 @@ public class CartRecordServiceImplIntegrationTest {
     private CartRecordDaoJdbc cartRecordDaoJdbc;
 
     @Test
-    void findCartRecordByCustomerIdAndProductIdIntegrationTest(){
-        CartRecord cartRecord = cartRecordDaoJdbc.findCartRecordByCustomerIdAndProductId(1, 2);
-        assertNotNull(cartRecord);
-        assertTrue(cartRecord.getCustomerId() == 1);
-        assertTrue(cartRecord.getProductId() == 2);
-        assertTrue(cartRecord.getQuantity() == 1);
-    }
-
-    @Test
-    void findCartRecordsByCustomerIdIntegrationTest(){
+    public void findCartRecordsByCustomerIdIntegrationTest() {
         List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
         assertNotNull(cartRecords);
         assertTrue(cartRecords.size() > 0);
     }
 
     @Test
-    void isRecordExistIntegrationTest(){
-        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
-        assertTrue(cartRecordDaoJdbc.isCartRecordExist(cartRecords.get(0).getCustomerId(), cartRecords.get(0).getProductId()));
-        assertTrue(!(cartRecordDaoJdbc.isCartRecordExist(cartRecords.get(0).getCustomerId(), Integer.MAX_VALUE)));
-        cartRecords = cartRecordService.findCartRecordsByCustomerId(Integer.MAX_VALUE);
-        assertTrue(cartRecords.size() == 0);
+    public void findCartRecordsByCustomerIdAndProductIdIntegrationTest() {
+        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(1, 2);
+        assertNotNull(cartRecords);
+        assertEquals(1, cartRecords.size());
+        assertEquals(2, (int) cartRecords.get(0).getProductId());
+        assertEquals(1, (int) cartRecords.get(0).getCustomerId());
+        assertEquals(1, (int) cartRecords.get(0).getQuantity());
+        cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(1, Integer.MAX_VALUE);
+        assertEquals(0, cartRecords.size());
+        cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(Integer.MAX_VALUE, 1);
+        assertEquals(0, cartRecords.size());
     }
 
     @Test
-    void createIntegrationTest(){
+    void isCartRecordExistIntegrationTest() {
+        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
+        assertTrue(cartRecordDaoJdbc.isCartRecordExist(cartRecords.get(0).getCustomerId(), cartRecords.get(0).getProductId()));
+        assertFalse(cartRecordDaoJdbc.isCartRecordExist(cartRecords.get(0).getCustomerId(), Integer.MAX_VALUE));
+        cartRecords = cartRecordService.findCartRecordsByCustomerId(Integer.MAX_VALUE);
+        assertEquals(0, cartRecords.size());
+    }
+
+    @Test
+    void createIntegrationTest() {
         List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
         assertNotNull(cartRecords);
 
@@ -62,7 +66,7 @@ public class CartRecordServiceImplIntegrationTest {
         assertNotNull(cartRecords);
         assertTrue(cartRecords.size() > 0);
         int sizeAfter = cartRecords.size();
-        assertTrue(sizeAfter - sizeBefore == 1);
+        assertEquals(1, sizeAfter - sizeBefore);
 
         testCartRecord.setQuantity(8);
         sizeBefore = cartRecords.size();
@@ -72,21 +76,7 @@ public class CartRecordServiceImplIntegrationTest {
         assertNotNull(cartRecords);
         assertTrue(cartRecords.size() > 0);
         sizeAfter = cartRecords.size();
-        assertTrue(sizeAfter - sizeBefore == 0);
-    }
-
-    @Test
-    public void findCartRecordsByCustomerIdAndProductIdIntegrationTest() {
-        List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(1, 2);
-        assertNotNull(cartRecords);
-        assertTrue(cartRecords.size() == 1);
-        assertTrue(cartRecords.get(0).getProductId() == 2);
-        assertTrue(cartRecords.get(0).getCustomerId() == 1);
-        assertTrue(cartRecords.get(0).getQuantity() == 1);
-        cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(1, Integer.MAX_VALUE);
-        assertTrue(cartRecords.size() == 0);
-        cartRecords = cartRecordService.findCartRecordsByCustomerIdAndProductId(Integer.MAX_VALUE, 1);
-        assertTrue(cartRecords.size() == 0);
+        assertEquals(0, sizeAfter - sizeBefore);
     }
 
     @Test
@@ -94,10 +84,10 @@ public class CartRecordServiceImplIntegrationTest {
         List<CartRecord> cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
         assertNotNull(cartRecords);
         int sizeBefore = cartRecords.size();
-        assertTrue(sizeBefore == 2);
+        assertEquals(2, sizeBefore);
         cartRecordService.delete(1, cartRecords.get(0).getProductId());
         cartRecords = cartRecordService.findCartRecordsByCustomerId(1);
         int sizeAfter = cartRecords.size();
-        assertTrue(sizeBefore - 1 == sizeAfter);
+        assertEquals(sizeBefore - 1, sizeAfter);
     }
 }

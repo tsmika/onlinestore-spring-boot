@@ -20,7 +20,7 @@ import java.security.Principal;
 import java.util.List;
 
 /**
- * Product controller.
+ * Customer controller.
  */
 @Controller
 @RequestMapping("/customers")

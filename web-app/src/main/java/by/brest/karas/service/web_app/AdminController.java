@@ -102,7 +102,7 @@ public class AdminController {
 
     @PostMapping("/{admin_id}/products/new")
     public String createProduct(
-            @ModelAttribute("product") @Valid Product product
+            @Valid Product product
             , BindingResult bindingResult
             , Principal principal) {
 

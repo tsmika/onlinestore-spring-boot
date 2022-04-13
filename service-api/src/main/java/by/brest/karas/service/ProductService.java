@@ -10,8 +10,6 @@ public interface ProductService {
 
     Product findById(Integer id);
 
-    List<Product> findCartProductsByUserId(Long userId);
-
     List<Product> findProductsByDescription(String description);
 
     Integer create(Product product);
