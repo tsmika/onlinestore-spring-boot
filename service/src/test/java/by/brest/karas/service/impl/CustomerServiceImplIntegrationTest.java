@@ -41,17 +41,18 @@ public class CustomerServiceImplIntegrationTest {
 
     @Test
     public void findByIdIntegrationTest() {
-
         Integer customerId = findAllAssertion().get(0).getCustomerId();
         Customer expectedCustomer = customerService.findById(customerId).get();
         assertEquals(customerId, expectedCustomer.getCustomerId());
         assertEquals(customerId.intValue(), expectedCustomer.getCustomerId().intValue());
         assertEquals(expectedCustomer, findAllAssertion().get(0));
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
+            customerService.findById(Integer.MAX_VALUE).get();
+        });
     }
 
     @Test
     public void findByLoginIntegrationTest() {
-
         Customer customer = findAllAssertion().get(2);
         Customer expectedCustomer = customerService.findByLogin("customer1").get();
         assertEquals(expectedCustomer, customer);

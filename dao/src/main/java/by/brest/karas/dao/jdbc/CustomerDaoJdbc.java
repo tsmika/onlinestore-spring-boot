@@ -80,7 +80,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public List<Customer> searchCustomersByLogin(String filter) {
-        LOGGER.debug("Search customers by login");
+        LOGGER.debug("Search customers by login: {}", filter );
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("FILTER", "%" + filter + "%");
         return namedParameterJdbcTemplate.query(searchCustomersByLoginSql, sqlParameterSource, rowMapper);
     }

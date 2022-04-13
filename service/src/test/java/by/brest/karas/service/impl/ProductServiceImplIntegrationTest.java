@@ -1,9 +1,11 @@
 package by.brest.karas.service.impl;
 
 import by.brest.karas.model.Product;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,10 @@ class ProductServiceImplIntegrationTest {
         Product testProduct = productService.findById(products.get(0).getProductId());
         assertNotNull(testProduct);
         assertEquals(1, (int) testProduct.getProductId());
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            productService.findById(Integer.MAX_VALUE);
+        });
+
     }
 
     @Test
@@ -61,6 +67,11 @@ class ProductServiceImplIntegrationTest {
         assertNotNull(products);
         assertEquals(sizeBefore, products.size() - 1);
         assertEquals("test short description", products.get(sizeBefore).getShortDescription());
+        Product productWithTheSameDescription = new Product();
+        productWithTheSameDescription.setShortDescription(testProduct.getShortDescription());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            productService.create(productWithTheSameDescription);
+        });
     }
 
     @Test

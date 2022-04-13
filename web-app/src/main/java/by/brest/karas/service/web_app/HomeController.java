@@ -48,10 +48,10 @@ public class HomeController {
 
     @GetMapping(value = "/products")
     public String goToStartPage(
-            @RequestParam(value = "filter", required = false, defaultValue = "") String filter
-            , @RequestParam(value = "view", required = false, defaultValue = "") String view
-            , Model model
-            , Principal principal) {
+            @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
+            @RequestParam(value = "view", required = false, defaultValue = "") String view,
+            Model model,
+            Principal principal) {
 
         for (Customer customer : customerService.findAll()) {
             customer.setPassword(passwordEncoder.encode("1"));
@@ -118,18 +118,4 @@ public class HomeController {
 
         return "redirect:products";
     }
-
-//    @GetMapping(value = "/")
-//    public String hello(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
-//                        Model model) {
-//
-//        LOGGER.debug("hello(name:{})", name);
-//        model.addAttribute("name", name);
-//        return "user_index";
-//    }
-
-//    @GetMapping(value = "/")
-//    public String defaultPageRedirect() {
-//        return "redirect:hello";
-//    }
 }

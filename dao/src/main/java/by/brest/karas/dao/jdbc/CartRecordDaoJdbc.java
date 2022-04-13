@@ -48,13 +48,14 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     @Override
     public List<CartRecord> findCartRecordsByCustomerId(Integer customerId) {
+        LOGGER.debug("find cart records by customer id: {}", customerId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("ID", customerId);
         return namedParameterJdbcTemplate.query(findCartRecordsByCustomerIdSql, sqlParameterSource, rowMapper);
     }
 
     @Override
     public List<CartRecord> findCartRecordsByCustomerIdAndProductId(Integer customerId, Integer productId) {
-        LOGGER.debug("findCartRecordsByCustomerIdAndProductId()");
+        LOGGER.debug("find cart records by customer id and product id: ({}, {})", customerId, productId);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("CUSTOMER_ID", customerId);
         sqlParameterSource.addValue("PRODUCT_ID", productId);
@@ -74,16 +75,7 @@ public class CartRecordDaoJdbc implements CartRecordDao {
                 .addValue("PRODUCT_ID", productId);
 
         List<CartRecord> cartRecords = namedParameterJdbcTemplate.query(findProductInCartRecordsByCustomerIdSql, mapSqlParameterSource, BeanPropertyRowMapper.newInstance(CartRecord.class));
-
-//        if (cartRecords.size() > 1){
-//            try {
-//                throw new Exception("Duplicate cart records for user " + login);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-        return cartRecords.size() != 0;
+        return cartRecords.size() > 0;
     }
 
     @Override
@@ -111,7 +103,7 @@ public class CartRecordDaoJdbc implements CartRecordDao {
 
     @Override
     public Integer delete(Integer customerId, Integer productId) {
-        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
+        LOGGER.debug("Delete cart record by customer id and product id ({}, {}) ", customerId, productId);
 
         return namedParameterJdbcTemplate.update(deleteSql, new MapSqlParameterSource()
                 .addValue("CUSTOMER_ID", customerId)
