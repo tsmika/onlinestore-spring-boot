@@ -157,7 +157,7 @@ public class AdminController {
 
     /////////////////////// CUSTOMERS
     @GetMapping(value = "/{admin_id}/customers")
-    public String goToCustomerPage(
+    public String goToCustomersPage(
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 

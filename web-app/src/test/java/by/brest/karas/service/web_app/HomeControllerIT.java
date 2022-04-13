@@ -138,7 +138,7 @@ public class HomeControllerIT {
     }
 
     @Test
-    public void shouldNotReturnProductsPageForUserOrAdmin() throws Exception {
+    public void shouldForbidReturnProductsPageForUserOrAdmin() throws Exception {
         mockMvc.perform(get("/admins/1/products").with(user("admin1").password("1").roles("USER")))
                 .andExpect(status().isForbidden());
 

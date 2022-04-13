@@ -21,13 +21,6 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
-        <!--        <dependency>-->
-<!--            <groupId>by.brest.karas</groupId>-->
-<!--            <artifactId>service</artifactId>-->
-<!--        </dependency>-->
-
-
-
     </dependencies>
 
 </project>
