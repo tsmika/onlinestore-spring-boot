@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Customer controller.
@@ -177,7 +178,7 @@ public class CustomerController {
 
         System.out.println("/{customer_id}/edit");
 
-        if (customerId != Integer.valueOf(getCustomerId(principal))) {
+        if (!Objects.equals(customerId, Integer.valueOf(getCustomerId(principal)))) {
             return "redirect:customers/{customer_id}/edit";
         }
 
