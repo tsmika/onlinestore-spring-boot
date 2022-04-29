@@ -1,5 +1,6 @@
 package by.brest.karas.service.web_app;
 
+import by.brest.karas.dao.jdbc.CustomerDaoJdbc;
 import by.brest.karas.model.CartRecord;
 import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
@@ -8,6 +9,8 @@ import by.brest.karas.service.CartRecordDtoService;
 import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +37,8 @@ public class AdminController {
     private final CartRecordDtoService cartRecordDtoService;
 
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 
     public AdminController(ProductService productService,
                            CustomerService customerService,
@@ -115,7 +120,7 @@ public class AdminController {
         product.setPicture("add picture");
         product.setChangedBy(adminId);
         productService.create(product);
-
+        LOGGER.debug("Create product: {}", product);
         return "redirect:/admins/{admin_id}/products";
     }
 

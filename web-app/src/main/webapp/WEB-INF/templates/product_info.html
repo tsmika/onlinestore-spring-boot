@@ -28,6 +28,7 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
+                <h5 th:if="${principal_role} eq 'admin'" class="card-title" th:text="'Product id: ' +  ${product.getProductId()}">ProductId in the card title</h5>
                 <h5 class="card-title" th:text="${product.getShortDescription()}">Card title</h5>
                 <p class="card-text" th:text="'Price: ' + ${product.getPrice()}">Price</p>
                 <p class="card-text" th:text="${product.getDetailDescription()}">DetailDescription</p>
