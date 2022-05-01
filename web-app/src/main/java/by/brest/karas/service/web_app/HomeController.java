@@ -1,6 +1,7 @@
 package by.brest.karas.service.web_app;
 
 import by.brest.karas.model.Customer;
+import by.brest.karas.model.Product;
 import by.brest.karas.model.Role;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
@@ -43,6 +44,7 @@ public class HomeController {
 
     @GetMapping(value = "/")
     public String welcomePage() {
+        LOGGER.debug("Redirecting to products page");
         return "redirect:products";
     }
 
@@ -50,8 +52,9 @@ public class HomeController {
     public String goToStartPage(
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             @RequestParam(value = "view", required = false, defaultValue = "") String view,
-            Model model,
-            Principal principal) {
+            Model model) {
+
+        LOGGER.debug("Products page");
 
         for (Customer customer : customerService.findAll()) {
             customer.setPassword(passwordEncoder.encode("1"));
@@ -73,7 +76,9 @@ public class HomeController {
             @PathVariable(value = "product_id") Integer productId,
             Model model) {
 
-        model.addAttribute("product", productService.findById(productId));
+        Product product = productService.findById(productId);
+        LOGGER.debug("View product; {}", product);
+        model.addAttribute("product", product);
 
         return "product_info";
     }
@@ -82,6 +87,8 @@ public class HomeController {
     public String authorisation(Principal principal) {
         Customer customer = customerService.findByLogin(principal.getName()).get();
         Integer principalId = customer.getCustomerId();
+
+        LOGGER.debug("Authorisation customer id:{}, login:{}", principalId, customer.getLogin());
 
         if (customer.getRole().equals(Role.ROLE_ADMIN))
             return "redirect:/admins/" + principalId + "/products";
@@ -95,13 +102,14 @@ public class HomeController {
             @RequestParam(value = "error", required = false) String error
             , Model model) {
 
-//        LOGGER.debug("login (name:{})" );
+        LOGGER.debug("Request to view the login page");
         model.addAttribute("error", error != null);
         return "login";
     }
 
     @GetMapping("/new_customer")
     public String goToNewCustomerForm(@ModelAttribute("customer") Customer customer) {
+        LOGGER.debug("Request for a new client's page");
         return "new_customer_form";
     }
 
@@ -116,6 +124,7 @@ public class HomeController {
         customer.setIsActual(true);
         customerService.create(customer);
 
+        LOGGER.debug("Create new customer - id:{}, login:{}", customer.getCustomerId(), customer.getLogin());
         return "redirect:products";
     }
 }

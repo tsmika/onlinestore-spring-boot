@@ -5,10 +5,12 @@ import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import by.brest.karas.model.Role;
 import by.brest.karas.model.dto.CartRecordDto;
-import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CartRecordDtoService;
+import by.brest.karas.service.CartRecordService;
 import by.brest.karas.service.CustomerService;
 import by.brest.karas.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,8 @@ public class CustomerController {
     private final CartRecordDtoService cartLineService;
 
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
     public CustomerController(ProductService productService, CustomerService customerService, CartRecordService cartRecordService, CartRecordDtoService cartService, CartRecordDtoService cartLineService, BCryptPasswordEncoder passwordEncoder) {
         this.productService = productService;
@@ -71,6 +75,7 @@ public class CustomerController {
             @RequestParam(value = "view", required = false, defaultValue = "") String view,
             Model model) {
 
+        LOGGER.debug("Products page for customer id:{}, role:{}", customerId, Role.ROLE_USER);
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);
 
@@ -86,6 +91,7 @@ public class CustomerController {
             @PathVariable(value = "product_id") Integer productId,
             Model model) {
 
+        LOGGER.debug("Product info page for product id:{}", productId);
         model.addAttribute("product", productService.findById(productId));
 
         return "product_info";
@@ -98,6 +104,7 @@ public class CustomerController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
+        LOGGER.debug("Cart page");
         List<CartRecordDto> cartRecordDtos = cartLineService.findCartRecordDtosByCustomerId(customerId, filter);
         model.addAttribute("filter", filter);
         model.addAttribute("cart_lines", cartRecordDtos);
@@ -108,6 +115,7 @@ public class CustomerController {
 
     @GetMapping("/{customer_id}/cart/products/{product_id}/edit")
     public String goToNewCartRecordForm() {
+
         return "redirect:/customers/{customer_id}/cart/products/{product_id}/new";
     }
 
@@ -118,6 +126,7 @@ public class CustomerController {
             @PathVariable("product_id") Integer productId,
             Model model) {
 
+        LOGGER.debug("New cart record form request");
         Product product = productService.findById(productId);
         model.addAttribute("productId", productId);
         model.addAttribute("productDescription", product.getShortDescription());
@@ -127,7 +136,6 @@ public class CustomerController {
         if (cartRecordService.isCartRecordExist(customerId, productId)) {
             model.addAttribute("quantity", cartRecordService.findCartRecordsByCustomerIdAndProductId(customerId, productId).get(0).getQuantity());
         }
-
         return "new_cart_record_form";
     }
 
@@ -151,6 +159,7 @@ public class CustomerController {
 
         cartRecord.setCustomerId(customerId);
         cartRecord.setProductId(productId);
+        LOGGER.debug("Create cart record: {}", cartRecord);
         cartRecordService.create(cartRecord);
 
         return "redirect:/customers/{customer_id}/cart/products";
@@ -161,8 +170,7 @@ public class CustomerController {
             @PathVariable("product_id") Integer productId,
             @PathVariable("customer_id") Integer customerId) {
 
-//        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
-//        LOGGER.debug("delete({},{})", id, model);
+        LOGGER.debug("Delete cart record by customer id: {} and product id:{}", customerId, productId);
         cartRecordService.delete(customerId, productId);
 
         return "redirect:/customers/{customer_id}/cart/products";
@@ -176,15 +184,14 @@ public class CustomerController {
             Principal principal,
             Model model) {
 
-        System.out.println("/{customer_id}/edit");
-
         if (!Objects.equals(customerId, Integer.valueOf(getCustomerId(principal)))) {
             return "redirect:customers/{customer_id}/edit";
         }
 
+        Customer customer = customerService.findById(customerId).get();
         model.addAttribute("customer_id", customerId);
-        model.addAttribute("customer", customerService.findById(customerId).get());
-
+        model.addAttribute("customer", customer);
+        LOGGER.debug("Customer edit page for customer id:{}, login:{}", customerId, customer.getLogin());
         return "edit_customer";
     }
 
@@ -204,6 +211,7 @@ public class CustomerController {
         customer.setRole(Role.ROLE_USER);
         customer.setIsActual(true);
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        LOGGER.debug("Updated customer id: {}, login: {}", customerId, customer.getLogin());
         customerService.update(customer);
 
         return "redirect:/customers/{customer_id}/products";

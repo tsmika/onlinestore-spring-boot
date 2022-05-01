@@ -1,7 +1,6 @@
 package by.brest.karas.dao.jdbc;
 
 import by.brest.karas.dao.ProductDao;
-import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,9 @@
 package by.brest.karas.service.web_app;
 
-import by.brest.karas.dao.jdbc.CustomerDaoJdbc;
 import by.brest.karas.model.CartRecord;
 import by.brest.karas.model.Customer;
 import by.brest.karas.model.Product;
+import by.brest.karas.model.Role;
 import by.brest.karas.model.dto.CartRecordDto;
 import by.brest.karas.service.CartRecordDtoService;
 import by.brest.karas.service.CartRecordService;
@@ -79,6 +79,7 @@ public class AdminController {
             @RequestParam(value = "view", required = false, defaultValue = "") String view,
             Model model) {
 
+        LOGGER.debug("Products page for customer id:{}, role:{}", adminId, Role.ROLE_ADMIN);
         model.addAttribute("filter", filter);
         model.addAttribute("view", view);
         model.addAttribute("admin_id", adminId);
@@ -95,6 +96,7 @@ public class AdminController {
             @PathVariable(value = "product_id") Integer productId,
             Model model) {
 
+        LOGGER.debug("Product info page for product id:{}, role:{}", productId, Role.ROLE_ADMIN);
         model.addAttribute("product", productService.findById(productId));
 
         return "product_info";
@@ -102,6 +104,7 @@ public class AdminController {
 
     @GetMapping("/{admin_id}/products/new")
     public String goToNewProductForm(@ModelAttribute Product product) {
+        LOGGER.debug("Request for a new product's page");
         return "new_product_form";
     }
 
@@ -116,22 +119,22 @@ public class AdminController {
         }
 
         Integer adminId = getPrincipalId(principal);
-
         product.setPicture("add picture");
         product.setChangedBy(adminId);
-        productService.create(product);
         LOGGER.debug("Create product: {}", product);
+        productService.create(product);
         return "redirect:/admins/{admin_id}/products";
     }
 
     @GetMapping("/{admin_id}/products/{product_id}/edit")
     public String goToEditProductPage(Model model, @PathVariable("product_id") Integer productId) {
+        LOGGER.debug("Request for a edit product's page");
         model.addAttribute("product", productService.findById(productId));
         return "edit_product";
     }
 
     @PatchMapping("/{admin_id}/products/{product_id}/edit")
-    public String editProduct(
+    public String updateProduct(
             @PathVariable("product_id") Integer productId,
             @PathVariable("admin_id") Integer adminId,
             @ModelAttribute("product") @Valid Product product,
@@ -140,10 +143,10 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "edit_product";
         }
-
         product.setProductId(productId);
         product.setChangedBy(adminId);
         productService.update(product);
+        LOGGER.debug("Updated product: {}", product);
 
         return "redirect:/admins/{admin_id}/products";
     }
@@ -152,8 +155,7 @@ public class AdminController {
     public String deleteProductById(
             @PathVariable("product_id") Integer productId) {
 
-//        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
-//        LOGGER.debug("delete({},{})", id, model);
+        LOGGER.debug("Delete product by id: {}", productId);
         productService.delete(productId);
 
         return "redirect:/admins/{admin_id}/products";
@@ -166,6 +168,7 @@ public class AdminController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
+        LOGGER.debug("Customer's page");
         model.addAttribute("filter", filter);
 
         if (filter == null) {
@@ -180,7 +183,9 @@ public class AdminController {
             @PathVariable(value = "customer_id") Integer customerId,
             Model model) {
 
-        model.addAttribute("customer", customerService.findById(customerId).get());
+        Customer customer = customerService.findById(customerId).get();
+        LOGGER.debug("Customer info page for customer id:{}, login:{}", customer.getCustomerId(), customer.getLogin());
+        model.addAttribute("customer", customer);
 
         return "customer_info";
     }
@@ -190,8 +195,10 @@ public class AdminController {
             @PathVariable("customer_id") Integer customerId,
             Model model) {
 
+        Customer customer = customerService.findById(customerId).get();
+        LOGGER.debug("Customer edit page for customer id:{}, login:{}", customer.getCustomerId(), customer.getLogin());
         model.addAttribute("customer_id", customerId);
-        model.addAttribute("customer", customerService.findById(customerId).get());
+        model.addAttribute("customer", customer);
 
         return "edit_customer";
     }
@@ -211,7 +218,7 @@ public class AdminController {
 
         System.out.println(customer);
 
-        if(customer.getIsActual()) {
+        if (customer.getIsActual()) {
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         } else {
             customer.setPassword(passwordEncoder.encode("deleted customer password"));
@@ -219,21 +226,19 @@ public class AdminController {
 
         customer.setCustomerId(customerId);
         customerService.update(customer);
+        LOGGER.debug("Updated customer id: {}, login: {}", customerId, customer.getLogin());
 
         return "redirect:/admins/{admin_id}/customers";
     }
 
     @GetMapping("/{admin_id}/customers/{customer_id}/delete")
-    public String deleteCartRecordByCustomerIdAndProductId( @PathVariable("customer_id") Integer customerId) {
+    public String deleteCartRecordByCustomerIdAndProductId(@PathVariable("customer_id") Integer customerId) {
 
-//        LOGGER.debug("Delete customer {}", customerId);
-//        LOGGER.debug("delete({},{})", id, model);
+        LOGGER.debug("Delete customer by id: {}", customerId);
         customerService.delete(customerId);
 
         return "redirect:/admins/{admin_id}/customers";
     }
-
-
     //^^^^^^^^^^^^^^^^^^^^ CUSTOMERS
 
     /////////////////////// CART
@@ -243,6 +248,7 @@ public class AdminController {
             @RequestParam(value = "filter", required = false, defaultValue = "") String filter,
             Model model) {
 
+        LOGGER.debug("Cart page");
         List<CartRecordDto> cartRecordDtos = cartRecordDtoService.findCartRecordDtosByCustomerId(adminId, filter);
         model.addAttribute("filter", filter);
         model.addAttribute("cart_lines", (cartRecordDtos.size() != 0) ? cartRecordDtos : null);
@@ -253,6 +259,7 @@ public class AdminController {
 
     @GetMapping("/{admin_id}/cart/products/{product_id}/edit")
     public String goToNewCartRecordForm() {
+        LOGGER.debug("Edit cart record page");
         return "redirect:/admins/{admin_id}/cart/products/{product_id}/new";
     }
 
@@ -273,6 +280,7 @@ public class AdminController {
             model.addAttribute("quantity", cartRecordService.findCartRecordsByCustomerIdAndProductId(adminId, productId).get(0).getQuantity());
         }
 
+        LOGGER.debug("Updated cart record: {}", cartRecord);
         return "new_cart_record_form";
     }
 
@@ -297,6 +305,7 @@ public class AdminController {
         cartRecord.setCustomerId(adminId);
         cartRecord.setProductId(productId);
         cartRecordService.create(cartRecord);
+        LOGGER.debug("Create cart record: {}", cartRecord);
 
         return "redirect:/admins/{admin_id}/cart/products";
     }
@@ -306,14 +315,11 @@ public class AdminController {
             @PathVariable("product_id") Integer productId,
             @PathVariable("admin_id") Integer adminId) {
 
-//        LOGGER.debug("Delete cart record by customer id and product id ({},{}) ", customerId, productId);
-//        LOGGER.debug("delete({},{})", id, model);
+        LOGGER.debug("Delete cart record by customer id: {} and product id:{}", adminId, productId);
         cartRecordService.delete(adminId, productId);
 
         return "redirect:/admins/{admin_id}/cart/products";
     }
-
-
     ///////////////////////  ^^^^CART
 }
 
