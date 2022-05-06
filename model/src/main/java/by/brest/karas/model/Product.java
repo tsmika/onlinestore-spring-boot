@@ -5,34 +5,76 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * POJO Product for model.
+ *
+ * @author Tsikhan Karas
+ * @version 1.0
+ */
 public class Product {
 
+    /**
+     * Product id.
+     */
     private Integer productId;
 
+    /**
+     * Product picture address.
+     */
     private String picture;
 
+    /**
+     * Short description for the product.
+     */
     @NotEmpty(message = "Description must not be empty")
     @Size(min = 5, max = 50, message = "Description must be from 5 to 50 characters")
     private String shortDescription;
 
+    /**
+     * Detail description for the product.
+     */
     @NotEmpty(message = "Description must not be empty")
     @Size(min = 5, max = 1000, message = "Description must be from 5 to 1000 characters")
     private String detailDescription;
 
+    /**
+     * Product price.
+     */
     @NotNull(message = "Price must be greater than 0")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
-    @Digits(integer=7, fraction=2, message = "Price must 2 characters of fraction")
+    @Digits(integer = 7, fraction = 2, message = "Price must 2 characters of fraction")
     private BigDecimal price;
 
+    /**
+     * Creation date.
+     */
     private Date creationDate;
 
+    /**
+     * Update date.
+     */
     private Date updateDate;
 
+    /**
+     * id of the customer created or changed the product.
+     */
     private Integer changedBy;
 
+    /**
+     * Constructor without arguments.
+     */
     public Product() {
     }
 
+    /**
+     * Constructor with arguments.
+     *
+     * @param picture           product's picture address
+     * @param shortDescription  product's short description
+     * @param detailDescription product's detail description
+     * @param price             product's price
+     * @param changedBy         id of the customer created or changed the product.
+     */
     public Product(String picture, String shortDescription, String detailDescription, BigDecimal price, Integer changedBy) {
         this.picture = picture;
         this.shortDescription = shortDescription;
@@ -104,8 +146,6 @@ public class Product {
     public void setChangedBy(Integer changedBy) {
         this.changedBy = changedBy;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

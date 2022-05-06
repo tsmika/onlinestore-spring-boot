@@ -4,25 +4,57 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
+/**
+ * POJO Customer for model.
+ *
+ * @author Tsikhan Karas
+ * @version 1.0
+ */
 public class Customer {
 
+    /**
+     * Customer id.
+     */
     private Integer customerId;
 
+    /**
+     * Customer's login.
+     */
     @NotEmpty(message = "The field can not be empty")
     @Size(min = 2, max = 10, message = "Login must contains from 2 to 10 characters.")
     private String login;
 
+    /**
+     * Customer's password.
+     */
     @NotEmpty(message = "The field can not be empty")
     @Size(min = 1, max = 10, message = "Login must contains from 1 to 10 characters.")
     private String password;
 
+    /**
+     * Customer's role.
+     */
     private Role role;
 
+    /**
+     * Is the customer actual.
+     */
     private Boolean isActual;
 
+    /**
+     * Constructor without arguments.
+     */
     public Customer() {
     }
 
+    /**
+     * Constructor with arguments.
+     *
+     * @param login    customer's login
+     * @param password customer's password
+     * @param role     customer's role
+     * @param isActual is the customer actual.
+     */
     public Customer(String login, String password, Role role, Boolean isActual) {
         this.login = login;
         this.password = password;
@@ -71,17 +103,6 @@ public class Customer {
     }
 
     @Override
-    public String toString() {
-        return getClass().getName() + "{" +
-                "customerId=" + customerId +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", isActual=" + isActual +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -92,5 +113,16 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(customerId, login, password, role, isActual);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "customerId=" + customerId +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", isActual=" + isActual +
+                '}';
     }
 }
