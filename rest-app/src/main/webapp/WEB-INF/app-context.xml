@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                        http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+<!--                        http://www.springframework.org/schema/security">-->
+
+
+    <!-- Use spring servlet for all requests, including static resources -->
+    <mvc:default-servlet-handler/>
+
+    <!-- Use @MVC annotations -->
+    <mvc:annotation-driven/>
+    
+<!--    <mvc:resources mapping="/resources/**" location="/resources/"/>-->
+
+    <!-- Component scan for @Controller, @Service... annotations -->
+    <context:component-scan base-package="by.brest.karas*"/>
+
+<!--    &lt;!&ndash; SpringResourceTemplateResolver&ndash;&gt;-->
+<!--<bean id="templateResolver"-->
+<!--      class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">-->
+<!--    <property name="prefix" value="/WEB-INF/templates/" />-->
+<!--    <property name="suffix" value=".html" />-->
+<!--    <property name="templateMode" value="HTML" />-->
+<!--    <property name="cacheable" value="false" />-->
+<!--</bean>-->
+
+<!--    <bean id="templateEngine"-->
+<!--          class="org.thymeleaf.spring5.SpringTemplateEngine">-->
+<!--        <property name="templateResolvers">-->
+<!--            <set>-->
+<!--                <ref bean="templateResolver" />-->
+<!--            </set>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+<!--    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">-->
+<!--        <property name="templateEngine" ref="templateEngine" />-->
+<!--        <property name="characterEncoding" value="UTF-8" />-->
+<!--    </bean>-->
+
+<!--    ///////////////////-->
+    <import resource="classpath:test-db.xml"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+<!--                <value>classpath:application.properties</value>-->
+                <value>classpath:dao.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="productDao" class="by.brest.karas.dao.jdbc.ProductDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="productService" class="by.brest.karas.service.impl.ProductServiceImpl">
+        <constructor-arg name="productDao" ref="productDao"/>
+    </bean>
+
+    <bean id="customerDao" class="by.brest.karas.dao.jdbc.CustomerDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="customerService" class="by.brest.karas.service.impl.CustomerServiceImpl">
+        <constructor-arg name="customerDao" ref="customerDao"/>
+    </bean>
+
+    <bean id="cartRecordDao" class="by.brest.karas.dao.jdbc.CartRecordDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="cartRecordService" class="by.brest.karas.service.impl.CartRecordServiceImpl">
+        <constructor-arg name="cartRecordDao" ref="cartRecordDao"/>
+    </bean>
+
+    <bean id="cartRecordDtoDao" class="by.brest.karas.dao.jdbc.CartRecordDtoDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="cartRecordDtoService" class="by.brest.karas.service.impl.CartRecordDtoServiceImpl">
+        <constructor-arg name="cartRecordDtoDao" ref="cartRecordDtoDao"/>
+    </bean>
+</beans>

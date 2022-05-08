@@ -20,6 +20,7 @@
         <module>service-api</module>
         <module>service</module>
         <module>web-app</module>
+        <module>rest-app</module>
     </modules>
 
     <properties>
@@ -41,6 +42,7 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
 
+        <jackson-databind.version>2.13.2.2</jackson-databind.version>
     </properties>
 
     <dependencyManagement>
@@ -213,6 +215,14 @@
                 <artifactId>javax.el</artifactId>
                 <version>${javax.el.version}</version>
             </dependency>
+
+            <!-- Rest serialisation -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
