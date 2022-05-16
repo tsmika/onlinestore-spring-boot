@@ -1,1 +1,1 @@
-# onlinestore-spring-xml-rest
+# onlinestore-spring-boot
